@@ -11,14 +11,14 @@ void FileNames::readDir(const char * path) {
 		tinydir_readfile(&dir, &file);
 
 		if (!strcmp(file.extension, "bin")) {
-			bin.push_back((std::string)path + (std::string)file.name);
+			bin.push_back((std::string)path + "/" + (std::string)file.name);
 		}
 		else if (!strcmp(file.extension, "csv")) {
-			leap.push_back((std::string)path + (std::string)file.name);
+			leap.push_back((std::string)path + "/" + (std::string)file.name);
 		}
 		else if (!strcmp(file.extension, "png")) {
-			if (strstr(file.name, "depth")) depth.push_back((std::string)path + (std::string)file.name);
-			else if (strstr(file.name, "rgb")) rgb.push_back((std::string)path + (std::string)file.name);
+			if (strstr(file.name, "depth")) depth.push_back((std::string)path + "/" + (std::string)file.name);
+			else if (strstr(file.name, "rgb")) rgb.push_back((std::string)path + "/" + (std::string)file.name);
 		}
 
 		tinydir_next(&dir);
