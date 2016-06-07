@@ -1,0 +1,29 @@
+CMAKE_MINIMUM_REQUIRED(VERSION 2.8.0 FATAL_ERROR)
+cmake_policy(VERSION 2.8)
+PROJECT(GestureRecognition)
+#make sure we only build release
+SET(CMAKE_CONFIGURATION_TYPES Debug Release CACHE STRING "" FORCE)
+#set opencv directory vars
+SET(LEAP_DIR "C:/Leap/LeapSDK/")
+SET(OPENCV_DIR "C:/OpenCV/build/")
+SET(KINECT_DIR "C:/Program Files/Microsoft SDKs/Kinect/v2.0_1409/")
+SET(SOURCE_DIR "source")
+SET(INCLUDE_DIR "include")
+
+FILE(GLOB SOURCE_FILES ${SOURCE_DIR}/*.cpp)
+FILE(GLOB HEADER_FILES ${INCLUDE_DIR}/*.h)
+
+MESSAGE(STATUS "PATH: " ${HEADER_FILES})
+#header filters
+SOURCE_GROUP("Header Files" FILES ${HEADER_FILES})
+#source filters
+SOURCE_GROUP("Source Files" FILES ${SOURCE_FILES})
+
+#make sure we include opencv include dir
+INCLUDE_DIRECTORIES(${LEAP_DIR}/include ${OPENCV_DIR}/include ${KINECT_DIR}/inc ${INCLUDE_DIR})
+#include opencv lib directory
+LINK_DIRECTORIES(${LEAP_DIR}/lib/x64/ ${OPENCV_DIR}/x64/vc12/lib/ ${KINECT_DIR}/Lib/x64/)
+#create exe
+ADD_EXECUTABLE(LeapKinect ${SOURCE_FILES} ${HEADER_FILES})
+#link libs
+TARGET_LINK_LIBRARIES(GestureRecognition Leap.lib opencv_world310.lib Kinect20.lib)
