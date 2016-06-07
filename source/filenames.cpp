@@ -49,5 +49,5 @@ void FileNames::print() {
 	for (int i = 0; i < bin.size(); i++) {
 		std::cout << "\t" << bin[i] << std::endl;
 	}
-	
+
 }
