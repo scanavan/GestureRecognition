@@ -1,8 +1,6 @@
 #ifndef IMAGE_H
 #define IMAGE_H
 #include <string>
-#include <opencv2/core/core.hpp>
-#include <opencv2/highgui/highgui.hpp>
 #include <opencv\cv.h>
 
 class Image {
