@@ -18,10 +18,10 @@ Image KinectMotion::getRgb() {
 	return rgb;
 }
 
-void KinectMotion::displayUpdatedImage(Image iDepth, int upperThresholdVal, int lowerThresholdVal) {
-	cv::Mat iDepthMat = iDepth.returnImage();
-	int h = iDepth.getHeight();
-	int w = iDepth.getWidth();
+void KinectMotion::displayUpdatedImage(int upperThresholdVal, int lowerThresholdVal) {
+	cv::Mat iDepthMat = depth.returnImage();
+	int h = depth.getHeight();
+	int w = depth.getWidth();
 	for (int i = 0; i < h; i++) {
 		for (int j = 0; j < w; j++) {
 			cv::Scalar intensity = iDepthMat.at<uchar>(i, j);
@@ -34,7 +34,7 @@ void KinectMotion::displayUpdatedImage(Image iDepth, int upperThresholdVal, int 
 		}
 	}
 
-	std::string imageName = iDepth.getName();
+	std::string imageName = depth.getName();
 	cv::namedWindow(imageName, cv::WINDOW_AUTOSIZE);
 	cv::imshow(imageName, iDepthMat);
 	cv::waitKey(0);
