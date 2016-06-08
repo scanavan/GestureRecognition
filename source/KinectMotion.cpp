@@ -4,7 +4,6 @@
 #include "Image.h"
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
-#include <opencv\cv.h>
 #include "filenames.h" 
 
 KinectMotion::KinectMotion(std::string iDepth, std::string iRgb):depth(Image(iDepth)),rgb(Image(iRgb)) {
@@ -19,21 +18,8 @@ Image KinectMotion::getRgb() {
 	return rgb;
 }
 
-void KinectMotion::test() {
-	FileNames myFiles;
-
-	myFiles.readDir("C:/JB/Gesture_1_Dataset/p1/g1");
-
-	int upperThresholdVal = 20;
-	int lowerThresholdVal = 1;
-
-
-
-	KinectMotion image = KinectMotion(myFiles.depth[0], myFiles.rgb[0]);
-	Image iDepth = image.getDepth();
-
-	cv::Mat iDepthMat = iDepth.returnImage(); 
-
+void KinectMotion::displayUpdatedImage(Image iDepth, int upperThresholdVal, int lowerThresholdVal) {
+	cv::Mat iDepthMat = iDepth.returnImage();
 	int h = iDepth.getHeight();
 	int w = iDepth.getWidth();
 	for (int i = 0; i < h; i++) {
@@ -48,9 +34,8 @@ void KinectMotion::test() {
 		}
 	}
 
-	std::string imageName = "Our Image";
+	std::string imageName = iDepth.getName();
 	cv::namedWindow(imageName, cv::WINDOW_AUTOSIZE);
 	cv::imshow(imageName, iDepthMat);
 	cv::waitKey(0);
-
 }
