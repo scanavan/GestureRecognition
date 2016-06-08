@@ -31,3 +31,7 @@ void Image::deleteWindow() {
 std::string Image::getName() {
 	return imageName;
 }
+
+cv::Mat Image::returnImage() {
+	return image;
+}
