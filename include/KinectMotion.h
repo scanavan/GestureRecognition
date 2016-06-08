@@ -9,6 +9,7 @@ public:
 	KinectMotion(std::string iDepth, std::string iRgb);
 	Image getDepth();
 	Image getRgb();
+	void test();
 private:
 	Image depth;
 	Image rgb;
