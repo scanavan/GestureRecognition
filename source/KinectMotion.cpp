@@ -32,7 +32,7 @@ void KinectMotion::test() {
 	KinectMotion image = KinectMotion(myFiles.depth[0], myFiles.rgb[0]);
 	Image iDepth = image.getDepth();
 
-	cv::Mat iDepthMat = iDepth.returnImage();
+	cv::Mat iDepthMat = iDepth.returnImage(); 
 
 	int h = iDepth.getHeight();
 	int w = iDepth.getWidth();
