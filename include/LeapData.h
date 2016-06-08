@@ -14,7 +14,6 @@ public:
 	void parse(int lineNum, std::string line);
 	std::vector<float> splitString(std::string line);
 	void printAttributes();
-	std::vector<float> getFingertipDistance();
 	std::vector<Point> getProjection();
 	void setNewScaleFactor();
 	void setNewFingerTipDist();

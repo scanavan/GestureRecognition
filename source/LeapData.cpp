@@ -1,6 +1,7 @@
 #include "LeapData.h"
 #include <sstream>
 
+// constructor
 LeapData::LeapData(std::string path) {
 	std::ifstream ifs;
 	std::string line;
@@ -20,6 +21,8 @@ LeapData::LeapData(std::string path) {
 	ifs.close();
 }
 
+// sets the newFingerTipDistance based on newScaleFactor
+// newFingerTipDist = dist(fingerTipPosition, palmPosition) / newScaleFactor
 void LeapData::setNewFingerTipDist() {
 	for (int i = 0; i < numFingers; i++) {
 		newFingerTipDistRefined.push_back(fingerTipPosition[i].getMagnitude(palmPosition) / newScaleFactor);
@@ -27,6 +30,8 @@ void LeapData::setNewFingerTipDist() {
 	
 }
 
+// calculates newScaleFactor
+// newScaleFactor = dist((avg(fingerTipPositions) / numFingers), palmPosition)
 void LeapData::setNewScaleFactor() {
 	if (numFingers == 0) {
 		newScaleFactor = 1;
@@ -46,18 +51,15 @@ void LeapData::setNewScaleFactor() {
 	}
 }
 
-std::vector<float> LeapData::getFingertipDistance() {
-	std::vector<float> returnVal;
-	for (int i = 0; i < numFingers; i++) {
-		returnVal.push_back(palmPosition.getMagnitude(fingerTipPosition[i]));
-	}
-	return returnVal;
-}
-
+// returns vector of Points projected into normal plane
+// projection = q(point to project) - dot(
 std::vector<Point> LeapData::getProjection() {
 	std::vector<Point> returnVal;
+	// p = (palmNormal / |palmnormal|) * 1
 	float k = 1 / palmPosition.getMagnitude(palmNormal);
 	Point p = Point(palmNormal.getX() * k, palmNormal.getY() * k, palmNormal.getZ() * k);
+	//d = fingerTipPosition - p
+	// returnVal = fingerTipPosition - dot(handDirection, d) * handDirection
 	for (int i = 0; i < numFingers; i++) {
 		Point d = Point(fingerTipPosition[i].getX() - p.getX(), fingerTipPosition[i].getY() - p.getY(), fingerTipPosition[i].getZ() - p.getZ());
 		returnVal.push_back(Point (fingerTipPosition[i].getX() - handDirection.getDotProduct(d) * handDirection.getX(),
@@ -67,6 +69,7 @@ std::vector<Point> LeapData::getProjection() {
 	return returnVal;
 }
 
+// parse all the attributes from CSV file
 void LeapData::parse(int lineNum, std::string line) {
 	std::vector<float> vect = splitString(line);
 	std::vector<Point> pointVect;
@@ -140,6 +143,7 @@ void LeapData::parse(int lineNum, std::string line) {
 
 }
 
+// returns vector of floats with CSV line content split at the commas
 std::vector<float> LeapData::splitString(std::string line) {
 	std::istringstream ss(line);
 	std::string token;
@@ -157,6 +161,7 @@ std::vector<float> LeapData::splitString(std::string line) {
 	return returnVal;
 }
 
+// prints all the attributes
 void LeapData::printAttributes() {
 	std::cout << "number of fingers: " << numFingers << std::endl;
 
