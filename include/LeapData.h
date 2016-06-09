@@ -1,7 +1,7 @@
 #ifndef LEAPDATA_H
 #define LEAPDATA_H
 
-#include <string>
+
 #include <iostream>
 #include <fstream>
 #include <vector>
@@ -15,8 +15,11 @@ public:
 	std::vector<float> splitString(std::string line);
 	void printAttributes();
 	std::vector<Point> getProjection();
+//	std::vector<float> getFingerTipDist();
 	void setNewScaleFactor();
 	void setNewFingerTipDist();
+	void setFingerTipAngles();
+	void writeToFile(std::string path);
 private:
 	int numFingers;
 	std::vector<float> fingerTipDist;
@@ -42,6 +45,8 @@ private:
 	//new attributes
 	float newScaleFactor;
 	std::vector<float> newFingerTipDistRefined;
+	std::vector<float> fingerTipAngles;
+	std::vector<Point> projectionPoints;
 };
 
 #endif 

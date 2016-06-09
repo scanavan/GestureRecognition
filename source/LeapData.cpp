@@ -17,8 +17,21 @@ LeapData::LeapData(std::string path) {
 		}
 		setNewScaleFactor();
 		setNewFingerTipDist();
+		projectionPoints = getProjection();
+		setFingerTipAngles();
 	}
 	ifs.close();
+}
+
+
+void LeapData::setFingerTipAngles() {
+	float a, b, c;
+	for (int i = 0; i < numFingers; i++) {
+		a = fingerTipDist[i];
+		b = projectionPoints[i].getMagnitude(palmPosition);
+		c = projectionPoints[i].getMagnitude(fingerTipPosition[i]);
+		fingerTipAngles.push_back(acos((-powf(c, 2) + powf(a, 2) + powf(b, 2)) / (2 * a * b)));
+	}
 }
 
 // sets the newFingerTipDistance based on newScaleFactor
@@ -27,7 +40,6 @@ void LeapData::setNewFingerTipDist() {
 	for (int i = 0; i < numFingers; i++) {
 		newFingerTipDistRefined.push_back(fingerTipPosition[i].getMagnitude(palmPosition) / newScaleFactor);
 	}
-	
 }
 
 // calculates newScaleFactor
@@ -50,6 +62,13 @@ void LeapData::setNewScaleFactor() {
 
 	}
 }
+
+//std::vector<float> LeapData::getFingerTipDist() {
+//	std::vector<float> returnVal;
+//	for (int i = 0; i < numFingers; i++) {
+//		returnVal.push_back(fingerTipPosition[i].getMagnitude(palmPosition));
+//	}
+//}
 
 // returns vector of Points projected into normal plane
 // projection = q(point to project) - dot(
@@ -252,4 +271,115 @@ void LeapData::printAttributes() {
 		std::cout << newFingerTipDistRefined[i] << " ";
 	}
 	std::cout << std::endl;
+
+	std::cout << "fingerTipAngles:" << " ";
+	for (int i = 0; i < fingerTipAngles.size(); i++) {
+		std::cout << fingerTipAngles[i] << " ";
+	}
+	std::cout << std::endl;
+
+	std::cout << "projectionPoints:" << " ";
+	for (int i = 0; i < projectionPoints.size(); i++) {
+		projectionPoints[i].printPoint();
+	}
+	std::cout << std::endl;
+}
+
+void LeapData::writeToFile(std::string path) {
+	std::ofstream file;
+	file.open(path);
+	std::cout << std::fixed;
+	file << "numFingers: " << numFingers << "\n";
+
+	file << "fingerTipDist: " ;
+	for (int i = 0; i < fingerTipDist.size(); i++) {
+		file << std::to_string(fingerTipDist[i]) << " ";
+	}
+	file << "\n";
+
+	file << "newFingerTipDistRefined: ";
+	for (int i = 0; i < newFingerTipDistRefined.size(); i++) {
+		file << std::to_string(newFingerTipDistRefined[i]) << " ";
+	}
+	file << "\n";
+
+	file << "fingerTipInterDist: ";
+	for (int i = 0; i < fingerTipInterDist.size(); i++) {
+		file << std::to_string(fingerTipInterDist[i]) << " ";
+	}
+	file << "\n";
+
+	file << "handDirection: ";
+	file << handDirection.writePoint();
+	file << "\n";
+
+	file << "palmNormal: ";
+	file << palmNormal.writePoint();
+	file << "\n";
+
+	file << "palmVelocity: ";
+	for (int i = 0; i < palmVelocity.size(); i++) {
+		file << std::to_string(palmVelocity[i]) << " ";
+	}
+	file << "\n";
+
+	file << "rotationAxis: ";
+	for (int i = 0; i < rotationAxis.size(); i++) {
+		file << std::to_string(rotationAxis[i]) << " ";
+	}
+	file << "\n";
+
+	file << "rotationMatrix: ";
+	for (int i = 0; i < rotationMatrix.size(); i++) {
+		file << std::to_string(rotationMatrix[i]) << " ";
+	}
+	file << "\n";
+
+	file << "translation: ";
+	for (int i = 0; i < translation.size(); i++) {
+		file << std::to_string(translation[i]) << " ";
+	}
+	file << "\n";
+
+	file << "handSphereRadius: " << std::to_string(handSphereRadius) << std::endl;
+
+	file << "rotationAngle: " << std::to_string(rotationAngle) << std::endl;
+
+	file << "rotationProbability: " << std::to_string(rotationProbability) << std::endl;
+
+	file << "translationProbability: " << std::to_string(translationProbability) << std::endl;
+
+	file << "fingerTipPosition: ";
+	for (int i = 0; i < fingerTipPosition.size(); i++) {
+		file << fingerTipPosition[i].writePoint();
+	}
+	file << "\n";
+
+	file << "handSphereCenter: ";
+	file << handSphereCenter.writePoint();
+	file << "\n";
+
+	file << "palmPosition: ";
+	file << palmPosition.writePoint();
+	file << "\n";
+
+	file << "palmPositionRefined: ";
+	file << palmPositionRefined.writePoint();
+	file << "\n";
+
+	file << "newScaleFactor: " << newScaleFactor << std::endl;
+
+	file << "fingerTipAngles: ";
+	for (int i = 0; i < fingerTipAngles.size(); i++) {
+		file << std::to_string(fingerTipAngles[i]) << " ";
+	}
+	file << "\n";
+
+	file << "projectionPoints: ";
+	for (int i = 0; i < projectionPoints.size(); i++) {
+		file << projectionPoints[i].writePoint();
+	}
+	file << "\n";
+
+	file.close();
 }
