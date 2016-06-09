@@ -46,14 +46,70 @@ void LeapCamera::Run()
 		LeapGetImage();
 		if (showHandInfo)
 		{
-			GetHandInformation();
+			PrintHandInformation();
+		}
+		else
+		{
+			PopulateHandData();
 		}
 		int key = cv::waitKey(33);
 		if (key == 101)
 		{
 			Exit();
 		}
+		std::cout << "There are " << leapData.extendedFingers.size() << " finger(s) extended in the current frame" << std::endl;
+		for (auto &finger : leapData.extendedFingers)
+		{
+			std::cout << GetLeapFingerName(finger) << std::endl;
+		}
+		//remove current extended fingers
+		//only saving per frame...
+		leapData.extendedFingers.clear();
 	}
+}
+std::string LeapCamera::GetLeapFingerName(Leap::Finger::Type type)
+{
+	std::string finger("Thumb");
+	switch(type)
+	{
+	case 1:
+		finger = "Index";
+		break;
+	case 2:
+		finger = "Middle";
+		break;
+	case 3:
+		finger = "Ring";
+		break;
+	case 4:
+		finger = "Pinky";
+		break;
+	}
+	return finger;
+}
+void LeapCamera::PopulateHandData()
+{
+	//get frame from leap
+	leapFrame = controller.frame();
+	//get hands
+	hands = leapFrame.hands();
+	for (Leap::HandList::const_iterator hl = hands.begin(); hl != hands.end(); ++hl)
+	{
+		// Get the hand
+		const Leap::Hand hand = *hl;
+		const Leap::FingerList fingers = hand.fingers().extended();
+		for (Leap::FingerList::const_iterator fl = fingers.begin(); fl != fingers.end(); ++fl)
+		{
+			const Leap::Finger finger = *fl;
+			//std::cout << GetLeapFingerName(finger.type()) << std::endl;
+			leapData.extendedFingers.emplace_back(finger.type());
+		}
+	}
+}
+//return the type of finger that leap is finding
+Leap::Finger::Type LeapCamera::GetFingerType()
+{
+	return Leap::Finger::Type();
 }
 void LeapCamera::LeapGetImage()
 {
@@ -80,22 +136,21 @@ void LeapCamera::OpenCVGetImage()
 	cv::namedWindow("OpenCV");
 	cv::imshow("OpenCV", frame);
 }
-void LeapCamera::GetHandInformation()
+void LeapCamera::PrintHandInformation()
 {
-	//NOTE: Make these class variables and cleanup function
-	const Leap::Frame frame = controller.frame();
+	leapFrame = controller.frame();
 
-	std::cout << "Frame id: " << frame.id()
-		<< ", timestamp: " << frame.timestamp()
-		<< ", hands: " << frame.hands().count()
-		<< ", extended fingers: " << frame.fingers().extended().count()
-		<< ", tools: " << frame.tools().count()
-		<< ", gestures: " << frame.gestures().count() << std::endl;
+	std::cout << "leapFrame id: " << leapFrame.id()
+		<< ", timestamp: " << leapFrame.timestamp()
+		<< ", hands: " << leapFrame.hands().count()
+		<< ", extended fingers: " << leapFrame.fingers().extended().count()
+		<< ", tools: " << leapFrame.tools().count()
+		<< ", gestures: " << leapFrame.gestures().count() << std::endl;
 	
-	Leap::HandList hands = frame.hands();
+	hands = leapFrame.hands();
 	for (Leap::HandList::const_iterator hl = hands.begin(); hl != hands.end(); ++hl)
 	{
-		// Get the first hand
+		// Get the hand
 		const Leap::Hand hand = *hl;
 		std::string handType = hand.isLeft() ? "Left hand" : "Right hand";
 		std::cout << std::string(2, ' ') << handType << ", id: " << hand.id()
@@ -137,7 +192,7 @@ void LeapCamera::GetHandInformation()
 	}
 
 	// Get tools
-	const Leap::ToolList tools = frame.tools();
+	const Leap::ToolList tools = leapFrame.tools();
 	for (Leap::ToolList::const_iterator tl = tools.begin(); tl != tools.end(); ++tl) {
 		const Leap::Tool tool = *tl;
 		std::cout << std::string(2, ' ') << "Tool, id: " << tool.id()
@@ -146,7 +201,7 @@ void LeapCamera::GetHandInformation()
 	}
 
 	// Get gestures
-	const Leap::GestureList gestures = frame.gestures();
+	const Leap::GestureList gestures = leapFrame.gestures();
 	for (int g = 0; g < gestures.count(); ++g) {
 		Leap::Gesture gesture = gestures[g];
 
@@ -163,7 +218,7 @@ void LeapCamera::GetHandInformation()
 				clockwiseness = "counterclockwise";
 			}
 
-			// Calculate angle swept since last frame
+			// Calculate angle swept since last leapFrame
 			float sweptAngle = 0;
 			if (circle.state() != Leap::Gesture::STATE_START) {
 				Leap::CircleGesture previousUpdate = Leap::CircleGesture(controller.frame(1).gesture(circle.id()));
@@ -214,7 +269,7 @@ void LeapCamera::GetHandInformation()
 		}
 	}
 
-	if (!frame.hands().isEmpty() || !gestures.isEmpty()) {
+	if (!leapFrame.hands().isEmpty() || !gestures.isEmpty()) {
 		std::cout << std::endl;
 	}
 
