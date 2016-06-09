@@ -5,6 +5,7 @@
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include "filenames.h" 
+#include <vector>
 
 KinectMotion::KinectMotion(std::string iDepth, std::string iRgb):depth(Image(iDepth)),rgb(Image(iRgb)) {
 
@@ -28,13 +29,16 @@ void removeRows(cv::Mat * image, int first_row, int last_row) {
 
 }
 
-void getRange(cv::Mat * image) {
+std::vector <unsigned char> getRange(cv::Mat * image) {
+
+	std::vector <unsigned char> return_vector;
 
 	int found_first = 0;
 	int first_col = 0;
 	int last_col = 0;
 
 	for (int i = 0; i < image->rows; i++) {
+		return_vector.push_back(0);
 		for (int j = 0; j < image->cols; j++) {
 			if (image->at<uchar>(i, j) != 0) {
 				if (found_first == 0) {
@@ -46,9 +50,12 @@ void getRange(cv::Mat * image) {
 		}
 		found_first = 0;
 		for (int j = first_col; j < last_col; j++) {
-			image->at<uchar>(i, j) = 255;
+			// image->at<uchar>(i, j) = 255;
+			return_vector.back()++;
 		}
 	}
+	
+	return return_vector;
 
 }
 
@@ -97,15 +104,15 @@ void KinectMotion::displayUpdatedImage(int upperThresholdVal, int lowerThreshold
 	}
 
 	// fill in area between fingers and such
-	// getRange(&iDepthMat);
+	std::vector <unsigned char> range_vector = getRange(&iDepthMat);
 
 	// get new sums (without irrelevant regions)
-	cv::reduce(iDepthMat, row_sums, 1, CV_REDUCE_SUM, CV_32S);
+	// cv::reduce(iDepthMat, row_sums, 1, CV_REDUCE_SUM, CV_32S);
 
-	// display row sums (doesn't actually work bc of 32 bit)
+	// display row ranges
 	for (int i = 0; i < h; i++) {
 		for (int j = 0; j < 20; j++) {
-			iDepthMat.at<uchar>(i, j) = (unsigned char) row_sums.at<int>(i);
+			iDepthMat.at<uchar>(i, j) = range_vector[i]; 
 		}
 	}
 
