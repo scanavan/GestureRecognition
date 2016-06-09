@@ -21,46 +21,6 @@ Image KinectMotion::getRgb() {
 	return rgb;
 }
 
-void removeRows(cv::Mat * image, int first_row, int last_row) {
-
-	for (int i = first_row; i <= last_row; i++) {
-		for (int j = 0; j < image->cols; j++) {
-			image->at<uchar>(i, j) = 0;
-		}
-	}
-
-}
-
-std::vector <unsigned char> getRange(cv::Mat * image) {
-
-	std::vector <unsigned char> return_vector;
-
-	int found_first = 0;
-	int first_col = 0;
-	int last_col = 0;
-
-	for (int i = 0; i < image->rows; i++) {
-		return_vector.push_back(0);
-		for (int j = 0; j < image->cols; j++) {
-			if (image->at<uchar>(i, j) != 0) {
-				if (found_first == 0) {
-					found_first = 1;
-					first_col = j;
-				}
-				last_col = j;
-			}
-		}
-		found_first = 0;
-		for (int j = first_col; j < last_col; j++) {
-			// image->at<uchar>(i, j) = 255;
-			return_vector.back()++;
-		}
-	}
-
-	return return_vector;
-
-}
-
 void KinectMotion::blob(cv::Mat imMat) {
 	cv::SimpleBlobDetector::Params params;
 	params.minThreshold = 1;
@@ -98,30 +58,30 @@ cv::Mat KinectMotion::findBiggestBlob(cv::Mat imMat) {
 	return imMat;
 }
 
-cv::Mat KinectMotion::displayUpdatedImage(int upperThresholdVal, int lowerThresholdVal) {
+cv::Mat KinectMotion::updateImage(int upperThresholdVal, int lowerThresholdVal) {
 
 	// get depth image determine hight and width of image
 	cv::Mat iDepthMat = depth.returnImage();
 	int h = depth.getHeight();
 	int w = depth.getWidth();
-
+	
 	// threshold
 	for (int i = 0; i < h; i++) {
 		for (int j = 0; j < w; j++) {
 			cv::Scalar intensity = iDepthMat.at<uchar>(i, j);
 			if (intensity.val[0] < upperThresholdVal && intensity.val[0] > lowerThresholdVal) {
-				//iDepthMat.at<uchar>(i, j) = 255;
+				iDepthMat.at<uchar>(i, j) = 255;
 			}
 			else {
 				iDepthMat.at<uchar>(i, j) = 0;
 			}
 		}
 	}
-
+	
 	// calculate sum of each row as one column (this isn't really that useful because it's 32 bit)
 	cv::Mat row_sums;
 	cv::reduce(iDepthMat, row_sums, 1, CV_REDUCE_SUM, CV_32S);
-
+	
 	// remove anything that isn't a hand (not tall enough)
 	int num_contiguous_rows = 0;
 	int first_contiguous_row = 0;
@@ -135,7 +95,11 @@ cv::Mat KinectMotion::displayUpdatedImage(int upperThresholdVal, int lowerThresh
 		else {
 			if (num_contiguous_rows != 0) {
 				if (num_contiguous_rows < 50) {
-					removeRows(&iDepthMat, first_contiguous_row, last_contiguous_row);
+					for (int i = first_contiguous_row; i <= last_contiguous_row; i++) {
+						for (int j = 0; j < iDepthMat.cols; j++) {
+							iDepthMat.at<uchar>(i, j) = 0;
+						}
+					}
 				}
 			}
 			num_contiguous_rows = 0;
@@ -143,18 +107,34 @@ cv::Mat KinectMotion::displayUpdatedImage(int upperThresholdVal, int lowerThresh
 	}
 
 	// fill in area between fingers and such
-	std::vector <unsigned char> range_vector = getRange(&iDepthMat);
-
-	// get new sums (without irrelevant regions)
-	// cv::reduce(iDepthMat, row_sums, 1, CV_REDUCE_SUM, CV_32S);
+	std::vector <unsigned char> range_vector;
+	int found_first = 0;
+	int first_col = 0;
+	int last_col = 0;
+	for (int i = 0; i < iDepthMat.rows; i++) {
+		range_vector.push_back(0);
+		for (int j = 0; j < iDepthMat.cols; j++) {
+			if (iDepthMat.at<uchar>(i, j) != 0) {
+				if (found_first == 0) {
+					found_first = 1;
+					first_col = j;
+				}
+				last_col = j;
+			}
+		}
+		found_first = 0;
+		for (int j = first_col; j < last_col; j++) {
+			range_vector.back()++;
+		}
+	}
 
 	// display row ranges
 	for (int i = 0; i < h; i++) {
 		for (int j = 0; j < 20; j++) {
-			iDepthMat.at<uchar>(i, j) = range_vector[i];
+			iDepthMat.at<uchar>(i, j) = range_vector[i]; 
 		}
 	}
 
-
 	return iDepthMat;
+
 }
