@@ -309,12 +309,32 @@ void LeapData::writeToFile(std::string path) {
 	}
 	file << "\n";
 
+	file << "fingerTipPosition: ";
+	for (int i = 0; i < fingerTipPosition.size(); i++) {
+		file << fingerTipPosition[i].writePoint();
+	}
+	file << "\n";
+
 	file << "handDirection: ";
 	file << handDirection.writePoint();
 	file << "\n";
 
+	file << "handSphereCenter: ";
+	file << handSphereCenter.writePoint();
+	file << "\n";
+
+	file << "handSphereRadius: " << std::to_string(handSphereRadius) << std::endl;
+
 	file << "palmNormal: ";
 	file << palmNormal.writePoint();
+	file << "\n";
+
+	file << "palmPosition: ";
+	file << palmPosition.writePoint();
+	file << "\n";
+
+	file << "palmPositionRefined: ";
+	file << palmPositionRefined.writePoint();
 	file << "\n";
 
 	file << "palmVelocity: ";
@@ -322,6 +342,8 @@ void LeapData::writeToFile(std::string path) {
 		file << std::to_string(palmVelocity[i]) << " ";
 	}
 	file << "\n";
+
+	file << "rotationAngle: " << std::to_string(rotationAngle) << std::endl;
 
 	file << "rotationAxis: ";
 	for (int i = 0; i < rotationAxis.size(); i++) {
@@ -335,39 +357,17 @@ void LeapData::writeToFile(std::string path) {
 	}
 	file << "\n";
 
+	file << "rotationProbability: " << std::to_string(rotationProbability) << std::endl;
+
+	file << "newScaleFactor: " << newScaleFactor << std::endl;
+
 	file << "translation: ";
 	for (int i = 0; i < translation.size(); i++) {
 		file << std::to_string(translation[i]) << " ";
 	}
 	file << "\n";
 
-	file << "handSphereRadius: " << std::to_string(handSphereRadius) << std::endl;
-
-	file << "rotationAngle: " << std::to_string(rotationAngle) << std::endl;
-
-	file << "rotationProbability: " << std::to_string(rotationProbability) << std::endl;
-
 	file << "translationProbability: " << std::to_string(translationProbability) << std::endl;
-
-	file << "fingerTipPosition: ";
-	for (int i = 0; i < fingerTipPosition.size(); i++) {
-		file << fingerTipPosition[i].writePoint();
-	}
-	file << "\n";
-
-	file << "handSphereCenter: ";
-	file << handSphereCenter.writePoint();
-	file << "\n";
-
-	file << "palmPosition: ";
-	file << palmPosition.writePoint();
-	file << "\n";
-
-	file << "palmPositionRefined: ";
-	file << palmPositionRefined.writePoint();
-	file << "\n";
-
-	file << "newScaleFactor: " << newScaleFactor << std::endl;
 
 	file << "fingerTipAngles: ";
 	for (int i = 0; i < fingerTipAngles.size(); i++) {
