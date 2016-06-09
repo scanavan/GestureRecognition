@@ -5,17 +5,8 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include "Point.h"
 
-class Point {
-public:
-	Point() : x(0.f), y(0.f), z(0.f) {}
-	Point(float _x, float _y, float _z);
-	void printPoint();
-private:
-	float x;
-	float y;
-	float z;
-};
 
 class LeapData {
 public:
@@ -23,16 +14,19 @@ public:
 	void parse(int lineNum, std::string line);
 	std::vector<float> splitString(std::string line);
 	void printAttributes();
+	std::vector<Point> getProjection();
+	void setNewScaleFactor();
+	void setNewFingerTipDist();
 private:
 	int numFingers;
 	std::vector<float> fingerTipDist;
 	std::vector<float> fingerTipDistRefined;
 	std::vector<float> fingerTipInterDist;
 	std::vector<Point> fingerTipPosition;
-	std::vector<float> handDirection;
+	Point handDirection;
 	Point handSphereCenter;
 	float handSphereRadius;
-	std::vector<float> palmNormal;
+	Point palmNormal;
 	Point palmPosition;
 	Point palmPositionRefined;
 	std::vector<float> palmVelocity;
@@ -44,6 +38,10 @@ private:
 	float scaleProbability;
 	std::vector<float> translation;
 	float translationProbability;
+
+	//new attributes
+	float newScaleFactor;
+	std::vector<float> newFingerTipDistRefined;
 };
 
 #endif 
