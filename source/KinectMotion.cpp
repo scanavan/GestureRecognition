@@ -5,6 +5,7 @@
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/features2d.hpp>
+#include "opencv2/imgproc/imgproc.hpp"
 #include "filenames.h" 
 #include <vector>
 
@@ -74,8 +75,8 @@ void KinectMotion::blob(cv::Mat imMat) {
 	cv::Mat iDepthMat_with_keypoints;
 	drawKeypoints(imMat, keypoints, iDepthMat_with_keypoints, cv::Scalar(0, 0, 255), cv::DrawMatchesFlags::DRAW_RICH_KEYPOINTS);
 	imshow("keypoints", iDepthMat_with_keypoints);
-	cv::waitKey(0);
-}
+	cv::waitKey(0); 
+} 
 
 void KinectMotion::findBiggestBlob(cv::Mat imMat) {
 	int largestArea = 0;
