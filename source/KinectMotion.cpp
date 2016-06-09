@@ -5,7 +5,7 @@
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/features2d.hpp>
-#include "opencv2/imgproc/imgproc.hpp"
+#include <opencv2/imgproc/imgproc.hpp>
 #include "filenames.h" 
 #include <vector>
 
@@ -78,14 +78,24 @@ void KinectMotion::blob(cv::Mat imMat) {
 	cv::waitKey(0); 
 } 
 
-void KinectMotion::findBiggestBlob(cv::Mat imMat) {
+cv::Mat KinectMotion::findBiggestBlob(cv::Mat imMat) {
 	int largestArea = 0;
 	int largestContour = 0;
 
 	std::vector<std::vector<cv::Point>> contours;
 	std::vector<cv::Vec4i> hierarchy;
 
-	//cv::findContours(imMat, contours, hierarchy, cv::CV_RETR_CCOMP, cv::CV_CHAIN_APPROX_SIMPLE);
+	cv::findContours(imMat, contours, hierarchy, CV_RETR_CCOMP, CV_CHAIN_APPROX_SIMPLE);
+
+	for (int i = 0; i < contours.size(); i++) {
+		double a = contourArea(contours[i], false);
+		if (a > largestArea) {
+			largestArea = a;
+			largestContour = i;
+		}
+	}
+	drawContours(imMat, contours, largestContour, cv::Scalar(255), CV_FILLED, 8, hierarchy);
+	return imMat;
 }
 
 cv::Mat KinectMotion::displayUpdatedImage(int upperThresholdVal, int lowerThresholdVal) {
