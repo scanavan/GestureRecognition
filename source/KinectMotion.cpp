@@ -138,3 +138,43 @@ cv::Mat KinectMotion::updateImage(int upperThresholdVal, int lowerThresholdVal) 
 	return iDepthMat;
 
 }
+float KinectMotion::blobMax(cv::Mat depth) {
+	// set up the parameters (check the defaults in opencv's code in blobdetector.cpp)
+	cv::SimpleBlobDetector::Params params;
+	params.minDistBetweenBlobs = 50.0f;
+	params.filterByInertia = false;
+	params.filterByConvexity = false;
+	params.filterByColor = false;
+	params.filterByCircularity = false;
+	params.filterByArea = false;
+	params.minArea = 750.0f;
+	params.maxArea = 2000.0f;
+
+	// set up and create the detector using the parameters
+	cv::Ptr<cv::SimpleBlobDetector> detector = cv::SimpleBlobDetector::create(params);
+
+	// detect!
+	std::vector<cv::KeyPoint> keypoints;
+	detector->detect(depth, keypoints);
+
+	// extract the index of the largest blob
+	int maxPoint;
+	float max = 0.0;
+	for (int i = 0; i < keypoints.size(); i++) {
+		if (keypoints[i].size > max) {
+			max = keypoints[i].size;
+			maxPoint = i;
+		}
+	}
+	// Draw detected blobs as red circles.
+	// DrawMatchesFlags::DRAW_RICH_KEYPOINTS flag ensures the size of the circle corresponds to the size of blob
+	cv::Mat im_with_keypoints;
+	drawKeypoints(depth, keypoints, im_with_keypoints, cv::Scalar(0, 0, 255), cv::DrawMatchesFlags::DRAW_RICH_KEYPOINTS);
+
+	// Show blobs
+	imshow("keypoints", im_with_keypoints);
+	cv::waitKey(0);
+	std::cout << maxPoint << std::endl;
+
+	return max;
+}

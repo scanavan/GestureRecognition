@@ -12,6 +12,7 @@ public:
 	cv::Mat updateImage(int upperThresholdVal, int lowerThresholdVal);
 	cv::Mat findBiggestBlob(cv::Mat imMat); 
 	void blob(cv::Mat imMat);
+	float blobMax(cv::Mat depth);
 private:
 	Image depth;
 	Image rgb;
