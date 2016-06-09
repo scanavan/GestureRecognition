@@ -10,7 +10,7 @@ public:
 	Image getDepth();
 	Image getRgb();
 	cv::Mat displayUpdatedImage(int upperThresholdVal, int lowerThresholdVal);
-	void findBiggestBlob(cv::Mat imMat); 
+	cv::Mat findBiggestBlob(cv::Mat imMat); 
 	void blob(cv::Mat imMat);
 private:
 	Image depth;
