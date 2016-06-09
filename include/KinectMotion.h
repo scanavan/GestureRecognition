@@ -15,5 +15,5 @@ public:
 private:
 	Image depth;
 	Image rgb;
-};
+}; 
 #endif
