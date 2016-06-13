@@ -81,7 +81,7 @@ cv::Mat KinectMotion::getHand(cv::Mat image, double thresholdRatio) {
 
 }
 
-cv::Mat KinectMotion::updateImage(int upperThresholdVal, int lowerThresholdVal) {
+cv::Mat KinectMotion::updateImage(int upperThresholdVal, int lowerThresholdVal, bool make_binary) {
 
 	// get depth image determine hight and width of image
 	cv::Mat iDepthMat = depth.returnImage();
@@ -91,12 +91,15 @@ cv::Mat KinectMotion::updateImage(int upperThresholdVal, int lowerThresholdVal) 
 	// threshold
 	for (int i = 0; i < h; i++) {
 		for (int j = 0; j < w; j++) {
-			cv::Scalar intensity = iDepthMat.at<uchar>(i, j);
-			if (intensity.val[0] < upperThresholdVal && intensity.val[0] > lowerThresholdVal) {
-				iDepthMat.at<uchar>(i, j) = 255;
-			}
+			if(i < 50 || j < 50 || i > h-50 || j > w-50) iDepthMat.at<uchar>(i, j) = 0;
 			else {
-				iDepthMat.at<uchar>(i, j) = 0;
+				cv::Scalar intensity = iDepthMat.at<uchar>(i, j);
+				if (intensity.val[0] < upperThresholdVal && intensity.val[0] > lowerThresholdVal) {
+					if (make_binary) iDepthMat.at<uchar>(i, j) = 255;
+				}
+				else {
+					if (make_binary) iDepthMat.at<uchar>(i, j) = 0;
+				}
 			}
 		}
 	}
@@ -200,4 +203,30 @@ float KinectMotion::blobMax(cv::Mat depth) {
 	std::cout << maxPoint << std::endl;
 
 	return max;
+}
+
+cv::Mat KinectMotion::findEdges(cv::Mat image) {
+	
+	cv::Mat edge_image(image.rows, image.cols, CV_8UC3);
+	int last_val = static_cast<int>(image.at<uchar>(0, 0));
+	cv::Vec3b current_color;
+
+	for (int i = 0; i < image.rows; ++i)
+	{
+		for (int j = 0; j < image.cols; ++j)
+		{
+			if (last_val != static_cast<int>(image.at<uchar>(i, j))) {
+				last_val = static_cast<int>(image.at<uchar>(i, j));
+				edge_image.at<cv::Vec3b>(i, j) = cv::Vec3b(0,0,255);
+			}
+			else {
+				edge_image.at<cv::Vec3b>(i, j)[0] = image.at<uchar>(i, j);
+				edge_image.at<cv::Vec3b>(i, j)[1] = image.at<uchar>(i, j);
+				edge_image.at<cv::Vec3b>(i, j)[2] = image.at<uchar>(i, j);
+			}
+		}
+	}
+
+	return edge_image;
+
 }
