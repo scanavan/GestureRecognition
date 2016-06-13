@@ -9,9 +9,10 @@ public:
 	KinectMotion(std::string iDepth, std::string iRgb);
 	Image getDepth();
 	Image getRgb();
-	cv::Mat displayUpdatedImage(int upperThresholdVal, int lowerThresholdVal);
-	cv::Mat findBiggestBlob(cv::Mat imMat); 
+	cv::Mat updateImage(int upperThresholdVal, int lowerThresholdVal);
 	void blob(cv::Mat imMat);
+	float blobMax(cv::Mat depth);
+	cv::Mat getHand(cv::Mat image, double ratio);
 private:
 	Image depth;
 	Image rgb;
