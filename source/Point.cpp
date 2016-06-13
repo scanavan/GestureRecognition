@@ -38,5 +38,5 @@ float Point::getZ() {
 }
 
 std::string Point::writePoint() {
-	return '(' + std::to_string(x) + ", " + std::to_string(y) + ", " + std::to_string(z) + ')' + " ";
+	return std::to_string(x) + "," + std::to_string(y) + "," + std::to_string(z);
 }
