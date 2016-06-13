@@ -205,8 +205,33 @@ float KinectMotion::blobMax(cv::Mat depth) {
 	return max;
 }
 
-cv::Mat KinectMotion::findEdges(cv::Mat image) {
+Point::Point(int i, int j) {
+	this->i = i;
+	this->j = j;
+}
+
+std::vector <Point> KinectMotion::findEdges(cv::Mat image) {
 	
+	int last_val = static_cast<int>(image.at<uchar>(0, 0));
+	std::vector <Point> edge_vector;
+
+	for (int i = 0; i < image.rows; ++i)
+	{
+		for (int j = 0; j < image.cols; ++j)
+		{
+			if (last_val != static_cast<int>(image.at<uchar>(i, j))) {
+				last_val = static_cast<int>(image.at<uchar>(i, j));
+				edge_vector.push_back(Point(i, j));
+			}
+		}
+	}
+
+	return edge_vector;
+
+}
+
+cv::Mat KinectMotion::makeEdgeImage(cv::Mat image) {
+
 	cv::Mat edge_image(image.rows, image.cols, CV_8UC3);
 	int last_val = static_cast<int>(image.at<uchar>(0, 0));
 

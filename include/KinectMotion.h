@@ -2,7 +2,14 @@
 #define KINECTMOTION_H
 #include <string>
 #include <opencv\cv.h>
+#include <vector>
 #include "Image.h"
+
+struct Point {
+	int i;
+	int j;
+	Point(int i, int j);
+};
 
 class KinectMotion {
 public:
@@ -13,7 +20,8 @@ public:
 	void blob(cv::Mat imMat);
 	float blobMax(cv::Mat depth);
 	cv::Mat getHand(cv::Mat image, double ratio);
-	cv::Mat findEdges(cv::Mat image);
+	std::vector <Point> findEdges(cv::Mat image);
+	cv::Mat makeEdgeImage(cv::Mat image);
 private:
 	Image depth;
 	Image rgb;
