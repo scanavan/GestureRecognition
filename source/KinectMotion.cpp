@@ -91,14 +91,14 @@ cv::Mat KinectMotion::updateImage(int upperThresholdVal, int lowerThresholdVal, 
 	// threshold
 	for (int i = 0; i < h; i++) {
 		for (int j = 0; j < w; j++) {
-			if(i < 50 || j < 50 || i > h-50 || j > w-50) iDepthMat.at<uchar>(i, j) = 0;
+			if(i < 50 || j < 50 || i > h-150 || j > w-50) iDepthMat.at<uchar>(i, j) = 0;
 			else {
 				cv::Scalar intensity = iDepthMat.at<uchar>(i, j);
 				if (intensity.val[0] < upperThresholdVal && intensity.val[0] > lowerThresholdVal) {
 					if (make_binary) iDepthMat.at<uchar>(i, j) = 255;
 				}
 				else {
-					if (make_binary) iDepthMat.at<uchar>(i, j) = 0;
+					iDepthMat.at<uchar>(i, j) = 0;
 				}
 			}
 		}
