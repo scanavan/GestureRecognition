@@ -133,33 +133,33 @@ cv::Mat KinectMotion::updateImage(int upperThresholdVal, int lowerThresholdVal, 
 	}
 
 	// fill in area between fingers and such
-	std::vector <unsigned char> range_vector;
-	int found_first = 0;
-	int first_col = 0;
-	int last_col = 0;
-	for (int i = 0; i < iDepthMat.rows; i++) {
-		range_vector.push_back(0);
-		for (int j = 0; j < iDepthMat.cols; j++) {
-			if (iDepthMat.at<uchar>(i, j) != 0) {
-				if (found_first == 0) {
-					found_first = 1;
-					first_col = j;
-				}
-				last_col = j;
-			}
-		}
-		found_first = 0;
-		for (int j = first_col; j < last_col; j++) {
-			range_vector.back()++;
-		}
-	}
+	//std::vector <unsigned char> range_vector;
+	//int found_first = 0;
+	//int first_col = 0;
+	//int last_col = 0;
+	//for (int i = 0; i < iDepthMat.rows; i++) {
+	//	range_vector.push_back(0);
+	//	for (int j = 0; j < iDepthMat.cols; j++) {
+	//		if (iDepthMat.at<uchar>(i, j) != 0) {
+	//			if (found_first == 0) {
+	//				found_first = 1;
+	//				first_col = j;
+	//			}
+	//			last_col = j;
+	//		}
+	//	}
+	//	found_first = 0;
+	//	for (int j = first_col; j < last_col; j++) {
+	//		range_vector.back()++;
+	//	}
+	//}
 
 	// display row ranges
-	for (int i = 0; i < h; i++) {
-		for (int j = 0; j < 20; j++) {
-			iDepthMat.at<uchar>(i, j) = range_vector[i];
-		}
-	}
+	//for (int i = 0; i < h; i++) {
+	//	for (int j = 0; j < 20; j++) {
+	//		iDepthMat.at<uchar>(i, j) = range_vector[i];
+	//	}
+	//}
 
 	return iDepthMat;
 
