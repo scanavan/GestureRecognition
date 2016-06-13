@@ -81,7 +81,7 @@ cv::Mat KinectMotion::getHand(cv::Mat image, double thresholdRatio) {
 
 }
 
-cv::Mat KinectMotion::updateImage(int upperThresholdVal, int lowerThresholdVal) {
+cv::Mat KinectMotion::updateImage(int upperThresholdVal, int lowerThresholdVal, bool make_binary) {
 
 	// get depth image determine hight and width of image
 	cv::Mat iDepthMat = depth.returnImage();
@@ -91,12 +91,15 @@ cv::Mat KinectMotion::updateImage(int upperThresholdVal, int lowerThresholdVal) 
 	// threshold
 	for (int i = 0; i < h; i++) {
 		for (int j = 0; j < w; j++) {
-			cv::Scalar intensity = iDepthMat.at<uchar>(i, j);
-			if (intensity.val[0] < upperThresholdVal && intensity.val[0] > lowerThresholdVal) {
-				iDepthMat.at<uchar>(i, j) = 255;
-			}
+			if(i < 50 || j < 50 || i > h-150 || j > w-50) iDepthMat.at<uchar>(i, j) = 0;
 			else {
-				iDepthMat.at<uchar>(i, j) = 0;
+				cv::Scalar intensity = iDepthMat.at<uchar>(i, j);
+				if (intensity.val[0] < upperThresholdVal && intensity.val[0] > lowerThresholdVal) {
+					if (make_binary) iDepthMat.at<uchar>(i, j) = 255;
+				}
+				else {
+					iDepthMat.at<uchar>(i, j) = 0;
+				}
 			}
 		}
 	}
@@ -130,33 +133,33 @@ cv::Mat KinectMotion::updateImage(int upperThresholdVal, int lowerThresholdVal) 
 	}
 
 	// fill in area between fingers and such
-	std::vector <unsigned char> range_vector;
-	int found_first = 0;
-	int first_col = 0;
-	int last_col = 0;
-	for (int i = 0; i < iDepthMat.rows; i++) {
-		range_vector.push_back(0);
-		for (int j = 0; j < iDepthMat.cols; j++) {
-			if (iDepthMat.at<uchar>(i, j) != 0) {
-				if (found_first == 0) {
-					found_first = 1;
-					first_col = j;
-				}
-				last_col = j;
-			}
-		}
-		found_first = 0;
-		for (int j = first_col; j < last_col; j++) {
-			range_vector.back()++;
-		}
-	}
+	//std::vector <unsigned char> range_vector;
+	//int found_first = 0;
+	//int first_col = 0;
+	//int last_col = 0;
+	//for (int i = 0; i < iDepthMat.rows; i++) {
+	//	range_vector.push_back(0);
+	//	for (int j = 0; j < iDepthMat.cols; j++) {
+	//		if (iDepthMat.at<uchar>(i, j) != 0) {
+	//			if (found_first == 0) {
+	//				found_first = 1;
+	//				first_col = j;
+	//			}
+	//			last_col = j;
+	//		}
+	//	}
+	//	found_first = 0;
+	//	for (int j = first_col; j < last_col; j++) {
+	//		range_vector.back()++;
+	//	}
+	//}
 
 	// display row ranges
-	for (int i = 0; i < h; i++) {
-		for (int j = 0; j < 20; j++) {
-			iDepthMat.at<uchar>(i, j) = range_vector[i];
-		}
-	}
+	//for (int i = 0; i < h; i++) {
+	//	for (int j = 0; j < 20; j++) {
+	//		iDepthMat.at<uchar>(i, j) = range_vector[i];
+	//	}
+	//}
 
 	return iDepthMat;
 
@@ -200,4 +203,72 @@ float KinectMotion::blobMax(cv::Mat depth) {
 	std::cout << maxPoint << std::endl;
 
 	return max;
+}
+
+Point::Point(int i, int j) {
+	this->i = i;
+	this->j = j;
+}
+
+std::vector <Point> KinectMotion::findEdges(cv::Mat image) {
+	
+	int last_val = static_cast<int>(image.at<uchar>(0, 0));
+	std::vector <Point> edge_vector;
+
+	for (int i = 0; i < image.rows; ++i)
+	{
+		for (int j = 0; j < image.cols; ++j)
+		{
+			if (last_val != static_cast<int>(image.at<uchar>(i, j))) {
+				last_val = static_cast<int>(image.at<uchar>(i, j));
+				edge_vector.push_back(Point(i, j));
+			}
+		}
+	}
+
+	return edge_vector;
+
+}
+
+cv::Mat KinectMotion::makeEdgeImage(cv::Mat image) {
+
+	cv::Mat edge_image(image.rows, image.cols, CV_8UC3);
+	int last_val = static_cast<int>(image.at<uchar>(0, 0));
+
+	for (int i = 0; i < image.rows; ++i)
+	{
+		for (int j = 0; j < image.cols; ++j)
+		{
+			if (last_val != static_cast<int>(image.at<uchar>(i, j))) {
+				last_val = static_cast<int>(image.at<uchar>(i, j));
+				edge_image.at<cv::Vec3b>(i, j) = cv::Vec3b(0,0,255);
+			}
+			else {
+				//edge_image.at<cv::Vec3b>(i, j)[0] = image.at<uchar>(i, j);
+				//edge_image.at<cv::Vec3b>(i, j)[1] = image.at<uchar>(i, j);
+				//edge_image.at<cv::Vec3b>(i, j)[2] = image.at<uchar>(i, j);
+				edge_image.at<cv::Vec3b>(i,j) = cv::Vec3b(0, 0, 0);
+			}
+		}
+	}
+
+	return edge_image;
+
+}
+
+Point KinectMotion::palmCenter(cv::Mat image) {
+	std::vector<Point> edges = findEdges(image);
+	int xSum = 0;
+	int ySum = 0;
+	for (int a = 0; a < edges.size(); a++) {
+		xSum += edges.at(a).i;
+		ySum += edges.at(a).j;
+	}
+	Point retVal(xSum / edges.size(), ySum / edges.size());
+	image = makeEdgeImage(image);
+	image.at<cv::Vec3b>(retVal.i, retVal.j) = cv::Vec3b(255,255,255);
+	cv::namedWindow("center", cv::WINDOW_AUTOSIZE);
+	cv::imshow("center", image);
+	cv::waitKey(0);
+	return retVal;
 }

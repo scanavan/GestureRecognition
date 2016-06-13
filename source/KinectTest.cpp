@@ -1,5 +1,6 @@
 #include "KinectMotion.h"
-#include <opencv\cv.h>  
+#include <opencv\cv.h>
+#include <vector>
 
 cv::Mat updateDepthImage(KinectMotion kinect_motion, int upperThresholdVal, int lowerThresholdVal) {
 	
