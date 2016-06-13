@@ -255,3 +255,20 @@ cv::Mat KinectMotion::makeEdgeImage(cv::Mat image) {
 	return edge_image;
 
 }
+
+Point KinectMotion::palmCenter(cv::Mat image) {
+	std::vector<Point> edges = findEdges(image);
+	int xSum = 0;
+	int ySum = 0;
+	for (int a = 0; a < edges.size(); a++) {
+		xSum += edges.at(a).i;
+		ySum += edges.at(a).j;
+	}
+	Point retVal(xSum / edges.size(), ySum / edges.size());
+	image = makeEdgeImage(image);
+	image.at<cv::Vec3b>(retVal.i, retVal.j) = cv::Vec3b(255,255,255);
+	cv::namedWindow("center", cv::WINDOW_AUTOSIZE);
+	cv::imshow("center", image);
+	cv::waitKey(0);
+	return retVal;
+}

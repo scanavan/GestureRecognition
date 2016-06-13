@@ -22,6 +22,7 @@ public:
 	cv::Mat getHand(cv::Mat image, double ratio);
 	std::vector <Point> findEdges(cv::Mat image);
 	cv::Mat makeEdgeImage(cv::Mat image);
+	Point palmCenter(cv::Mat image);
 private:
 	Image depth;
 	Image rgb;
