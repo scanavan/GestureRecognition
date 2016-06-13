@@ -209,7 +209,6 @@ cv::Mat KinectMotion::findEdges(cv::Mat image) {
 	
 	cv::Mat edge_image(image.rows, image.cols, CV_8UC3);
 	int last_val = static_cast<int>(image.at<uchar>(0, 0));
-	cv::Vec3b current_color;
 
 	for (int i = 0; i < image.rows; ++i)
 	{
@@ -220,9 +219,10 @@ cv::Mat KinectMotion::findEdges(cv::Mat image) {
 				edge_image.at<cv::Vec3b>(i, j) = cv::Vec3b(0,0,255);
 			}
 			else {
-				edge_image.at<cv::Vec3b>(i, j)[0] = image.at<uchar>(i, j);
-				edge_image.at<cv::Vec3b>(i, j)[1] = image.at<uchar>(i, j);
-				edge_image.at<cv::Vec3b>(i, j)[2] = image.at<uchar>(i, j);
+				//edge_image.at<cv::Vec3b>(i, j)[0] = image.at<uchar>(i, j);
+				//edge_image.at<cv::Vec3b>(i, j)[1] = image.at<uchar>(i, j);
+				//edge_image.at<cv::Vec3b>(i, j)[2] = image.at<uchar>(i, j);
+				edge_image.at<cv::Vec3b>(i,j) = cv::Vec3b(0, 0, 0);
 			}
 		}
 	}
