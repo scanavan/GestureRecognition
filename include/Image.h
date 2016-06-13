@@ -11,6 +11,7 @@ public:
 	void displayImage();
 	void deleteWindow();
 	std::string getName();
+	cv::Mat returnImage();
 protected:
 	std::string imageName;
 	cv::Mat image;
