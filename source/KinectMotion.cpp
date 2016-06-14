@@ -43,31 +43,31 @@ cv::Mat KinectMotion::getHand(cv::Mat image, double thresholdRatio) {
 	int top = 0;
 	bool foundHand = false;
 	int handToWrist = 0;
-	int numWhitePixels = 0;
+	int numPixels = 0;
 	int max = 0;
 	bool atWrist = false;
 	int tmp = 0;
 	
 	for (int i = 0; i < image.rows; i++) {
 		for (int j = 0; j < image.cols; j++) {
-			if (image.at<uchar>(i, j) == 255) {
-				numWhitePixels++;
+			if (image.at<uchar>(i, j) != 0) {
+				numPixels++;
 				if (!foundHand) {
 					top = i;
 					foundHand = true;
 				}
 			}
 		}
-		if (numWhitePixels > 0 && !atWrist) {
+		if (numPixels > 0 && !atWrist) {
 			handToWrist++;
-			if (numWhitePixels > max) {
-				max = numWhitePixels;
+			if (numPixels > max) {
+				max = numPixels;
 			}
-			if (i > top + 50 && tmp != 0 && numWhitePixels <= tmp * thresholdRatio && tmp <= max*.75) {
+			if (i > top + 50 && tmp != 0 && numPixels <= tmp * thresholdRatio && tmp <= max*.75) {
 				atWrist = true;
 			}
-			tmp = numWhitePixels;
-			numWhitePixels = 0;
+			tmp = numPixels;
+			numPixels = 0;
 		}
 	}
 

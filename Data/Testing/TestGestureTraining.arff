@@ -1,0 +1,78 @@
+% finger indexes
+% Class Distribution:
+%  LO  - 12
+%  MED - 12
+%  HI  - 12
+%
+
+@relation gesture-recognition
+
+@attribute thumb numeric
+@attribute index numeric
+@attribute middle numeric
+@attribute ring numeric
+@attribute pinky numeric
+@attribute gesture-rec-class {ZERO, ONE, TWO, THREE, FOUR, FIVE}
+
+@data
+
+0,0,0,0,0,ZERO
+0,0,0,0,0,ZERO
+0,0,0,0,0,ZERO
+0,0,0,0,0,ZERO
+0,0,0,0,0,ZERO
+0,0,0,0,0,ZERO
+0,0,0,0,0,ZERO
+0,0,0,0,0,ZERO
+0,0,0,0,0,ZERO
+0,0,0,0,0,ZERO
+0,1,0,0,0,ONE
+0,1,0,0,0,ONE
+0,1,0,0,0,ONE
+0,1,0,0,0,ONE
+0,1,0,0,0,ONE
+0,1,0,0,0,ONE
+0,1,0,0,0,ONE
+0,1,0,0,0,ONE
+0,1,0,0,0,ONE
+0,1,0,0,0,ONE
+0,1,1,0,0,TWO
+0,1,1,0,0,TWO
+0,1,1,0,0,TWO
+0,1,1,0,0,TWO
+0,1,1,0,0,TWO
+0,1,1,0,0,TWO
+0,1,1,0,0,TWO
+0,1,1,0,0,TWO
+0,1,1,0,0,TWO
+0,1,1,0,0,TWO
+0,1,1,1,0,THREE
+0,1,1,1,0,THREE
+0,1,1,1,0,THREE
+0,1,1,1,0,THREE
+0,1,1,1,0,THREE
+0,1,1,1,0,THREE
+0,1,1,1,0,THREE
+0,1,1,1,0,THREE
+0,1,1,1,0,THREE
+0,1,1,1,0,THREE
+0,1,1,1,1,FOUR
+0,1,1,1,1,FOUR
+0,1,1,1,1,FOUR
+0,1,1,1,1,FOUR
+0,1,1,1,1,FOUR
+0,1,1,1,1,FOUR
+0,1,1,1,1,FOUR
+0,1,1,1,1,FOUR
+0,1,1,1,1,FOUR
+0,1,1,1,1,FOUR
+1,1,1,1,1,FIVE
+1,1,1,1,1,FIVE
+1,1,1,1,1,FIVE
+1,1,1,1,1,FIVE
+1,1,1,1,1,FIVE
+1,1,1,1,1,FIVE
+1,1,1,1,1,FIVE
+1,1,1,1,1,FIVE
+1,1,1,1,1,FIVE
+1,1,1,1,1,FIVE
