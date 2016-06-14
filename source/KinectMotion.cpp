@@ -8,6 +8,7 @@
 #include <opencv2/imgproc/imgproc.hpp>
 #include "filenames.h" 
 #include <vector>
+#include <set>
 
 KinectMotion::KinectMotion(std::string iDepth, std::string iRgb) :depth(Image(iDepth)), rgb(Image(iRgb)) {
 
@@ -407,5 +408,33 @@ int * KinectMotion::palmCenter(cv::Mat image) {
 	cv::namedWindow("center", cv::WINDOW_AUTOSIZE);
 	cv::imshow("center", image);
 	cv::waitKey(0);
+	return retVal;
+}
+
+std::vector<std::set<float>> KinectMotion::cellOccupancy(cv::Mat image) {
+	std::vector<std::set<float>> retVal;
+	int nonZ = 0;
+	float avgD = 0;
+	//cv::Mat zero = cv::Mat::zeros(16, 16, CV_8U);
+	for (int i = 0; i < image.rows; i = i + 16) {
+		for (int j = 0; j < image.cols; j = j + 16) {
+			cv::Mat sub = image(cv::Range(i, i + 15), cv::Range(j, j + 15));
+			for (int a = 0; a < sub.rows; a++) {
+				for (int b = 0; b < sub.cols; b++) {
+					if (sub.at<uchar>(a, b) != 0) {
+						nonZ++;
+						avgD += sub.at<uchar>(a, b);
+					}
+					if (nonZ != 0) {
+						avgD = avgD / nonZ;
+					}
+					std::set<float> temp;
+					temp.insert(nonZ);
+					temp.insert(avgD);
+					retVal.push_back(temp);
+				}
+			}
+		}
+	}
 	return retVal;
 }

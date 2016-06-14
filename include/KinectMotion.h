@@ -4,6 +4,7 @@
 #include <opencv\cv.h>
 #include <vector>
 #include "Image.h"
+#include <set>
 
 struct Point {
 	int i;
@@ -24,6 +25,7 @@ public:
 	cv::Mat makeEdgeImage(cv::Mat image);
 	Point handCenter(cv::Mat image);
 	int * palmCenter(cv::Mat image);
+	std::vector <std::set <float>> cellOccupancy(cv::Mat image);
 private:
 	Image depth;
 	Image rgb;
