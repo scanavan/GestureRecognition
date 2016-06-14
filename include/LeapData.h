@@ -20,6 +20,33 @@ public:
 	void setNewFingerTipDist();
 	void setFingerTipAngles();
 	void writeToFile(std::string path);
+	int getNumFingers();
+	std::vector<float> getFingerTipDist();
+	std::vector<float> getFingerTipDistRefined();
+	std::vector<float> getFingerTipInterDist();
+	std::vector<Point> getFingerTipPosition();
+	Point getHandDirection();
+	Point getHandSphereCenter();
+	float getHandSphereRadius();
+	Point getPalmNormal();
+	Point getPalmPosition();
+	Point getPalmPositionRefined();
+	std::vector<float> getPalmVelocity();
+	float getRotationAngle();
+	std::vector<float> getRotationAxis();
+	std::vector<float> getRotationMatrix();
+	float getRotationProbability();
+	float getScaleFactor();
+	float getScaleProbability();
+	std::vector<float> getTranslation();
+	float getTranslationProbability();
+
+	//new attributes
+	float getNewScaleFactor();
+	std::vector<float> getNewFingerTipDistRefined();
+	std::vector<float> getFingerTipAngles();
+	std::vector<Point> getProjectionPoints();
+	std::vector<float> getFingerTipElevation();
 private:
 	int numFingers;
 	std::vector<float> fingerTipDist;
@@ -47,6 +74,7 @@ private:
 	std::vector<float> newFingerTipDistRefined;
 	std::vector<float> fingerTipAngles;
 	std::vector<Point> projectionPoints;
+	std::vector<float> fingerTipElevation;
 };
 
 #endif 
