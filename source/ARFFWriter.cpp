@@ -17,16 +17,15 @@ ARFFWriter::ARFFWriter(std::string path, std::vector<LeapData> data) {
 		"@ATTRIBUTE fingerTipDist_f3   NUMERIC\n" <<
 		"@ATTRIBUTE fingerTipDist_f4   NUMERIC\n" <<
 		"@ATTRIBUTE fingerTipDist_f5   NUMERIC\n" <<
-		"@ATTRIBUTE newFingerTipDistRefined_ f1  NUMERIC\n" <<
-		"@ATTRIBUTE newFingerTipDistRefined_ f2  NUMERIC\n" <<
-		"@ATTRIBUTE newFingerTipDistRefined_ f3  NUMERIC\n" <<
-		"@ATTRIBUTE newFingerTipDistRefined_ f4  NUMERIC\n" <<
-		"@ATTRIBUTE newFingerTipDistRefined_ f5  NUMERIC\n" <<
-		"@ATTRIBUTE fingertipInterDist_f1   NUMERIC\n" <<
-		"@ATTRIBUTE fingertipInterDist_f2   NUMERIC\n" <<
-		"@ATTRIBUTE fingertipInterDist_f3   NUMERIC\n" <<
-		"@ATTRIBUTE fingertipInterDist_f4   NUMERIC\n" <<
-		"@ATTRIBUTE fingertipInterDist_f5   NUMERIC\n" <<
+		"@ATTRIBUTE newFingerTipDistRefined_f1  NUMERIC\n" <<
+		"@ATTRIBUTE newFingerTipDistRefined_f2  NUMERIC\n" <<
+		"@ATTRIBUTE newFingerTipDistRefined_f3  NUMERIC\n" <<
+		"@ATTRIBUTE newFingerTipDistRefined_f4  NUMERIC\n" <<
+		"@ATTRIBUTE newFingerTipDistRefined_f5  NUMERIC\n" <<
+		"@ATTRIBUTE fingertipInterDist_d1   NUMERIC\n" <<
+		"@ATTRIBUTE fingertipInterDist_d2   NUMERIC\n" <<
+		"@ATTRIBUTE fingertipInterDist_d3   NUMERIC\n" <<
+		"@ATTRIBUTE fingertipInterDist_d4   NUMERIC\n" <<
 		"@ATTRIBUTE fingerTipPosition_f1x  NUMERIC\n" <<
 		"@ATTRIBUTE fingerTipPosition_f1y  NUMERIC\n" <<
 		"@ATTRIBUTE fingerTipPosition_f1z  NUMERIC\n" <<
