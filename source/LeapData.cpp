@@ -19,6 +19,10 @@ LeapData::LeapData(std::string path) {
 		setNewFingerTipDist();
 		projectionPoints = getProjection();
 		setFingerTipAngles();
+		int index = path.find_last_of("/");
+		char gestureNumber = path.at(index - 1);
+		gesture = "G";
+		gesture.push_back(gestureNumber);
 	}
 	else {
 		std::cout << "bad file" << std::endl;
@@ -492,4 +496,8 @@ std::vector<Point> LeapData::getProjectionPoints() {
 }
 std::vector<float> LeapData::getFingerTipElevation() {
 	return fingerTipElevation;
+}
+
+std::string LeapData::getGesture() {
+	return gesture;
 }

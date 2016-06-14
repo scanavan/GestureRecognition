@@ -47,6 +47,7 @@ public:
 	std::vector<float> getFingerTipAngles();
 	std::vector<Point> getProjectionPoints();
 	std::vector<float> getFingerTipElevation();
+	std::string getGesture();
 private:
 	int numFingers;
 	std::vector<float> fingerTipDist;
@@ -75,6 +76,7 @@ private:
 	std::vector<float> fingerTipAngles;
 	std::vector<Point> projectionPoints;
 	std::vector<float> fingerTipElevation;
+	std::string gesture;
 };
 
 #endif 

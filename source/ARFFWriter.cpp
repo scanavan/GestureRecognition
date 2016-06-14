@@ -108,7 +108,7 @@ ARFFWriter::ARFFWriter(std::string path, std::vector<LeapData> data) {
 		"\n@DATA\n";
 
 	for (int i = 0; i < data.size(); i++) {
-		file << writeData(data[i]) << "G6\n";
+		file << writeData(data[i]) << "\n";
 	}
 
 	file.close();
@@ -184,6 +184,7 @@ std::string ARFFWriter::writeData(LeapData leap) {
 	for (int i = 0; i < leap.getFingerTipElevation().size(); i++) {
 		returnVal = returnVal + std::to_string(leap.getFingerTipElevation()[i]) + ",";
 	}
+	returnVal = returnVal + leap.getGesture();
 
 	return returnVal;
 }

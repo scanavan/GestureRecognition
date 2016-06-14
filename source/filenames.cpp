@@ -21,9 +21,7 @@ void FileNames::readDir(const char * path) {
 			else if (strstr(file.name, "rgb")) rgb.push_back((std::string)path + "/" + (std::string)file.name);
 		}
 		// goes into the subdirectories
-		// this still goes into the bad directories
 		else if (file.is_dir && counter > 2) {
-			std::cout << path << "/" << file.name << std::endl;
 			std::string newPath = (std::string)path + "/" + (std::string)file.name;
 			const char *cstr = newPath.c_str();
 			readDir(cstr);
