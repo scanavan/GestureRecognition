@@ -7,7 +7,10 @@ class RealTimeLeapData
 {
 public:
 	RealTimeLeapData();
+	void Clear();
 	//extended fingers for current frame
 	std::vector<Leap::Finger::Type>extendedFingers;
+	std::vector<Leap::Vector>fingerDirections;
+	std::vector<Leap::Vector>tipPositions;
 };
 #endif
