@@ -212,9 +212,9 @@ Point::Point(int i, int j) {
 
 std::vector <Point> KinectMotion::findEdges(cv::Mat image) {
 	
-	int last_val = static_cast<int>(image.at<uchar>(0, 0));
 	std::vector <Point> edge_vector;
 
+	/*int last_val = static_cast<int>(image.at<uchar>(0, 0));
 	for (int i = 0; i < image.rows; ++i)
 	{
 		for (int j = 0; j < image.cols; ++j)
@@ -224,8 +224,17 @@ std::vector <Point> KinectMotion::findEdges(cv::Mat image) {
 				edge_vector.push_back(Point(i, j));
 			}
 		}
+	}*/
+	
+	for (int i = 1; i < image.rows; ++i)
+	{
+		for (int j = 1; j < image.cols; ++j)
+		{
+			if (image.at<uchar>(i - 1, j) != image.at<uchar>(i, j) || image.at<uchar>(i, j - 1) != image.at<uchar>(i, j)) {
+				edge_vector.push_back(Point(i, j));
+			}
+		}
 	}
-
 	return edge_vector;
 
 }
@@ -233,21 +242,37 @@ std::vector <Point> KinectMotion::findEdges(cv::Mat image) {
 cv::Mat KinectMotion::makeEdgeImage(cv::Mat image) {
 
 	cv::Mat edge_image(image.rows, image.cols, CV_8UC3);
-	int last_val = static_cast<int>(image.at<uchar>(0, 0));
 
-	for (int i = 0; i < image.rows; ++i)
+	//int last_val = static_cast<int>(image.at<uchar>(0, 0));
+	//for (int i = 0; i < image.rows; ++i)
+	//{
+	//	for (int j = 0; j < image.cols; ++j)
+	//	{
+	//		if (last_val != static_cast<int>(image.at<uchar>(i, j))) {
+	//			last_val = static_cast<int>(image.at<uchar>(i, j));
+	//			edge_image.at<cv::Vec3b>(i, j) = cv::Vec3b(0,0,255);
+	//		}
+	//		else {
+	//			//edge_image.at<cv::Vec3b>(i, j)[0] = image.at<uchar>(i, j);
+	//			//edge_image.at<cv::Vec3b>(i, j)[1] = image.at<uchar>(i, j);
+	//			//edge_image.at<cv::Vec3b>(i, j)[2] = image.at<uchar>(i, j);
+	//			edge_image.at<cv::Vec3b>(i,j) = cv::Vec3b(0, 0, 0);
+	//		}
+	//	}
+	//}
+
+	for (int i = 1; i < image.rows; ++i)
 	{
-		for (int j = 0; j < image.cols; ++j)
+		for (int j = 1; j < image.cols; ++j)
 		{
-			if (last_val != static_cast<int>(image.at<uchar>(i, j))) {
-				last_val = static_cast<int>(image.at<uchar>(i, j));
-				edge_image.at<cv::Vec3b>(i, j) = cv::Vec3b(0,0,255);
+			if (image.at<uchar>(i-1, j) != image.at<uchar>(i, j) || image.at<uchar>(i, j-1) != image.at<uchar>(i, j)) {
+				edge_image.at<cv::Vec3b>(i, j) = cv::Vec3b(0, 0, 255);
 			}
 			else {
 				//edge_image.at<cv::Vec3b>(i, j)[0] = image.at<uchar>(i, j);
 				//edge_image.at<cv::Vec3b>(i, j)[1] = image.at<uchar>(i, j);
 				//edge_image.at<cv::Vec3b>(i, j)[2] = image.at<uchar>(i, j);
-				edge_image.at<cv::Vec3b>(i,j) = cv::Vec3b(0, 0, 0);
+				edge_image.at<cv::Vec3b>(i, j) = cv::Vec3b(0, 0, 0);
 			}
 		}
 	}
