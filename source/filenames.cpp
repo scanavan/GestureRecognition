@@ -2,13 +2,13 @@
 #include <iostream>
 
 void FileNames::readDir(const char * path) {
-
-	tinydir_open(&dir, path);
-
-	while (dir.has_next)
+	tinydir_dir tempDir;
+	tinydir_open(&tempDir, path);
+	int counter = 1;
+	while (tempDir.has_next)
 	{
 		tinydir_file file;
-		tinydir_readfile(&dir, &file);
+		tinydir_readfile(&tempDir, &file);
 
 		if (!strcmp(file.extension, "bin")) {
 			bin.push_back((std::string)path + "/" + (std::string)file.name);
@@ -20,11 +20,19 @@ void FileNames::readDir(const char * path) {
 			if (strstr(file.name, "depth")) depth.push_back((std::string)path + "/" + (std::string)file.name);
 			else if (strstr(file.name, "rgb")) rgb.push_back((std::string)path + "/" + (std::string)file.name);
 		}
-
-		tinydir_next(&dir);
+		// goes into the subdirectories
+		// this still goes into the bad directories
+		else if (file.is_dir && counter > 2) {
+			std::cout << path << "/" << file.name << std::endl;
+			std::string newPath = (std::string)path + "/" + (std::string)file.name;
+			const char *cstr = newPath.c_str();
+			readDir(cstr);
+		}
+		counter++;
+		tinydir_next(&tempDir);
 	}
 
-	tinydir_close(&dir);
+	tinydir_close(&tempDir);
 
 }
 
