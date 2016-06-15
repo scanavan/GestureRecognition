@@ -8,7 +8,7 @@
 struct Point {
 	int i;
 	int j;
-	Point(int i, int j);
+	Point(int i = 0, int j = 0);
 };
 
 class KinectMotion {
