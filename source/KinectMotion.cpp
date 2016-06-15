@@ -184,12 +184,12 @@ float KinectMotion::blobMax(cv::Mat image) {
 	detector->detect(image, keypoints);
 
 	// extract the index of the largest blob
-	int maxPoint;
+	int maxKeyIndex;
 	float max = 0.0;
 	for (int i = 0; i < keypoints.size(); i++) {
 		if (keypoints[i].size > max) {
 			max = keypoints[i].size;
-			maxPoint = i;
+			maxKeyIndex = i;
 		}
 	}
 	// Draw detected blobs as red circles.
@@ -200,7 +200,7 @@ float KinectMotion::blobMax(cv::Mat image) {
 	// Show blobs
 	imshow("keypoints", im_with_keypoints);
 	cv::waitKey(0);
-	std::cout << maxPoint << std::endl;
+	std::cout << maxKeyIndex << std::endl;
 
 	return max;
 }
@@ -382,7 +382,7 @@ int * KinectMotion::palmCenter(cv::Mat image) {
 	//image.at<cv::Vec3b>(edge_p.i, edge_p.j) = cv::Vec3b(255, 255, 255);
 
 	cv::Mat new_image = image.clone();
-	cv::GaussianBlur(image, new_image, cv::Size(0, 0), 24, 24);
+	cv::GaussianBlur(image, new_image, cv::Size(0, 0), 23, 23);
 
 	int max = 0;
 	for (int i = 0; i < new_image.rows; ++i)
@@ -490,13 +490,13 @@ void KinectMotion::normalizeHand(cv::Mat image) {
 		}
 	}
 
-	maxPoint.x = xMax;
-	maxPoint.y = yMax;
-	minPoint.x = xMin;
-	minPoint.y = yMin;
+	maxPoint.x = xMax + 10;
+	maxPoint.y = yMax + 10;
+	minPoint.x = xMin - 10;
+	minPoint.y = yMin - 10;
 
 	image = makeEdgeImage(image);
-	cv::rectangle(image, maxPoint, minPoint, cv::Scalar(0, 0, 255), 1, 8, 0);
+	//cv::rectangle(image, maxPoint, minPoint, cv::Scalar(0, 0, 255), 1, 8, 0);
 
 	cv::Mat croppedImage = image(cv::Rect(maxPoint, minPoint)); 
 
