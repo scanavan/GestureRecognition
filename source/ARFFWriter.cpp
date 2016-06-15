@@ -1,5 +1,9 @@
 #include "ARFFWriter.h"
 
+// constructor
+// formats the output file to ARFF file format
+// @ATTRIBUTE are all the numeric values from the leapData
+// the for loop goes through the data vector
 ARFFWriter::ARFFWriter(std::string path, std::vector<LeapData> data) {
 	std::ofstream file;
 	file.open(path);

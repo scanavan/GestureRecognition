@@ -19,6 +19,7 @@ LeapData::LeapData(std::string path) {
 		setNewFingerTipDist();
 		projectionPoints = getProjection();
 		setFingerTipAngles();
+		//gets the gesture based on the path
 		int index = path.find_last_of("/");
 		char gestureNumber = path.at(index - 1);
 		gesture = "G";
