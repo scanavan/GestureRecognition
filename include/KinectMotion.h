@@ -10,6 +10,12 @@ struct Point {
 	int i;
 	int j;
 	Point(int i = 0, int j = 0);
+}; 
+
+struct Occ {
+	int nonZ;
+	float avgD;
+	Occ(int nonZ, float avgD);
 };
 
 class KinectMotion {
@@ -25,7 +31,9 @@ public:
 	cv::Mat makeEdgeImage(cv::Mat image);
 	Point handCenter(cv::Mat image);
 	int * palmCenter(cv::Mat image);
-	std::vector <std::set <float>> cellOccupancy(cv::Mat image);
+	std::vector <Occ> cellOccupancy(cv::Mat image);
+	void findDirection(cv::Mat image);
+	void normalizeHand(cv::Mat image);
 private:
 	Image depth;
 	Image rgb;

@@ -164,7 +164,7 @@ cv::Mat KinectMotion::updateImage(int upperThresholdVal, int lowerThresholdVal, 
 	return iDepthMat;
 
 }
-float KinectMotion::blobMax(cv::Mat depth) {
+float KinectMotion::blobMax(cv::Mat image) {
 	// set up the parameters (check the defaults in opencv's code in blobdetector.cpp)
 	cv::SimpleBlobDetector::Params params;
 	params.minDistBetweenBlobs = 50.0f;
@@ -181,7 +181,7 @@ float KinectMotion::blobMax(cv::Mat depth) {
 
 	// detect!
 	std::vector<cv::KeyPoint> keypoints;
-	detector->detect(depth, keypoints);
+	detector->detect(image, keypoints);
 
 	// extract the index of the largest blob
 	int maxPoint;
@@ -195,7 +195,7 @@ float KinectMotion::blobMax(cv::Mat depth) {
 	// Draw detected blobs as red circles.
 	// DrawMatchesFlags::DRAW_RICH_KEYPOINTS flag ensures the size of the circle corresponds to the size of blob
 	cv::Mat im_with_keypoints;
-	drawKeypoints(depth, keypoints, im_with_keypoints, cv::Scalar(0, 0, 255), cv::DrawMatchesFlags::DRAW_RICH_KEYPOINTS);
+	drawKeypoints(image, keypoints, im_with_keypoints, cv::Scalar(0, 0, 255), cv::DrawMatchesFlags::DRAW_RICH_KEYPOINTS);
 
 	// Show blobs
 	imshow("keypoints", im_with_keypoints);
@@ -209,6 +209,7 @@ Point::Point(int i, int j) {
 	this->i = i;
 	this->j = j;
 }
+
 
 std::vector <Point> KinectMotion::findEdges(cv::Mat image) {
 	
@@ -353,7 +354,7 @@ int * KinectMotion::palmCenter(cv::Mat image) {
 	//		{
 	//			int x = (edges.at(k).i - i);
 	//			int y = (edges.at(k).j - j);
-	//			current_distance = sqrt((x*x) - (y*y));
+	//			current_distance = sqrt((x*x) + (y*y));
 	//			if (current_distance < current_min)
 	//			{
 	//				current_min = current_distance;
@@ -411,10 +412,16 @@ int * KinectMotion::palmCenter(cv::Mat image) {
 	return retVal;
 }
 
-std::vector<std::set<float>> KinectMotion::cellOccupancy(cv::Mat image) {
-	std::vector<std::set<float>> retVal;
+Occ::Occ(int nonZ, float avgD) {
+	this->nonZ = nonZ;
+	this->avgD = avgD;
+}
+
+std::vector<Occ> KinectMotion::cellOccupancy(cv::Mat image) {
+	std::vector<Occ> retVal;
 	int nonZ = 0;
 	float avgD = 0;
+	float maxD = 0;
 	//cv::Mat zero = cv::Mat::zeros(16, 16, CV_8U);
 	for (int i = 0; i < image.rows; i = i + 16) {
 		for (int j = 0; j < image.cols; j = j + 16) {
@@ -427,14 +434,111 @@ std::vector<std::set<float>> KinectMotion::cellOccupancy(cv::Mat image) {
 					}
 					if (nonZ != 0) {
 						avgD = avgD / nonZ;
+						if (avgD > maxD) {
+							maxD = avgD;
+						}
 					}
-					std::set<float> temp;
-					temp.insert(nonZ);
-					temp.insert(avgD);
+					Occ temp = Occ(nonZ, avgD);
 					retVal.push_back(temp);
 				}
 			}
+			nonZ = 0;
+		}
+	}
+	if (maxD != 0) {
+		for (int x = 0; x < retVal.size(); x++) {
+			Occ temp1 = retVal.at(x);
+			temp1.avgD = avgD / maxD;
 		}
 	}
 	return retVal;
+}
+
+
+void KinectMotion::normalizeHand(cv::Mat image) {
+
+	std::vector<Point> edges = findEdges(image);
+	int xMin = 2000;
+	int xMax = 0;
+	int yMin = 2000;
+	int yMax = 0;
+	cv::Point maxPoint;
+	cv::Point minPoint;
+	int currentX;
+	int currentY; 
+
+	for (int a = 0; a < edges.size(); a++)
+	{
+		currentX = edges.at(a).j;
+		currentY = edges.at(a).i;
+
+		if (currentX < xMin)
+		{
+			xMin = currentX;
+		}
+		if (currentY < yMin)
+		{
+			yMin = currentY;
+		}
+		if (currentX > xMax)
+		{
+			xMax = currentX;
+		}
+		if (currentY > yMax)
+		{
+			yMax = currentY;
+		}
+	}
+
+	maxPoint.x = xMax;
+	maxPoint.y = yMax;
+	minPoint.x = xMin;
+	minPoint.y = yMin;
+
+	image = makeEdgeImage(image);
+	cv::rectangle(image, maxPoint, minPoint, cv::Scalar(0, 0, 255), 1, 8, 0);
+
+	cv::Mat croppedImage = image(cv::Rect(maxPoint, minPoint)); 
+
+	cv::Mat dst;
+	cv::resize(croppedImage, dst, image.size());
+
+	cv::namedWindow("center", cv::WINDOW_AUTOSIZE);
+	cv::imshow("center", dst);
+	cv::waitKey(0);
+
+	cv::imwrite("test.jpg", dst);
+}
+
+void KinectMotion::findDirection(cv::Mat image) {
+
+	std::vector<Point> edges = findEdges(image);
+	double max_distance = 0;
+	double current_distance;
+	Point ends[2];
+	for (int i = 0; i < edges.size() - 1; ++i)
+	{
+		for (int j = i + 1; j < edges.size(); ++j)
+		{
+			int x = (edges.at(i).i - edges.at(j).i);
+			int y = (edges.at(i).j - edges.at(j).j);
+			current_distance = sqrt((x*x) + (y*y));
+			if (current_distance > max_distance)
+			{
+				max_distance = current_distance;
+				ends[0] = edges.at(i);
+				ends[1] = edges.at(j);
+			}
+		}
+	}
+
+	cv::Mat edge_image = makeEdgeImage(image);
+	edge_image.at<cv::Vec3b>(ends[0].i,ends[0].j) = cv::Vec3b(255, 255, 0);
+	edge_image.at<cv::Vec3b>(ends[1].i,ends[1].j) = cv::Vec3b(255, 255, 0);
+
+	cv::namedWindow("center", cv::WINDOW_AUTOSIZE);
+	cv::imshow("center", edge_image);
+	cv::waitKey(0);
+
+	return;
 }
