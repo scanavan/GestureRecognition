@@ -210,6 +210,7 @@ Point::Point(int i, int j) {
 	this->j = j;
 }
 
+
 std::vector <Point> KinectMotion::findEdges(cv::Mat image) {
 	
 	std::vector <Point> edge_vector;
@@ -353,7 +354,7 @@ int * KinectMotion::palmCenter(cv::Mat image) {
 	//		{
 	//			int x = (edges.at(k).i - i);
 	//			int y = (edges.at(k).j - j);
-	//			current_distance = sqrt((x*x) - (y*y));
+	//			current_distance = sqrt((x*x) + (y*y));
 	//			if (current_distance < current_min)
 	//			{
 	//				current_min = current_distance;
@@ -411,10 +412,16 @@ int * KinectMotion::palmCenter(cv::Mat image) {
 	return retVal;
 }
 
-std::vector<std::set<float>> KinectMotion::cellOccupancy(cv::Mat image) {
-	std::vector<std::set<float>> retVal;
+Occ::Occ(int nonZ, float avgD) {
+	this->nonZ = nonZ;
+	this->avgD = avgD;
+}
+
+std::vector<Occ> KinectMotion::cellOccupancy(cv::Mat image) {
+	std::vector<Occ> retVal;
 	int nonZ = 0;
 	float avgD = 0;
+	float maxD = 0;
 	//cv::Mat zero = cv::Mat::zeros(16, 16, CV_8U);
 	for (int i = 0; i < image.rows; i = i + 16) {
 		for (int j = 0; j < image.cols; j = j + 16) {
@@ -427,20 +434,28 @@ std::vector<std::set<float>> KinectMotion::cellOccupancy(cv::Mat image) {
 					}
 					if (nonZ != 0) {
 						avgD = avgD / nonZ;
+						if (avgD > maxD) {
+							avgD = maxD;
+						}
 					}
-					std::set<float> temp;
-					temp.insert(nonZ);
-					temp.insert(avgD);
-					retVal.push_back(temp);
+					Occ temp = Occ(nonZ, avgD);
+					nonZ = 0;	
 				}
 			}
+		}
+	}
+	if (maxD != 0) {
+		for (int x = 0; x < retVal.size(); x++) {
+			Occ temp1 = retVal.at(x);
+			temp1.avgD = avgD / maxD;
 		}
 	}
 	return retVal;
 }
 
+
 void KinectMotion::normalizeHand(cv::Mat image) {
-	
+
 	std::vector<Point> edges = findEdges(image);
 	int xMin = 2000;
 	int xMax = 0;
@@ -455,7 +470,6 @@ void KinectMotion::normalizeHand(cv::Mat image) {
 	{
 		currentX = edges.at(a).j;
 		currentY = edges.at(a).i;
-		std::cout << edges.at(a).i << ' ' << edges.at(a).j << std::endl;
 
 		if (currentX < xMin)
 		{
@@ -477,20 +491,52 @@ void KinectMotion::normalizeHand(cv::Mat image) {
 
 	maxPoint.x = xMax;
 	maxPoint.y = yMax;
-	minPoint.x = xMin; 
+	minPoint.x = xMin;
 	minPoint.y = yMin;
 
-	std::cout << maxPoint << ' ' << minPoint << std::endl;
 	image = makeEdgeImage(image);
 	cv::rectangle(image, maxPoint, minPoint, cv::Scalar(0, 0, 255), 1, 8, 0);
 
-	cv::Size size(640, 480);
+	cv::Mat croppedImage = image(cv::Rect(minPoint.x, minPoint.y, maxPoint.x, maxPoint.y));
 	cv::Mat dst;
-
-	cv::resize(image, dst, size, 10.0, 10.0, 1);
+	cv::resize(croppedImage, dst, image.size());
 
 	cv::namedWindow("center", cv::WINDOW_AUTOSIZE);
 	cv::imshow("center", dst);
 	cv::waitKey(0);
 
+	cv::imwrite("test.jpg", dst);
+}
+
+void KinectMotion::findDirection(cv::Mat image) {
+
+	std::vector<Point> edges = findEdges(image);
+	double max_distance = 0;
+	double current_distance;
+	Point ends[2];
+	for (int i = 0; i < edges.size() - 1; ++i)
+	{
+		for (int j = i + 1; j < edges.size(); ++j)
+		{
+			int x = (edges.at(i).i - edges.at(j).i);
+			int y = (edges.at(i).j - edges.at(j).j);
+			current_distance = sqrt((x*x) + (y*y));
+			if (current_distance > max_distance)
+			{
+				max_distance = current_distance;
+				ends[0] = edges.at(i);
+				ends[1] = edges.at(j);
+			}
+		}
+	}
+
+	cv::Mat edge_image = makeEdgeImage(image);
+	edge_image.at<cv::Vec3b>(ends[0].i,ends[0].j) = cv::Vec3b(255, 255, 0);
+	edge_image.at<cv::Vec3b>(ends[1].i,ends[1].j) = cv::Vec3b(255, 255, 0);
+
+	cv::namedWindow("center", cv::WINDOW_AUTOSIZE);
+	cv::imshow("center", edge_image);
+	cv::waitKey(0);
+
+	return;
 }
