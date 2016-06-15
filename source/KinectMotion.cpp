@@ -71,7 +71,7 @@ cv::Mat KinectMotion::getHand(cv::Mat image, double thresholdRatio) {
 		}
 	}
 
-	for (int i = (top + handToWrist); i < image.rows; i++) {
+	for (int i = (top + handToWrist + 10); i < image.rows; i++) {
 		for (int j = 0; j < image.cols; j++) {
 			image.at<uchar>(i, j) = 0;
 		}
@@ -381,7 +381,7 @@ int * KinectMotion::palmCenter(cv::Mat image) {
 	//image.at<cv::Vec3b>(edge_p.i, edge_p.j) = cv::Vec3b(255, 255, 255);
 
 	cv::Mat new_image = image.clone();
-	cv::GaussianBlur(image, new_image, cv::Size(0, 0), 23, 23);
+	cv::GaussianBlur(image, new_image, cv::Size(0, 0), 24, 24);
 
 	int max = 0;
 	for (int i = 0; i < new_image.rows; ++i)
