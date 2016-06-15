@@ -24,6 +24,7 @@ public:
 	std::string getRotationProbability(LeapData leap);
 	std::string getTranslation(LeapData leap);
 	std::string getTranslationProbability(LeapData leap);
+	std::string getFingerTipDistRefined(LeapData leap);
 
 	//new attributes
 	std::string getNewScaleFactor(LeapData leap);
