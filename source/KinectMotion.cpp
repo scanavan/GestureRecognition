@@ -215,18 +215,6 @@ std::vector <Point> KinectMotion::findEdges(cv::Mat image) {
 	
 	std::vector <Point> edge_vector;
 
-	/*int last_val = static_cast<int>(image.at<uchar>(0, 0));
-	for (int i = 0; i < image.rows; ++i)
-	{
-		for (int j = 0; j < image.cols; ++j)
-		{
-			if (last_val != static_cast<int>(image.at<uchar>(i, j))) {
-				last_val = static_cast<int>(image.at<uchar>(i, j));
-				edge_vector.push_back(Point(i, j));
-			}
-		}
-	}*/
-	
 	for (int i = 1; i < image.rows; ++i)
 	{
 		for (int j = 1; j < image.cols; ++j)
@@ -244,24 +232,6 @@ cv::Mat KinectMotion::makeEdgeImage(cv::Mat image) {
 
 	cv::Mat edge_image(image.rows, image.cols, CV_8UC3);
 
-	//int last_val = static_cast<int>(image.at<uchar>(0, 0));
-	//for (int i = 0; i < image.rows; ++i)
-	//{
-	//	for (int j = 0; j < image.cols; ++j)
-	//	{
-	//		if (last_val != static_cast<int>(image.at<uchar>(i, j))) {
-	//			last_val = static_cast<int>(image.at<uchar>(i, j));
-	//			edge_image.at<cv::Vec3b>(i, j) = cv::Vec3b(0,0,255);
-	//		}
-	//		else {
-	//			//edge_image.at<cv::Vec3b>(i, j)[0] = image.at<uchar>(i, j);
-	//			//edge_image.at<cv::Vec3b>(i, j)[1] = image.at<uchar>(i, j);
-	//			//edge_image.at<cv::Vec3b>(i, j)[2] = image.at<uchar>(i, j);
-	//			edge_image.at<cv::Vec3b>(i,j) = cv::Vec3b(0, 0, 0);
-	//		}
-	//	}
-	//}
-
 	for (int i = 1; i < image.rows; ++i)
 	{
 		for (int j = 1; j < image.cols; ++j)
@@ -270,9 +240,6 @@ cv::Mat KinectMotion::makeEdgeImage(cv::Mat image) {
 				edge_image.at<cv::Vec3b>(i, j) = cv::Vec3b(0, 0, 255);
 			}
 			else {
-				//edge_image.at<cv::Vec3b>(i, j)[0] = image.at<uchar>(i, j);
-				//edge_image.at<cv::Vec3b>(i, j)[1] = image.at<uchar>(i, j);
-				//edge_image.at<cv::Vec3b>(i, j)[2] = image.at<uchar>(i, j);
 				edge_image.at<cv::Vec3b>(i, j) = cv::Vec3b(0, 0, 0);
 			}
 		}
@@ -372,8 +339,6 @@ int * KinectMotion::palmCenter(cv::Mat image) {
 	//}
 
 	//image = makeEdgeImage(image);
-	//std::cout << maxMin << std::endl;
-	//image.at<cv::Vec3b>(retVal.i, retVal.j) = cv::Vec3b(255, 255, 255);
 	//image.at<cv::Vec3b>(xMin_p.i, xMin_p.j) = cv::Vec3b(255, 255, 255);
 	//image.at<cv::Vec3b>(yMin_p.i, yMin_p.j) = cv::Vec3b(255, 255, 255);
 	//image.at<cv::Vec3b>(xMax_p.i, xMax_p.j) = cv::Vec3b(255, 255, 255);
