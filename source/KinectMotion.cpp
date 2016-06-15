@@ -498,7 +498,7 @@ void KinectMotion::normalizeHand(cv::Mat image) {
 	image = makeEdgeImage(image);
 	cv::rectangle(image, maxPoint, minPoint, cv::Scalar(0, 0, 255), 1, 8, 0);
 
-	cv::Mat croppedImage = image(cv::Rect(maxPoint, minPoint));
+	cv::Mat croppedImage = image(cv::Rect(maxPoint, minPoint)); 
 
 	cv::Mat dst;
 	cv::resize(croppedImage, dst, image.size());
