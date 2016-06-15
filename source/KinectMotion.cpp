@@ -210,6 +210,7 @@ Point::Point(int i, int j) {
 	this->j = j;
 }
 
+
 std::vector <Point> KinectMotion::findEdges(cv::Mat image) {
 	
 	std::vector <Point> edge_vector;
@@ -411,10 +412,16 @@ int * KinectMotion::palmCenter(cv::Mat image) {
 	return retVal;
 }
 
-std::vector<std::set<float>> KinectMotion::cellOccupancy(cv::Mat image) {
-	std::vector<std::set<float>> retVal;
+Occ::Occ(int nonZ, float avgD) {
+	this->nonZ = nonZ;
+	this->avgD = avgD;
+}
+
+std::vector<Occ> KinectMotion::cellOccupancy(cv::Mat image) {
+	std::vector<Occ> retVal;
 	int nonZ = 0;
 	float avgD = 0;
+	float maxD = 0;
 	//cv::Mat zero = cv::Mat::zeros(16, 16, CV_8U);
 	for (int i = 0; i < image.rows; i = i + 16) {
 		for (int j = 0; j < image.cols; j = j + 16) {
@@ -427,13 +434,20 @@ std::vector<std::set<float>> KinectMotion::cellOccupancy(cv::Mat image) {
 					}
 					if (nonZ != 0) {
 						avgD = avgD / nonZ;
+						if (avgD > maxD) {
+							avgD = maxD;
+						}
 					}
-					std::set<float> temp;
-					temp.insert(nonZ);
-					temp.insert(avgD);
-					retVal.push_back(temp);
+					Occ temp = Occ(nonZ, avgD);
+					nonZ = 0;	
 				}
 			}
+		}
+	}
+	if (maxD != 0) {
+		for (int x = 0; x < retVal.size(); x++) {
+			Occ temp1 = retVal.at(x);
+			temp1.avgD = avgD / maxD;
 		}
 	}
 	return retVal;
