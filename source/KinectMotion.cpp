@@ -420,7 +420,7 @@ Occ::Occ(int nonZ, float avgD) {
 std::vector<Occ> KinectMotion::cellOccupancy(cv::Mat image) {
 	std::vector<Occ> retVal;
 	int nonZ = 0;
-	float avgD = 0;
+	float avgD = 0; 
 	float maxD = 0;
 	//cv::Mat zero = cv::Mat::zeros(16, 16, CV_8U);
 	for (int i = 0; i < image.rows; i = i + 16) {
