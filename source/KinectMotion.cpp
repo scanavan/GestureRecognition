@@ -420,35 +420,35 @@ Occ::Occ(int nonZ, float avgD) {
 std::vector<Occ> KinectMotion::cellOccupancy(cv::Mat image) {
 	std::vector<Occ> retVal;
 	int nonZ = 0;
-	float avgD = 0;
-	float maxD = 0;
+	double avgD = 0;
+	double maxD = 0;
 	//cv::Mat zero = cv::Mat::zeros(16, 16, CV_8U);
 	for (int i = 0; i < image.rows; i = i + 16) {
 		for (int j = 0; j < image.cols; j = j + 16) {
-			cv::Mat sub = image(cv::Range(i, i + 15), cv::Range(j, j + 15));
+			cv::Mat sub = image(cv::Range(i, i + 16), cv::Range(j, j + 16));
 			for (int a = 0; a < sub.rows; a++) {
 				for (int b = 0; b < sub.cols; b++) {
 					if (sub.at<uchar>(a, b) != 0) {
 						nonZ++;
 						avgD += sub.at<uchar>(a, b);
 					}
-					if (nonZ != 0) {
-						avgD = avgD / nonZ;
-						if (avgD > maxD) {
-							maxD = avgD;
-						}
-					}
-					Occ temp = Occ(nonZ, avgD);
-					retVal.push_back(temp);
 				}
 			}
+			if (nonZ != 0) {
+				avgD = avgD / 256;
+				if (avgD > maxD) {
+					maxD = avgD;
+				}
+			}
+			Occ temp = Occ(nonZ, avgD);
+			retVal.push_back(temp);
 			nonZ = 0;
+			avgD = 0;
 		}
 	}
 	if (maxD != 0) {
 		for (int x = 0; x < retVal.size(); x++) {
-			Occ temp1 = retVal.at(x);
-			temp1.avgD = avgD / maxD;
+			retVal.at(x).avgD = retVal.at(x).avgD / maxD;
 		}
 	}
 	return retVal;
