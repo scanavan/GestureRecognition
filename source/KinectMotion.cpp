@@ -477,7 +477,7 @@ void KinectMotion::normalizeHand(cv::Mat image) {
 
 	maxPoint.x = xMax;
 	maxPoint.y = yMax;
-	minPoint.x = xMin;
+	minPoint.x = xMin; 
 	minPoint.y = yMin;
 
 	std::cout << maxPoint << ' ' << minPoint << std::endl;
