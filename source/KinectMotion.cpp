@@ -435,13 +435,14 @@ std::vector<Occ> KinectMotion::cellOccupancy(cv::Mat image) {
 					if (nonZ != 0) {
 						avgD = avgD / nonZ;
 						if (avgD > maxD) {
-							avgD = maxD;
+							maxD = avgD;
 						}
 					}
 					Occ temp = Occ(nonZ, avgD);
-					nonZ = 0;	
+					retVal.push_back(temp);
 				}
 			}
+			nonZ = 0;
 		}
 	}
 	if (maxD != 0) {
