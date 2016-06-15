@@ -307,44 +307,44 @@ int * KinectMotion::palmCenter(cv::Mat image) {
 	}
 	int * retVal = new int[4]{ xMin,yMin,xMax,yMax };
 
-	//double current_distance;
-	//double current_min;
-	//double maxMin = 0;
-	//Point maxMin_p;
-	//Point edge_p;
-	//for (int i = xMin; i < xMax; ++i)
-	//{
-	//	for (int j = yMin; j < yMax; ++j)
-	//	{
-	//		current_min = 10000;
-	//		for (int k = 0; k < edges.size(); ++k)
-	//		{
-	//			int x = (edges.at(k).i - i);
-	//			int y = (edges.at(k).j - j);
-	//			current_distance = sqrt((x*x) + (y*y));
-	//			if (current_distance < current_min)
-	//			{
-	//				current_min = current_distance;
-	//				edge_p.i = edges.at(k).i;
-	//				edge_p.j = edges.at(k).j;
-	//			}
-	//		}
-	//		if (current_min > maxMin)
-	//		{
-	//			maxMin = current_min;
-	//			maxMin_p.i = i;
-	//			maxMin_p.j = j;
-	//		}
-	//	}
-	//}
+	double current_distance;
+	double current_min;
+	double maxMin = 0;
+	Point maxMin_p;
+	Point edge_p;
+	for (int i = xMin; i < xMax; ++i)
+	{
+		for (int j = yMin; j < yMax; ++j)
+		{
+			current_min = 10000;
+			for (int k = 0; k < edges.size(); ++k)
+			{
+				int x = (edges.at(k).i - i);
+				int y = (edges.at(k).j - j);
+				current_distance = sqrt((x*x) + (y*y));
+				if (current_distance < current_min)
+				{
+					current_min = current_distance;
+					edge_p.i = edges.at(k).i;
+					edge_p.j = edges.at(k).j;
+				}
+			}
+			if (current_min > maxMin)
+			{
+				maxMin = current_min;
+				maxMin_p.i = i;
+				maxMin_p.j = j;
+			}
+		}
+	}
 
-	//image = makeEdgeImage(image);
-	//image.at<cv::Vec3b>(xMin_p.i, xMin_p.j) = cv::Vec3b(255, 255, 255);
-	//image.at<cv::Vec3b>(yMin_p.i, yMin_p.j) = cv::Vec3b(255, 255, 255);
-	//image.at<cv::Vec3b>(xMax_p.i, xMax_p.j) = cv::Vec3b(255, 255, 255);
-	//image.at<cv::Vec3b>(yMax_p.i, yMax_p.j) = cv::Vec3b(255, 255, 255);
-	//image.at<cv::Vec3b>(maxMin_p.i, maxMin_p.j) = cv::Vec3b(255, 255, 255);
-	//image.at<cv::Vec3b>(edge_p.i, edge_p.j) = cv::Vec3b(255, 255, 255);
+	image = makeEdgeImage(image);
+	image.at<cv::Vec3b>(xMin_p.i, xMin_p.j) = cv::Vec3b(255, 255, 255);
+	image.at<cv::Vec3b>(yMin_p.i, yMin_p.j) = cv::Vec3b(255, 255, 255);
+	image.at<cv::Vec3b>(xMax_p.i, xMax_p.j) = cv::Vec3b(255, 255, 255);
+	image.at<cv::Vec3b>(yMax_p.i, yMax_p.j) = cv::Vec3b(255, 255, 255);
+	image.at<cv::Vec3b>(maxMin_p.i, maxMin_p.j) = cv::Vec3b(255, 255, 255);
+	image.at<cv::Vec3b>(edge_p.i, edge_p.j) = cv::Vec3b(255, 255, 255);
 
 	cv::Mat new_image = image.clone();
 	cv::GaussianBlur(image, new_image, cv::Size(0, 0), 23, 23);
