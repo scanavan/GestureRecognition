@@ -57,16 +57,12 @@ void LeapCamera::Run()
 		{
 			Exit();
 		}
-		std::cout << "There are " << leapData.extendedFingers.size() << " finger(s) extended in the current frame" << std::endl;
-		for (auto &finger : leapData.extendedFingers)
-		{
-			std::cout << GetLeapFingerName(finger) << std::endl;
-		}
-		//remove current extended fingers
+		
 		//only saving per frame...
-		leapData.extendedFingers.clear();
+		leapData.Clear();
 	}
 }
+
 std::string LeapCamera::GetLeapFingerName(Leap::Finger::Type type)
 {
 	std::string finger("Thumb");
@@ -101,8 +97,14 @@ void LeapCamera::PopulateHandData()
 		for (Leap::FingerList::const_iterator fl = fingers.begin(); fl != fingers.end(); ++fl)
 		{
 			const Leap::Finger finger = *fl;
-			//std::cout << GetLeapFingerName(finger.type()) << std::endl;
+			Leap::Pointable pointable = leapFrame.pointables().frontmost();
+
+			//save finger types
 			leapData.extendedFingers.emplace_back(finger.type());
+			//save directions of fingers
+			leapData.fingerDirections.emplace_back(pointable.direction());
+			//save position of finger tips
+			leapData.tipPositions.emplace_back(pointable.tipPosition());
 		}
 	}
 }
