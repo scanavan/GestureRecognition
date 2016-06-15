@@ -24,6 +24,7 @@ public:
 	std::string getRotationProbability(LeapData leap);
 	std::string getTranslation(LeapData leap);
 	std::string getTranslationProbability(LeapData leap);
+	std::string getFingerTipDistRefined(LeapData leap);
 
 	//new attributes
 	std::string getNewScaleFactor(LeapData leap);
@@ -31,6 +32,7 @@ public:
 	std::string getFingerTipAngles(LeapData leap);
 	std::string getProjectionPoints(LeapData leap);
 	std::string getFingerTipElevation(LeapData leap);
+	std::string getGesture(LeapData leap);
 
 };
 #endif // !ARFFWRITER_H

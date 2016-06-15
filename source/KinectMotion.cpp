@@ -184,12 +184,12 @@ float KinectMotion::blobMax(cv::Mat image) {
 	detector->detect(image, keypoints);
 
 	// extract the index of the largest blob
-	int maxPoint;
+	int maxKeyIndex;
 	float max = 0.0;
 	for (int i = 0; i < keypoints.size(); i++) {
 		if (keypoints[i].size > max) {
 			max = keypoints[i].size;
-			maxPoint = i;
+			maxKeyIndex = i;
 		}
 	}
 	// Draw detected blobs as red circles.
@@ -200,7 +200,7 @@ float KinectMotion::blobMax(cv::Mat image) {
 	// Show blobs
 	imshow("keypoints", im_with_keypoints);
 	cv::waitKey(0);
-	std::cout << maxPoint << std::endl;
+	std::cout << maxKeyIndex << std::endl;
 
 	return max;
 }
@@ -347,7 +347,7 @@ int * KinectMotion::palmCenter(cv::Mat image) {
 	//image.at<cv::Vec3b>(edge_p.i, edge_p.j) = cv::Vec3b(255, 255, 255);
 
 	cv::Mat new_image = image.clone();
-	cv::GaussianBlur(image, new_image, cv::Size(0, 0), 24, 24);
+	cv::GaussianBlur(image, new_image, cv::Size(0, 0), 23, 23);
 
 	int max = 0;
 	for (int i = 0; i < new_image.rows; ++i)
@@ -390,30 +390,30 @@ std::vector<Occ> KinectMotion::cellOccupancy(cv::Mat image) {
 	//cv::Mat zero = cv::Mat::zeros(16, 16, CV_8U);
 	for (int i = 0; i < image.rows; i = i + 16) {
 		for (int j = 0; j < image.cols; j = j + 16) {
-			cv::Mat sub = image(cv::Range(i, i + 15), cv::Range(j, j + 15));
+			cv::Mat sub = image(cv::Range(i, i + 16), cv::Range(j, j + 16));
 			for (int a = 0; a < sub.rows; a++) {
 				for (int b = 0; b < sub.cols; b++) {
 					if (sub.at<uchar>(a, b) != 0) {
 						nonZ++;
 						avgD += sub.at<uchar>(a, b);
 					}
-					if (nonZ != 0) {
-						avgD = avgD / nonZ;
-						if (avgD > maxD) {
-							maxD = avgD;
-						}
-					}
-					Occ temp = Occ(nonZ, avgD);
-					retVal.push_back(temp);
 				}
 			}
+			if (nonZ != 0) {
+				avgD = avgD / 256;
+				if (avgD > maxD) {
+					maxD = avgD;
+				}
+			}
+			Occ temp = Occ(nonZ, avgD);
+			retVal.push_back(temp);
 			nonZ = 0;
+			avgD = 0;
 		}
 	}
 	if (maxD != 0) {
 		for (int x = 0; x < retVal.size(); x++) {
-			Occ temp1 = retVal.at(x);
-			temp1.avgD = avgD / maxD;
+			retVal.at(x).avgD = retVal.at(x).avgD / maxD;
 		}
 	}
 	return retVal;
@@ -455,15 +455,16 @@ void KinectMotion::normalizeHand(cv::Mat image) {
 		}
 	}
 
-	maxPoint.x = xMax;
-	maxPoint.y = yMax;
-	minPoint.x = xMin;
-	minPoint.y = yMin;
+	maxPoint.x = xMax + 10;
+	maxPoint.y = yMax + 10;
+	minPoint.x = xMin - 10;
+	minPoint.y = yMin - 10;
 
 	image = makeEdgeImage(image);
-	cv::rectangle(image, maxPoint, minPoint, cv::Scalar(0, 0, 255), 1, 8, 0);
+	//cv::rectangle(image, maxPoint, minPoint, cv::Scalar(0, 0, 255), 1, 8, 0);
 
-	cv::Mat croppedImage = image(cv::Rect(minPoint.x, minPoint.y, maxPoint.x, maxPoint.y));
+	cv::Mat croppedImage = image(cv::Rect(maxPoint, minPoint)); 
+
 	cv::Mat dst;
 	cv::resize(croppedImage, dst, image.size());
 
