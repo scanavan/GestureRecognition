@@ -468,11 +468,9 @@ void KinectMotion::normalizeHand(cv::Mat image) {
 	cv::Mat dst;
 	cv::resize(croppedImage, dst, image.size());
 
-	cv::namedWindow("center", cv::WINDOW_AUTOSIZE);
-	cv::imshow("center", dst);
+	cv::namedWindow("Scaled Image", cv::WINDOW_AUTOSIZE);
+	cv::imshow("Scaled Image", dst);
 	cv::waitKey(0);
-
-	cv::imwrite("test.jpg", dst);
 }
 
 void KinectMotion::findDirection(cv::Mat image) {
