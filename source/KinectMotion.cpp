@@ -184,12 +184,12 @@ float KinectMotion::blobMax(cv::Mat image) {
 	detector->detect(image, keypoints);
 
 	// extract the index of the largest blob
-	int maxPoint;
+	int maxKeyIndex;
 	float max = 0.0;
 	for (int i = 0; i < keypoints.size(); i++) {
 		if (keypoints[i].size > max) {
 			max = keypoints[i].size;
-			maxPoint = i;
+			maxKeyIndex = i;
 		}
 	}
 	// Draw detected blobs as red circles.
@@ -200,7 +200,7 @@ float KinectMotion::blobMax(cv::Mat image) {
 	// Show blobs
 	imshow("keypoints", im_with_keypoints);
 	cv::waitKey(0);
-	std::cout << maxPoint << std::endl;
+	std::cout << maxKeyIndex << std::endl;
 
 	return max;
 }
@@ -215,18 +215,6 @@ std::vector <Point> KinectMotion::findEdges(cv::Mat image) {
 	
 	std::vector <Point> edge_vector;
 
-	/*int last_val = static_cast<int>(image.at<uchar>(0, 0));
-	for (int i = 0; i < image.rows; ++i)
-	{
-		for (int j = 0; j < image.cols; ++j)
-		{
-			if (last_val != static_cast<int>(image.at<uchar>(i, j))) {
-				last_val = static_cast<int>(image.at<uchar>(i, j));
-				edge_vector.push_back(Point(i, j));
-			}
-		}
-	}*/
-	
 	for (int i = 1; i < image.rows; ++i)
 	{
 		for (int j = 1; j < image.cols; ++j)
@@ -244,24 +232,6 @@ cv::Mat KinectMotion::makeEdgeImage(cv::Mat image) {
 
 	cv::Mat edge_image(image.rows, image.cols, CV_8UC3);
 
-	//int last_val = static_cast<int>(image.at<uchar>(0, 0));
-	//for (int i = 0; i < image.rows; ++i)
-	//{
-	//	for (int j = 0; j < image.cols; ++j)
-	//	{
-	//		if (last_val != static_cast<int>(image.at<uchar>(i, j))) {
-	//			last_val = static_cast<int>(image.at<uchar>(i, j));
-	//			edge_image.at<cv::Vec3b>(i, j) = cv::Vec3b(0,0,255);
-	//		}
-	//		else {
-	//			//edge_image.at<cv::Vec3b>(i, j)[0] = image.at<uchar>(i, j);
-	//			//edge_image.at<cv::Vec3b>(i, j)[1] = image.at<uchar>(i, j);
-	//			//edge_image.at<cv::Vec3b>(i, j)[2] = image.at<uchar>(i, j);
-	//			edge_image.at<cv::Vec3b>(i,j) = cv::Vec3b(0, 0, 0);
-	//		}
-	//	}
-	//}
-
 	for (int i = 1; i < image.rows; ++i)
 	{
 		for (int j = 1; j < image.cols; ++j)
@@ -270,9 +240,6 @@ cv::Mat KinectMotion::makeEdgeImage(cv::Mat image) {
 				edge_image.at<cv::Vec3b>(i, j) = cv::Vec3b(0, 0, 255);
 			}
 			else {
-				//edge_image.at<cv::Vec3b>(i, j)[0] = image.at<uchar>(i, j);
-				//edge_image.at<cv::Vec3b>(i, j)[1] = image.at<uchar>(i, j);
-				//edge_image.at<cv::Vec3b>(i, j)[2] = image.at<uchar>(i, j);
 				edge_image.at<cv::Vec3b>(i, j) = cv::Vec3b(0, 0, 0);
 			}
 		}
@@ -372,8 +339,6 @@ int * KinectMotion::palmCenter(cv::Mat image) {
 	//}
 
 	//image = makeEdgeImage(image);
-	//std::cout << maxMin << std::endl;
-	//image.at<cv::Vec3b>(retVal.i, retVal.j) = cv::Vec3b(255, 255, 255);
 	//image.at<cv::Vec3b>(xMin_p.i, xMin_p.j) = cv::Vec3b(255, 255, 255);
 	//image.at<cv::Vec3b>(yMin_p.i, yMin_p.j) = cv::Vec3b(255, 255, 255);
 	//image.at<cv::Vec3b>(xMax_p.i, xMax_p.j) = cv::Vec3b(255, 255, 255);
@@ -382,7 +347,7 @@ int * KinectMotion::palmCenter(cv::Mat image) {
 	//image.at<cv::Vec3b>(edge_p.i, edge_p.j) = cv::Vec3b(255, 255, 255);
 
 	cv::Mat new_image = image.clone();
-	cv::GaussianBlur(image, new_image, cv::Size(0, 0), 24, 24);
+	cv::GaussianBlur(image, new_image, cv::Size(0, 0), 23, 23);
 
 	int max = 0;
 	for (int i = 0; i < new_image.rows; ++i)
@@ -490,23 +455,22 @@ void KinectMotion::normalizeHand(cv::Mat image) {
 		}
 	}
 
-	maxPoint.x = xMax;
-	maxPoint.y = yMax;
-	minPoint.x = xMin;
-	minPoint.y = yMin;
+	maxPoint.x = xMax + 10;
+	maxPoint.y = yMax + 10;
+	minPoint.x = xMin - 10;
+	minPoint.y = yMin - 10;
 
 	image = makeEdgeImage(image);
-	cv::rectangle(image, maxPoint, minPoint, cv::Scalar(0, 0, 255), 1, 8, 0);
+	//cv::rectangle(image, maxPoint, minPoint, cv::Scalar(0, 0, 255), 1, 8, 0);
 
-	cv::Mat croppedImage = image(cv::Rect(minPoint.x, minPoint.y, maxPoint.x, maxPoint.y));
+	cv::Mat croppedImage = image(cv::Rect(maxPoint, minPoint)); 
+
 	cv::Mat dst;
 	cv::resize(croppedImage, dst, image.size());
 
-	cv::namedWindow("center", cv::WINDOW_AUTOSIZE);
-	cv::imshow("center", dst);
+	cv::namedWindow("Scaled Image", cv::WINDOW_AUTOSIZE);
+	cv::imshow("Scaled Image", dst);
 	cv::waitKey(0);
-
-	cv::imwrite("test.jpg", dst);
 }
 
 void KinectMotion::findDirection(cv::Mat image) {

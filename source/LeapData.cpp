@@ -46,7 +46,10 @@ void LeapData::setFingerTipAngles() {
 			b = projectionPoints[i].getMagnitude(palmPosition);
 			c = projectionPoints[i].getMagnitude(fingerTipPosition[i]);
 			fingerTipAngles.push_back(acos((-powf(c, 2) + powf(a, 2) + powf(b, 2)) / (2 * a * b)));
-			fingerTipElevation.push_back(c / newScaleFactor);
+			fingerTipElevation.push_back(c / scaleFactor);
+			//
+			//		scale factor 
+			//
 		}
 	}
 }
