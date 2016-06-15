@@ -417,7 +417,7 @@ std::vector<Occ> KinectMotion::cellOccupancy(cv::Mat image) {
 		}
 	}
 	return retVal;
-}
+} 
 
 
 void KinectMotion::normalizeHand(cv::Mat image) {
