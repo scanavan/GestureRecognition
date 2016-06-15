@@ -465,7 +465,7 @@ void KinectMotion::normalizeHand(cv::Mat image) {
 	cv::Point maxPoint;
 	cv::Point minPoint;
 	int currentX;
-	int currentY;
+	int currentY; 
 
 	for (int a = 0; a < edges.size(); a++)
 	{
