@@ -164,7 +164,7 @@ cv::Mat KinectMotion::updateImage(int upperThresholdVal, int lowerThresholdVal, 
 	return iDepthMat;
 
 }
-float KinectMotion::blobMax(cv::Mat depth) {
+float KinectMotion::blobMax(cv::Mat image) {
 	// set up the parameters (check the defaults in opencv's code in blobdetector.cpp)
 	cv::SimpleBlobDetector::Params params;
 	params.minDistBetweenBlobs = 50.0f;
@@ -181,7 +181,7 @@ float KinectMotion::blobMax(cv::Mat depth) {
 
 	// detect!
 	std::vector<cv::KeyPoint> keypoints;
-	detector->detect(depth, keypoints);
+	detector->detect(image, keypoints);
 
 	// extract the index of the largest blob
 	int maxPoint;
@@ -195,7 +195,7 @@ float KinectMotion::blobMax(cv::Mat depth) {
 	// Draw detected blobs as red circles.
 	// DrawMatchesFlags::DRAW_RICH_KEYPOINTS flag ensures the size of the circle corresponds to the size of blob
 	cv::Mat im_with_keypoints;
-	drawKeypoints(depth, keypoints, im_with_keypoints, cv::Scalar(0, 0, 255), cv::DrawMatchesFlags::DRAW_RICH_KEYPOINTS);
+	drawKeypoints(image, keypoints, im_with_keypoints, cv::Scalar(0, 0, 255), cv::DrawMatchesFlags::DRAW_RICH_KEYPOINTS);
 
 	// Show blobs
 	imshow("keypoints", im_with_keypoints);
@@ -437,4 +437,60 @@ std::vector<std::set<float>> KinectMotion::cellOccupancy(cv::Mat image) {
 		}
 	}
 	return retVal;
+}
+
+void KinectMotion::normalizeHand(cv::Mat image) {
+	
+	std::vector<Point> edges = findEdges(image);
+	int xMin = 2000;
+	int xMax = 0;
+	int yMin = 2000;
+	int yMax = 0;
+	cv::Point maxPoint;
+	cv::Point minPoint;
+	int currentX;
+	int currentY;
+
+	for (int a = 0; a < edges.size(); a++)
+	{
+		currentX = edges.at(a).j;
+		currentY = edges.at(a).i;
+		std::cout << edges.at(a).i << ' ' << edges.at(a).j << std::endl;
+
+		if (currentX < xMin)
+		{
+			xMin = currentX;
+		}
+		if (currentY < yMin)
+		{
+			yMin = currentY;
+		}
+		if (currentX > xMax)
+		{
+			xMax = currentX;
+		}
+		if (currentY > yMax)
+		{
+			yMax = currentY;
+		}
+	}
+
+	maxPoint.x = xMax;
+	maxPoint.y = yMax;
+	minPoint.x = xMin;
+	minPoint.y = yMin;
+
+	std::cout << maxPoint << ' ' << minPoint << std::endl;
+	image = makeEdgeImage(image);
+	cv::rectangle(image, maxPoint, minPoint, cv::Scalar(0, 0, 255), 1, 8, 0);
+
+	cv::Size size(640, 480);
+	cv::Mat dst;
+
+	cv::resize(image, dst, size, 10.0, 10.0, 1);
+
+	cv::namedWindow("center", cv::WINDOW_AUTOSIZE);
+	cv::imshow("center", dst);
+	cv::waitKey(0);
+
 }
