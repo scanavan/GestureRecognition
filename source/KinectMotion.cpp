@@ -353,7 +353,7 @@ int * KinectMotion::palmCenter(cv::Mat image) {
 	//		{
 	//			int x = (edges.at(k).i - i);
 	//			int y = (edges.at(k).j - j);
-	//			current_distance = sqrt((x*x) - (y*y));
+	//			current_distance = sqrt((x*x) + (y*y));
 	//			if (current_distance < current_min)
 	//			{
 	//				current_min = current_distance;
@@ -437,4 +437,37 @@ std::vector<std::set<float>> KinectMotion::cellOccupancy(cv::Mat image) {
 		}
 	}
 	return retVal;
+}
+
+void KinectMotion::findDirection(cv::Mat image) {
+
+	std::vector<Point> edges = findEdges(image);
+	double max_distance = 0;
+	double current_distance;
+	Point ends[2];
+	for (int i = 0; i < edges.size() - 1; ++i)
+	{
+		for (int j = i + 1; j < edges.size(); ++j)
+		{
+			int x = (edges.at(i).i - edges.at(j).i);
+			int y = (edges.at(i).j - edges.at(j).j);
+			current_distance = sqrt((x*x) + (y*y));
+			if (current_distance > max_distance)
+			{
+				max_distance = current_distance;
+				ends[0] = edges.at(i);
+				ends[1] = edges.at(j);
+			}
+		}
+	}
+
+	cv::Mat edge_image = makeEdgeImage(image);
+	edge_image.at<cv::Vec3b>(ends[0].i,ends[0].j) = cv::Vec3b(255, 255, 0);
+	edge_image.at<cv::Vec3b>(ends[1].i,ends[1].j) = cv::Vec3b(255, 255, 0);
+
+	cv::namedWindow("center", cv::WINDOW_AUTOSIZE);
+	cv::imshow("center", edge_image);
+	cv::waitKey(0);
+
+	return;
 }

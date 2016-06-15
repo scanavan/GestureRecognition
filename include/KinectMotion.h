@@ -26,6 +26,7 @@ public:
 	Point handCenter(cv::Mat image);
 	int * palmCenter(cv::Mat image);
 	std::vector <std::set <float>> cellOccupancy(cv::Mat image);
+	void findDirection(cv::Mat image);
 private:
 	Image depth;
 	Image rgb;
