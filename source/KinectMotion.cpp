@@ -334,16 +334,16 @@ void KinectMotion::normalizeHand(cv::Mat image) {
 
 void KinectMotion::findDirection(cv::Mat image) {
 
-	std::vector<Point> edges = findEdges(image);
+	std::vector<cv::Point> edges = getContour(image);
 	double max_distance = 0;
 	double current_distance;
-	Point ends[2];
+	cv::Point ends[2];
 	for (int i = 0; i < edges.size() - 1; ++i)
 	{
 		for (int j = i + 1; j < edges.size(); ++j)
 		{
-			int x = (edges.at(i).i - edges.at(j).i);
-			int y = (edges.at(i).j - edges.at(j).j);
+			int x = (edges.at(i).x - edges.at(j).x);
+			int y = (edges.at(i).y - edges.at(j).y);
 			current_distance = sqrt((x*x) + (y*y));
 			if (current_distance > max_distance)
 			{
@@ -355,11 +355,11 @@ void KinectMotion::findDirection(cv::Mat image) {
 	}
 
 	cv::Mat edge_image = makeEdgeImage(image);
-	edge_image.at<cv::Vec3b>(ends[0].i,ends[0].j) = cv::Vec3b(255, 255, 0);
-	edge_image.at<cv::Vec3b>(ends[1].i,ends[1].j) = cv::Vec3b(255, 255, 0);
+	edge_image.at<cv::Vec3b>(ends[0].x,ends[0].y) = cv::Vec3b(255, 255, 0);
+	edge_image.at<cv::Vec3b>(ends[1].x,ends[1].y) = cv::Vec3b(255, 255, 0);
 
-	cv::namedWindow("center", cv::WINDOW_AUTOSIZE);
-	cv::imshow("center", edge_image);
+	cv::namedWindow("Direction", cv::WINDOW_AUTOSIZE);
+	cv::imshow("Direction", edge_image);
 	cv::waitKey(0);
 
 	return;
