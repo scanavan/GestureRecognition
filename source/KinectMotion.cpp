@@ -163,30 +163,7 @@ float KinectMotion::blobMax(cv::Mat image) {
 	return max;
 }
 
-Point::Point(int i, int j) {
-	this->i = i;
-	this->j = j;
-}
-
-
-std::vector <Point> KinectMotion::findEdges(cv::Mat image) {
-	
-	std::vector <Point> edge_vector;
-
-	for (int i = 1; i < image.rows; ++i)
-	{
-		for (int j = 1; j < image.cols; ++j)
-		{
-			if (image.at<uchar>(i - 1, j) != image.at<uchar>(i, j) || image.at<uchar>(i, j - 1) != image.at<uchar>(i, j)) {
-				edge_vector.push_back(Point(i, j));
-			}
-		}
-	}
-	return edge_vector;
-
-}
-
-cv::Mat KinectMotion::makeEdgeImage(cv::Mat image) {
+cv::Mat KinectMotion::makeContourImage(cv::Mat image) {
 
 	cv::Mat contourImage(image.size(), CV_8UC3, cv::Scalar(0, 0, 0));
 	
@@ -207,7 +184,7 @@ cv::Point KinectMotion::handCenter(cv::Mat image) {
 		ySum += edges.at(a).y;
 	}
 	cv::Point retVal(xSum / edges.size(), ySum / edges.size());
-	image = makeEdgeImage(image);
+	image = makeContourImage(image);
 	image.at<cv::Vec3b>(retVal.x, retVal.y) = cv::Vec3b(255,255,255);
 	cv::namedWindow("center", cv::WINDOW_AUTOSIZE);
 	cv::imshow("center", image);
@@ -279,59 +256,6 @@ std::vector<Occ> KinectMotion::cellOccupancy(cv::Mat image) {
 	return retVal;
 } 
 
-
-void KinectMotion::normalizeHand(cv::Mat image) {
-
-	std::vector<cv::Point> edges = getContour(image);
-	int xMin = 2000;
-	int xMax = 0;
-	int yMin = 2000;
-	int yMax = 0;
-	cv::Point maxPoint;
-	cv::Point minPoint;
-	int currentX;
-	int currentY; 
-
-	for (int a = 0; a < edges.size(); a++)
-	{
-		currentX = edges.at(a).x;
-		currentY = edges.at(a).y;
-
-		if (currentX < xMin)
-		{
-			xMin = currentX;
-		}
-		if (currentY < yMin)
-		{
-			yMin = currentY;
-		}
-		if (currentX > xMax)
-		{
-			xMax = currentX;
-		}
-		if (currentY > yMax)
-		{
-			yMax = currentY;
-		}
-	}
-
-	maxPoint.x = xMax + 10;
-	maxPoint.y = yMax + 10;
-	minPoint.x = xMin - 10;
-	minPoint.y = yMin - 10;
-
-	cv::Mat tmp = makeEdgeImage(image);
-
-	cv::Mat croppedImage = tmp(cv::Rect(maxPoint, minPoint)); 
-
-	cv::Mat dst;
-	cv::resize(croppedImage, dst, tmp.size());
-
-	cv::namedWindow("Scaled Image", cv::WINDOW_AUTOSIZE);
-	cv::imshow("Scaled Image", dst);
-	cv::waitKey(0);
-}
-
 void KinectMotion::findDirection(cv::Mat image) {
 
 	std::vector<cv::Point> edges = getContour(image);
@@ -354,7 +278,7 @@ void KinectMotion::findDirection(cv::Mat image) {
 		}
 	}
 
-	cv::Mat edge_image = makeEdgeImage(image);
+	cv::Mat edge_image = makeContourImage(image);
 	edge_image.at<cv::Vec3b>(ends[0].x,ends[0].y) = cv::Vec3b(255, 255, 0);
 	edge_image.at<cv::Vec3b>(ends[1].x,ends[1].y) = cv::Vec3b(255, 255, 0);
 
@@ -386,4 +310,79 @@ std::vector<cv::Point> getContour(cv::Mat image) {
 	}
 
 	return contours[max_index];
+}
+
+cv::Mat KinectMotion::scaleHand(cv::Mat image) {
+
+	std::vector<cv::Point> edges = getContour(image);
+	int xMin = 2000;
+	int xMax = 0;
+	int yMin = 2000;
+	int yMax = 0;
+	cv::Point maxPoint;
+	cv::Point minPoint;
+	int currentX;
+	int currentY;
+
+	for (int a = 0; a < edges.size(); a++)
+	{
+		currentX = edges.at(a).x;
+		currentY = edges.at(a).y;
+
+		if (currentX < xMin)
+		{
+			xMin = currentX;
+		}
+		if (currentY < yMin)
+		{
+			yMin = currentY;
+		}
+		if (currentX > xMax)
+		{
+			xMax = currentX;
+		}
+		if (currentY > yMax)
+		{
+			yMax = currentY;
+		}
+	}
+
+	maxPoint.x = xMax + 10;
+	maxPoint.y = yMax + 10;
+	minPoint.x = xMin - 10;
+	minPoint.y = yMin - 10;
+
+	cv::Mat croppedImage = image(cv::Rect(maxPoint, minPoint));
+
+	int width  = croppedImage.cols,
+		height = croppedImage.rows;
+	int max_dim = (width >= height) ? width : height;
+
+	cv::Mat dst = cv::Mat::zeros(320,320,CV_8U);
+
+	float scale = ((float) 320) / max_dim;
+	cv::Rect roi;
+	if (width >= height)
+	{
+		roi.width = 320;
+		roi.x = 0;
+		roi.height = height * scale;
+		roi.y = (320 - roi.height) / 2;
+	}
+	else
+	{
+		roi.y = 0;
+		roi.height = 320;
+		roi.width = width * scale;
+		roi.x = (320 - roi.width) / 2;
+	}
+	cv::resize(croppedImage, dst(roi), roi.size());
+
+
+	//cv::namedWindow("Scaled Image", cv::WINDOW_AUTOSIZE);
+	//cv::imshow("Scaled Image", dst);
+	//cv::waitKey(0);
+
+	return dst;
+
 }
