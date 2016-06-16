@@ -371,18 +371,18 @@ std::vector<cv::Point> getContour(cv::Mat image) {
 	std::vector<std::vector<cv::Point>> contours;
 	cv::findContours(image, contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_NONE);
 
-	//if (contours.size() == 1) return contours[0];
+	if (contours.size() == 1) return contours[0];
 
 	int max_size = 0;
-	int max_index = 0;
-	//for (int i = 0; i < contours.size(); ++i)
-	//{
-	//	if (contours[i].size() > max_size)
-	//	{
-	//		max_size = contours[i].size();
-	//		max_index = i;
-	//	}
-	//}
+	int max_index;
+	for (int i = 0; i < contours.size(); ++i)
+	{
+		if (contours[i].size() > max_size)
+		{
+			max_size = contours[i].size();
+			max_index = i;
+		}
+	}
 
 	return contours[max_index];
 }
