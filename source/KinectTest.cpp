@@ -24,6 +24,7 @@
 	//				current_min = current_distance;
 	//				edge_p.i = edges.at(k).i;
 	//				edge_p.j = edges.at(k).j;
+	//				if (current_min < maxMin) break;
 	//			}
 	//		}
 	//		if (current_min > maxMin)
@@ -42,7 +43,44 @@
 	//image.at<cv::Vec3b>(yMax_p.i, yMax_p.j) = cv::Vec3b(255, 255, 255);
 	//image.at<cv::Vec3b>(maxMin_p.i, maxMin_p.j) = cv::Vec3b(255, 255, 255);
 	//image.at<cv::Vec3b>(edge_p.i, edge_p.j) = cv::Vec3b(255, 255, 255);
+//std::vector<Point> edges = findEdges(image);
+//	int xMin = 2000;
+//	int xMax = 0;
+//	int yMin = 2000;
+//	int yMax = 0;
+//	Point xMin_p;
+//	Point xMax_p;
+//	Point yMin_p;
+//	Point yMax_p;
+//	int currentX;
+//	int currentY;
+//	for (int a = 0; a < edges.size(); a++)
+//	{
+//		currentX = edges.at(a).i;
+//		currentY = edges.at(a).j;
 //
+//		if (currentX < xMin)
+//		{
+//			xMin = currentX;
+//			xMin_p = edges.at(a);
+//		}
+//		if (currentY < yMin)
+//		{
+//			yMin = currentY;
+//			yMin_p = edges.at(a);
+//		}
+//		if (currentX > xMax)
+//		{
+//			xMax = currentX;
+//			xMax_p = edges.at(a);
+//		}
+//		if (currentY > yMax)
+//		{
+//			yMax = currentY;
+//			yMax_p = edges.at(a);
+//		}
+//	}
+//	int * retVal = new int[4]{ xMin,yMin,xMax,yMax };
 //}
 
 //void KinectMotion::blob(cv::Mat imMat) {

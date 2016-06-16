@@ -28,8 +28,8 @@ public:
 	cv::Mat getHand(cv::Mat image, double ratio);
 	std::vector <Point> findEdges(cv::Mat image);
 	cv::Mat makeEdgeImage(cv::Mat image);
-	Point handCenter(cv::Mat image);
-	void palmCenter(cv::Mat image);
+	cv::Point handCenter(cv::Mat image);
+	cv::Point palmCenter(cv::Mat image);
 	std::vector <Occ> cellOccupancy(cv::Mat image);
 	void findDirection(cv::Mat image);
 	void normalizeHand(cv::Mat image);
