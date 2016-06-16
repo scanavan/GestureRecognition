@@ -302,7 +302,6 @@ std::vector<Occ> KinectMotion::cellOccupancy(cv::Mat image) {
 	int nonZ = 0;
 	float avgD = 0;
 	float maxD = 0;
-	//cv::Mat zero = cv::Mat::zeros(16, 16, CV_8U);
 	for (int i = 0; i < image.rows; i = i + 16) {
 		for (int j = 0; j < image.cols; j = j + 16) {
 			cv::Mat sub = image(cv::Range(i, i + 16), cv::Range(j, j + 16));
@@ -440,5 +439,4 @@ std::vector<cv::Point> getContour(cv::Mat image) {
 	}
 
 	return contours[max_index];
-
 }
