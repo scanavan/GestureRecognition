@@ -368,7 +368,8 @@ void KinectMotion::findDirection(cv::Mat image) {
 std::vector<cv::Point> getContour(cv::Mat image) {
 	
 	std::vector<std::vector<cv::Point>> contours;
-	cv::Mat image_clone = image.clone();
+	cv::Mat image_clone;
+	image.convertTo(image_clone,CV_8U);
 	cv::findContours(image_clone, contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_NONE);
 
 	if (contours.size() == 1) return contours[0];
