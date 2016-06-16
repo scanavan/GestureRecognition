@@ -280,9 +280,10 @@ void KinectMotion::findDirection(cv::Mat image) {
 
 std::vector<cv::Point> getContour(cv::Mat image) {
 	
-	std::vector<std::vector<cv::Point>> contours;
 	cv::Mat image_clone;
 	image.convertTo(image_clone,CV_8U);
+
+	std::vector<std::vector<cv::Point>> contours;
 	cv::findContours(image_clone, contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_NONE);
 
 	if (contours.size() == 1) return contours[0];
@@ -302,6 +303,8 @@ std::vector<cv::Point> getContour(cv::Mat image) {
 }
 
 cv::Mat KinectMotion::scaleHand(cv::Mat image) {
+
+	cv::Mat dst = cv::Mat::zeros(320,320,CV_8U);
 
 	std::vector<cv::Point> edges = getContour(image);
 	int xMin = 2000;
@@ -346,8 +349,6 @@ cv::Mat KinectMotion::scaleHand(cv::Mat image) {
 	int width  = croppedImage.cols,
 		height = croppedImage.rows;
 	int max_dim = (width >= height) ? width : height;
-
-	cv::Mat dst = cv::Mat::zeros(320,320,CV_8U);
 
 	float scale = ((float) 320) / max_dim;
 	cv::Rect roi;
