@@ -132,35 +132,6 @@ cv::Mat KinectMotion::updateImage(int upperThresholdVal, int lowerThresholdVal, 
 		}
 	}
 
-	// fill in area between fingers and such
-	//std::vector <unsigned char> range_vector;
-	//int found_first = 0;
-	//int first_col = 0;
-	//int last_col = 0;
-	//for (int i = 0; i < iDepthMat.rows; i++) {
-	//	range_vector.push_back(0);
-	//	for (int j = 0; j < iDepthMat.cols; j++) {
-	//		if (iDepthMat.at<uchar>(i, j) != 0) {
-	//			if (found_first == 0) {
-	//				found_first = 1;
-	//				first_col = j;
-	//			}
-	//			last_col = j;
-	//		}
-	//	}
-	//	found_first = 0;
-	//	for (int j = first_col; j < last_col; j++) {
-	//		range_vector.back()++;
-	//	}
-	//}
-
-	// display row ranges
-	//for (int i = 0; i < h; i++) {
-	//	for (int j = 0; j < 20; j++) {
-	//		iDepthMat.at<uchar>(i, j) = range_vector[i];
-	//	}
-	//}
-
 	return iDepthMat;
 
 }
@@ -266,7 +237,7 @@ Point KinectMotion::handCenter(cv::Mat image) {
 	return retVal;
 }
 
-int * KinectMotion::palmCenter(cv::Mat image) {
+void KinectMotion::palmCenter(cv::Mat image) {
 
 	std::vector<Point> edges = findEdges(image);
 	int xMin = 2000;
@@ -307,6 +278,39 @@ int * KinectMotion::palmCenter(cv::Mat image) {
 	}
 	int * retVal = new int[4]{ xMin,yMin,xMax,yMax };
 
+	cv::Mat new_image = image.clone();
+	cv::GaussianBlur(image, new_image, cv::Size(0, 0), 23, 23);
+
+	int max = 0;
+	for (int i = 0; i < new_image.rows; ++i)
+	{
+		for (int j = 0; j < new_image.cols; ++j)
+		{
+			if (static_cast<int>(new_image.at<uchar>(i, j)) > max)
+			{
+				max = static_cast<int>(new_image.at<uchar>(i, j));
+			}
+		}
+	}
+	for (int i = 0; i < new_image.rows; ++i)
+	{
+		for (int j = 0; j < new_image.cols; ++j)
+		{
+			if (static_cast<int>(new_image.at<uchar>(i, j)) == max)
+			{
+				image.at<uchar>(i, j) = 0;
+			}
+		}
+	}
+
+	cv::namedWindow("center", cv::WINDOW_AUTOSIZE);
+	cv::imshow("center", image);
+	cv::waitKey(0);
+	return;
+}
+
+//int * KinectMotion::palmCenter2(cv::Mat image) {
+//
 	//double current_distance;
 	//double current_min;
 	//double maxMin = 0;
@@ -337,7 +341,7 @@ int * KinectMotion::palmCenter(cv::Mat image) {
 	//		}
 	//	}
 	//}
-
+	//
 	//image = makeEdgeImage(image);
 	//image.at<cv::Vec3b>(xMin_p.i, xMin_p.j) = cv::Vec3b(255, 255, 255);
 	//image.at<cv::Vec3b>(yMin_p.i, yMin_p.j) = cv::Vec3b(255, 255, 255);
@@ -345,37 +349,8 @@ int * KinectMotion::palmCenter(cv::Mat image) {
 	//image.at<cv::Vec3b>(yMax_p.i, yMax_p.j) = cv::Vec3b(255, 255, 255);
 	//image.at<cv::Vec3b>(maxMin_p.i, maxMin_p.j) = cv::Vec3b(255, 255, 255);
 	//image.at<cv::Vec3b>(edge_p.i, edge_p.j) = cv::Vec3b(255, 255, 255);
-
-	cv::Mat new_image = image.clone();
-	cv::GaussianBlur(image, new_image, cv::Size(0, 0), 23, 23);
-
-	int max = 0;
-	for (int i = 0; i < new_image.rows; ++i)
-	{
-		for (int j = 0; j < new_image.cols; ++j)
-		{
-			if (static_cast<int>(new_image.at<uchar>(i, j)) > max)
-			{
-				max = static_cast<int>(new_image.at<uchar>(i, j));
-			}
-		}
-	}
-	for (int i = 0; i < new_image.rows; ++i)
-	{
-		for (int j = 0; j < new_image.cols; ++j)
-		{
-			if (static_cast<int>(new_image.at<uchar>(i, j)) == max)
-			{
-				image.at<uchar>(i, j) = 0;
-			}
-		}
-	}
-
-	cv::namedWindow("center", cv::WINDOW_AUTOSIZE);
-	cv::imshow("center", image);
-	cv::waitKey(0);
-	return retVal;
-}
+//
+//}
 
 Occ::Occ(int nonZ, float avgD) {
 	this->nonZ = nonZ;
