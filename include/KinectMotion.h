@@ -34,5 +34,6 @@ private:
 }; 
 
 std::vector<cv::Point> getContour(cv::Mat image);
+void createWindow(cv::Mat image, std::string imageName);
 
 #endif
