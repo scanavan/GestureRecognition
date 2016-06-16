@@ -15,12 +15,9 @@ public:
 	LeapCamera(bool showHandInfo = false, bool useOpenCVWindow = true);
 	//main loop for Leap camera
 	void Run() override;
-	//fingers
-	Leap::Finger::Type GetFingerType();
-private:
-	//human readable version of finger name
-	std::string GetLeapFingerName(Leap::Finger::Type type);
+	RealTimeLeapData GetRealTimeLeapData();
 
+private:
 	//names of finger types
 	std::vector<std::string> fingerNames;
 	//names of bone types
@@ -36,8 +33,6 @@ private:
 
 	//get an image from the leap
 	void LeapGetImage();
-	//use opencv to get an image from the leap from a stream
-	void OpenCVGetImage();
 	//Gets hand information from the leap and outputs to console
 	void PrintHandInformation();
 	//read data from Leap and populate class data
@@ -52,7 +47,8 @@ private:
 
 	//do we want to show hand information?
 	bool showHandInfo;
-
+	bool showLeapImage;
+	//save data
 	RealTimeLeapData leapData;
 };
 #endif

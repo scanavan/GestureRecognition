@@ -3,6 +3,7 @@
 
 LeapCamera::LeapCamera(bool showHandInformation, bool useOpenCVWindow) :
 	  showHandInfo(showHandInformation)
+	, showLeapImage(useOpenCVWindow)
 {
 	fingerNames.emplace_back("Thumb");
 	fingerNames.emplace_back("Index");
@@ -31,8 +32,14 @@ LeapCamera::LeapCamera(bool showHandInformation, bool useOpenCVWindow) :
 	Initialize();
 
 }
+RealTimeLeapData LeapCamera::GetRealTimeLeapData()
+{
+	return leapData;
+}
 void LeapCamera::Initialize()
 {
+	//set some stuff for the Leap camera
+	//can make this configurable
 	controller.setPolicy(Leap::Controller::POLICY_IMAGES);
 	controller.enableGesture(Leap::Gesture::TYPE_CIRCLE);
 	controller.enableGesture(Leap::Gesture::TYPE_KEY_TAP);
@@ -43,15 +50,19 @@ void LeapCamera::Run()
 {
 	while (!quit)
 	{
-		LeapGetImage();
+		if (showLeapImage)
+		{
+			//get image from leap and show it
+			LeapGetImage();
+		}
 		if (showHandInfo)
 		{
+			//print hand information to output
 			PrintHandInformation();
 		}
-		else
-		{
-			PopulateHandData();
-		}
+		//populate info to save
+		PopulateHandData();
+
 		int key = cv::waitKey(33);
 		if (key == 101)
 		{
@@ -61,27 +72,6 @@ void LeapCamera::Run()
 		//only saving per frame...
 		leapData.Clear();
 	}
-}
-
-std::string LeapCamera::GetLeapFingerName(Leap::Finger::Type type)
-{
-	std::string finger("Thumb");
-	switch(type)
-	{
-	case 1:
-		finger = "Index";
-		break;
-	case 2:
-		finger = "Middle";
-		break;
-	case 3:
-		finger = "Ring";
-		break;
-	case 4:
-		finger = "Pinky";
-		break;
-	}
-	return finger;
 }
 void LeapCamera::PopulateHandData()
 {
@@ -108,38 +98,33 @@ void LeapCamera::PopulateHandData()
 		}
 	}
 }
-//return the type of finger that leap is finding
-Leap::Finger::Type LeapCamera::GetFingerType()
-{
-	return Leap::Finger::Type();
-}
 void LeapCamera::LeapGetImage()
 {
-	// Get the most recent frame and report some basic information
+	//current Leap frame
 	const Leap::Frame frame = controller.frame();
 	Leap::ImageList images = frame.images();
 	Leap::Image image = images[0];
 	if (!image.isValid())
 	{
+		//return if image is bad
 		return;
 	}
+	//get buffer of image data
 	const unsigned char* buffer = image.data();
+	//create new OpenCV image
 	cv::Mat result;
 	result.create(image.height(), image.width(), CV_8UC1);
+	//copy bugger into image
 	memcpy(result.data, buffer, sizeof(uchar)*image.height()*image.width()*image.bytesPerPixel());
+	//show image
 	cv::Mat flipped;
 	cv::flip(result, flipped, 1);
 	cv::namedWindow("Leap");
 	cv::imshow("Leap", flipped);
 }
-void LeapCamera::OpenCVGetImage()
-{
-	capture >> frame;
-	cv::namedWindow("OpenCV");
-	cv::imshow("OpenCV", frame);
-}
 void LeapCamera::PrintHandInformation()
 {
+	//current leap frame
 	leapFrame = controller.frame();
 
 	std::cout << "leapFrame id: " << leapFrame.id()
@@ -148,7 +133,7 @@ void LeapCamera::PrintHandInformation()
 		<< ", extended fingers: " << leapFrame.fingers().extended().count()
 		<< ", tools: " << leapFrame.tools().count()
 		<< ", gestures: " << leapFrame.gestures().count() << std::endl;
-	
+	//hand in frame
 	hands = leapFrame.hands();
 	for (Leap::HandList::const_iterator hl = hands.begin(); hl != hands.end(); ++hl)
 	{
