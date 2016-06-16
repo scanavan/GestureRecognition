@@ -39,4 +39,7 @@ private:
 	Image depth;
 	Image rgb;
 }; 
+
+std::vector<std::vector<cv::Point>> getContour(cv::Mat image);
+
 #endif
