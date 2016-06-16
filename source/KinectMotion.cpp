@@ -115,10 +115,6 @@ cv::Mat KinectMotion::updateImage(int upperThresholdVal, int lowerThresholdVal, 
 		}
 	}
 
-	//cv::namedWindow("Thing", cv::WINDOW_AUTOSIZE);
-	//cv::imshow("Thing", iDepthMat);
-	//cv::waitKey(0);
-
 	return iDepthMat;
 
 }
@@ -156,8 +152,7 @@ float KinectMotion::blobMax(cv::Mat image) {
 	drawKeypoints(image, keypoints, im_with_keypoints, cv::Scalar(0, 0, 255), cv::DrawMatchesFlags::DRAW_RICH_KEYPOINTS);
 
 	// Show blobs
-	imshow("keypoints", im_with_keypoints);
-	cv::waitKey(0);
+
 	std::cout << maxKeyIndex << std::endl;
 
 	return max;
@@ -186,9 +181,7 @@ cv::Point KinectMotion::handCenter(cv::Mat image) {
 	cv::Point retVal(xSum / edges.size(), ySum / edges.size());
 	image = makeContourImage(image);
 	image.at<cv::Vec3b>(retVal.x, retVal.y) = cv::Vec3b(255,255,255);
-	cv::namedWindow("center", cv::WINDOW_AUTOSIZE);
-	cv::imshow("center", image);
-	cv::waitKey(0);
+
 	return retVal;
 }
 
@@ -282,10 +275,6 @@ void KinectMotion::findDirection(cv::Mat image) {
 	edge_image.at<cv::Vec3b>(ends[0].x,ends[0].y) = cv::Vec3b(255, 255, 0);
 	edge_image.at<cv::Vec3b>(ends[1].x,ends[1].y) = cv::Vec3b(255, 255, 0);
 
-	cv::namedWindow("Direction", cv::WINDOW_AUTOSIZE);
-	cv::imshow("Direction", edge_image);
-	cv::waitKey(0);
-
 	return;
 }
 
@@ -378,11 +367,12 @@ cv::Mat KinectMotion::scaleHand(cv::Mat image) {
 	}
 	cv::resize(croppedImage, dst(roi), roi.size());
 
-
-	//cv::namedWindow("Scaled Image", cv::WINDOW_AUTOSIZE);
-	//cv::imshow("Scaled Image", dst);
-	//cv::waitKey(0);
-
 	return dst;
 
+}
+
+void createWindow(cv::Mat image, std::string imageName) {
+	cv::namedWindow(imageName, cv::WINDOW_AUTOSIZE);
+	cv::imshow(imageName, image);
+	cv::waitKey(0);
 }
