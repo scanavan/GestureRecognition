@@ -26,6 +26,7 @@ public:
 	std::vector <Occ> cellOccupancy(cv::Mat image);
 	void findDirection(cv::Mat image);
 	cv::Mat scaleHand(cv::Mat image);
+	std::vector<float>distContour(cv::Mat image);
 	//void blob(cv::Mat imMat);
 	//int * palmCenter2(cv::Mat image);
 private:

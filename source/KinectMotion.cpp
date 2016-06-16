@@ -377,3 +377,23 @@ void createWindow(cv::Mat image, std::string imageName) {
 	cv::imshow(imageName, image);
 	cv::waitKey(0);
 }
+
+std::vector<float> KinectMotion::distContour(cv::Mat image) {
+	std::vector<cv::Point> edges = getContour(image);
+	cv::Point center = palmCenter(image);
+	std::vector<float> retVal;
+	float max = 0;
+	for (int i = 0; i < edges.size(); i++) {
+		float temp = std::sqrt(std::pow(center.x - edges.at(i).x, 2) + std::pow(center.y - edges.at(i).y, 2));
+		retVal.push_back(temp);
+		if (temp > max) {
+			max = temp;
+		}
+	}
+	for (int j = 0; j < retVal.size(); j++) {
+		if (max != 0) {
+			retVal.at(j) = retVal.at(j) / max;
+		}
+	}
+	return retVal;
+}
