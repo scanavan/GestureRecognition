@@ -24,16 +24,16 @@ public:
 	Image getDepth();
 	Image getRgb();
 	cv::Mat updateImage(int upperThresholdVal, int lowerThresholdVal, bool make_binary = true);
-	void blob(cv::Mat imMat);
 	float blobMax(cv::Mat depth);
 	cv::Mat getHand(cv::Mat image, double ratio);
 	std::vector <Point> findEdges(cv::Mat image);
 	cv::Mat makeEdgeImage(cv::Mat image);
-	Point handCenter(cv::Mat image);
-	void palmCenter(cv::Mat image);
+	cv::Point handCenter(cv::Mat image);
+	cv::Point palmCenter(cv::Mat image);
 	std::vector <Occ> cellOccupancy(cv::Mat image);
 	void findDirection(cv::Mat image);
 	void normalizeHand(cv::Mat image);
+	//void blob(cv::Mat imMat);
 	//int * palmCenter2(cv::Mat image);
 private:
 	Image depth;

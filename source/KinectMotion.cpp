@@ -87,7 +87,7 @@ cv::Mat KinectMotion::updateImage(int upperThresholdVal, int lowerThresholdVal, 
 		}
 	}
 
-	// calculate sum of each row as one column (this isn't really that useful because it's 32 bit)
+	// calculate sum of each row as one column 
 	cv::Mat row_sums;
 	cv::reduce(iDepthMat, row_sums, 1, CV_REDUCE_SUM, CV_32S);
 
@@ -114,6 +114,10 @@ cv::Mat KinectMotion::updateImage(int upperThresholdVal, int lowerThresholdVal, 
 			num_contiguous_rows = 0;
 		}
 	}
+
+	//cv::namedWindow("Thing", cv::WINDOW_AUTOSIZE);
+	//cv::imshow("Thing", iDepthMat);
+	//cv::waitKey(0);
 
 	return iDepthMat;
 
@@ -184,112 +188,54 @@ std::vector <Point> KinectMotion::findEdges(cv::Mat image) {
 
 cv::Mat KinectMotion::makeEdgeImage(cv::Mat image) {
 
-	cv::Mat edge_image(image.rows, image.cols, CV_8UC3);
+	cv::Mat contourImage(image.size(), CV_8UC3, cv::Scalar(0, 0, 0));
+	
+	std::vector <std::vector<cv::Point>> contours;
+	contours.push_back(getContour(image));
+	cv::drawContours(contourImage, contours, 0, cv::Scalar(255,255,255));
 
-	for (int i = 1; i < image.rows; ++i)
-	{
-		for (int j = 1; j < image.cols; ++j)
-		{
-			if (image.at<uchar>(i-1, j) != image.at<uchar>(i, j) || image.at<uchar>(i, j-1) != image.at<uchar>(i, j)) {
-				edge_image.at<cv::Vec3b>(i, j) = cv::Vec3b(0, 0, 255);
-			}
-			else {
-				edge_image.at<cv::Vec3b>(i, j) = cv::Vec3b(0, 0, 0);
-			}
-		}
-	}
-
-	return edge_image;
+	return contourImage;
 
 }
 
-Point KinectMotion::handCenter(cv::Mat image) {
-	std::vector<Point> edges = findEdges(image);
+cv::Point KinectMotion::handCenter(cv::Mat image) {
+	std::vector<cv::Point> edges = getContour(image);
 	int xSum = 0;
 	int ySum = 0;
 	for (int a = 0; a < edges.size(); a++) {
-		xSum += edges.at(a).i;
-		ySum += edges.at(a).j;
+		xSum += edges.at(a).x;
+		ySum += edges.at(a).y;
 	}
-	Point retVal(xSum / edges.size(), ySum / edges.size());
+	cv::Point retVal(xSum / edges.size(), ySum / edges.size());
 	image = makeEdgeImage(image);
-	image.at<cv::Vec3b>(retVal.i, retVal.j) = cv::Vec3b(255,255,255);
+	image.at<cv::Vec3b>(retVal.x, retVal.y) = cv::Vec3b(255,255,255);
 	cv::namedWindow("center", cv::WINDOW_AUTOSIZE);
 	cv::imshow("center", image);
 	cv::waitKey(0);
 	return retVal;
 }
 
-void KinectMotion::palmCenter(cv::Mat image) {
-
-	std::vector<Point> edges = findEdges(image);
-	int xMin = 2000;
-	int xMax = 0;
-	int yMin = 2000;
-	int yMax = 0;
-	Point xMin_p;
-	Point xMax_p;
-	Point yMin_p;
-	Point yMax_p;
-	int currentX;
-	int currentY;
-	for (int a = 0; a < edges.size(); a++)
-	{
-		currentX = edges.at(a).i;
-		currentY = edges.at(a).j;
-
-		if (currentX < xMin)
-		{
-			xMin = currentX;
-			xMin_p = edges.at(a);
-		}
-		if (currentY < yMin)
-		{
-			yMin = currentY;
-			yMin_p = edges.at(a);
-		}
-		if (currentX > xMax)
-		{
-			xMax = currentX;
-			xMax_p = edges.at(a);
-		}
-		if (currentY > yMax)
-		{
-			yMax = currentY;
-			yMax_p = edges.at(a);
-		}
-	}
-	int * retVal = new int[4]{ xMin,yMin,xMax,yMax };
+cv::Point KinectMotion::palmCenter(cv::Mat image) {
 
 	cv::Mat new_image = image.clone();
 	cv::GaussianBlur(image, new_image, cv::Size(0, 0), 23, 23);
 
 	int max = 0;
+	cv::Point center;
 	for (int i = 0; i < new_image.rows; ++i)
 	{
 		for (int j = 0; j < new_image.cols; ++j)
 		{
-			if (static_cast<int>(new_image.at<uchar>(i, j)) > max)
+			if (static_cast<int>(new_image.at<uchar>(i, j)) >= max)
 			{
 				max = static_cast<int>(new_image.at<uchar>(i, j));
-			}
-		}
-	}
-	for (int i = 0; i < new_image.rows; ++i)
-	{
-		for (int j = 0; j < new_image.cols; ++j)
-		{
-			if (static_cast<int>(new_image.at<uchar>(i, j)) == max)
-			{
-				image.at<uchar>(i, j) = 0;
+				center = cv::Point(j, i);
 			}
 		}
 	}
 
-	cv::namedWindow("center", cv::WINDOW_AUTOSIZE);
-	cv::imshow("center", image);
-	cv::waitKey(0);
-	return;
+	return center;
+
 }
 
 Occ::Occ(int nonZ, float avgD) {
@@ -336,7 +282,7 @@ std::vector<Occ> KinectMotion::cellOccupancy(cv::Mat image) {
 
 void KinectMotion::normalizeHand(cv::Mat image) {
 
-	std::vector<Point> edges = findEdges(image);
+	std::vector<cv::Point> edges = getContour(image);
 	int xMin = 2000;
 	int xMax = 0;
 	int yMin = 2000;
@@ -348,8 +294,8 @@ void KinectMotion::normalizeHand(cv::Mat image) {
 
 	for (int a = 0; a < edges.size(); a++)
 	{
-		currentX = edges.at(a).j;
-		currentY = edges.at(a).i;
+		currentX = edges.at(a).x;
+		currentY = edges.at(a).y;
 
 		if (currentX < xMin)
 		{
@@ -425,18 +371,18 @@ std::vector<cv::Point> getContour(cv::Mat image) {
 	std::vector<std::vector<cv::Point>> contours;
 	cv::findContours(image, contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_NONE);
 
-	if (contours.size() == 1) return contours[0];
+	//if (contours.size() == 1) return contours[0];
 
 	int max_size = 0;
-	int max_index;
-	for (int i = 0; i < contours.size(); ++i)
-	{
-		if (contours[i].size() > max_size)
-		{
-			max_size = contours[i].size();
-			max_index = i;
-		}
-	}
+	int max_index = 0;
+	//for (int i = 0; i < contours.size(); ++i)
+	//{
+	//	if (contours[i].size() > max_size)
+	//	{
+	//		max_size = contours[i].size();
+	//		max_index = i;
+	//	}
+	//}
 
 	return contours[max_index];
 }
