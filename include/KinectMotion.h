@@ -30,12 +30,16 @@ public:
 	std::vector <Point> findEdges(cv::Mat image);
 	cv::Mat makeEdgeImage(cv::Mat image);
 	Point handCenter(cv::Mat image);
-	int * palmCenter(cv::Mat image);
+	void palmCenter(cv::Mat image);
 	std::vector <Occ> cellOccupancy(cv::Mat image);
 	void findDirection(cv::Mat image);
 	void normalizeHand(cv::Mat image);
+	//int * palmCenter2(cv::Mat image);
 private:
 	Image depth;
 	Image rgb;
 }; 
+
+std::vector<std::vector<cv::Point>> getContour(cv::Mat image);
+
 #endif
