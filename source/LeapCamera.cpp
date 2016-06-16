@@ -23,6 +23,7 @@ LeapCamera::LeapCamera(bool showHandInformation, bool useOpenCVWindow) :
 
 	if (useOpenCVWindow)
 	{
+		//open camera stream
 		capture = cv::VideoCapture(0);
 		if (!capture.isOpened())
 		{

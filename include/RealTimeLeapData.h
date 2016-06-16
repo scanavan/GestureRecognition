@@ -6,7 +6,6 @@
 class RealTimeLeapData
 {
 public:
-	RealTimeLeapData();
 	//clear all of the data
 	void Clear();
 	//NOTE: These are public for use of use, can make them private with getters/setters
