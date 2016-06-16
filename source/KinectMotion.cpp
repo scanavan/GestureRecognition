@@ -22,23 +22,6 @@ Image KinectMotion::getRgb() {
 	return rgb;
 }
 
-void KinectMotion::blob(cv::Mat imMat) {
-	cv::SimpleBlobDetector::Params params;
-	params.minThreshold = 1;
-	params.maxThreshold = 25;
-	params.filterByArea = false;
-	params.filterByCircularity = false;
-	params.filterByConvexity = false;
-	params.filterByInertia = false;
-	cv::Ptr<cv::SimpleBlobDetector> detector = cv::SimpleBlobDetector::create(params);
-	std::vector<cv::KeyPoint> keypoints;
-	detector->detect(imMat, keypoints);
-	cv::Mat iDepthMat_with_keypoints;
-	drawKeypoints(imMat, keypoints, iDepthMat_with_keypoints, cv::Scalar(0, 0, 255), cv::DrawMatchesFlags::DRAW_RICH_KEYPOINTS);
-	imshow("keypoints", iDepthMat_with_keypoints);
-	cv::waitKey(0);
-}
-
 cv::Mat KinectMotion::getHand(cv::Mat image, double thresholdRatio) {
 	int top = 0;
 	bool foundHand = false;
@@ -131,35 +114,6 @@ cv::Mat KinectMotion::updateImage(int upperThresholdVal, int lowerThresholdVal, 
 			num_contiguous_rows = 0;
 		}
 	}
-
-	// fill in area between fingers and such
-	//std::vector <unsigned char> range_vector;
-	//int found_first = 0;
-	//int first_col = 0;
-	//int last_col = 0;
-	//for (int i = 0; i < iDepthMat.rows; i++) {
-	//	range_vector.push_back(0);
-	//	for (int j = 0; j < iDepthMat.cols; j++) {
-	//		if (iDepthMat.at<uchar>(i, j) != 0) {
-	//			if (found_first == 0) {
-	//				found_first = 1;
-	//				first_col = j;
-	//			}
-	//			last_col = j;
-	//		}
-	//	}
-	//	found_first = 0;
-	//	for (int j = first_col; j < last_col; j++) {
-	//		range_vector.back()++;
-	//	}
-	//}
-
-	// display row ranges
-	//for (int i = 0; i < h; i++) {
-	//	for (int j = 0; j < 20; j++) {
-	//		iDepthMat.at<uchar>(i, j) = range_vector[i];
-	//	}
-	//}
 
 	return iDepthMat;
 
@@ -266,7 +220,7 @@ Point KinectMotion::handCenter(cv::Mat image) {
 	return retVal;
 }
 
-int * KinectMotion::palmCenter(cv::Mat image) {
+void KinectMotion::palmCenter(cv::Mat image) {
 
 	std::vector<Point> edges = findEdges(image);
 	int xMin = 2000;
@@ -307,45 +261,6 @@ int * KinectMotion::palmCenter(cv::Mat image) {
 	}
 	int * retVal = new int[4]{ xMin,yMin,xMax,yMax };
 
-	//double current_distance;
-	//double current_min;
-	//double maxMin = 0;
-	//Point maxMin_p;
-	//Point edge_p;
-	//for (int i = xMin; i < xMax; ++i)
-	//{
-	//	for (int j = yMin; j < yMax; ++j)
-	//	{
-	//		current_min = 10000;
-	//		for (int k = 0; k < edges.size(); ++k)
-	//		{
-	//			int x = (edges.at(k).i - i);
-	//			int y = (edges.at(k).j - j);
-	//			current_distance = sqrt((x*x) + (y*y));
-	//			if (current_distance < current_min)
-	//			{
-	//				current_min = current_distance;
-	//				edge_p.i = edges.at(k).i;
-	//				edge_p.j = edges.at(k).j;
-	//			}
-	//		}
-	//		if (current_min > maxMin)
-	//		{
-	//			maxMin = current_min;
-	//			maxMin_p.i = i;
-	//			maxMin_p.j = j;
-	//		}
-	//	}
-	//}
-
-	//image = makeEdgeImage(image);
-	//image.at<cv::Vec3b>(xMin_p.i, xMin_p.j) = cv::Vec3b(255, 255, 255);
-	//image.at<cv::Vec3b>(yMin_p.i, yMin_p.j) = cv::Vec3b(255, 255, 255);
-	//image.at<cv::Vec3b>(xMax_p.i, xMax_p.j) = cv::Vec3b(255, 255, 255);
-	//image.at<cv::Vec3b>(yMax_p.i, yMax_p.j) = cv::Vec3b(255, 255, 255);
-	//image.at<cv::Vec3b>(maxMin_p.i, maxMin_p.j) = cv::Vec3b(255, 255, 255);
-	//image.at<cv::Vec3b>(edge_p.i, edge_p.j) = cv::Vec3b(255, 255, 255);
-
 	cv::Mat new_image = image.clone();
 	cv::GaussianBlur(image, new_image, cv::Size(0, 0), 23, 23);
 
@@ -374,7 +289,7 @@ int * KinectMotion::palmCenter(cv::Mat image) {
 	cv::namedWindow("center", cv::WINDOW_AUTOSIZE);
 	cv::imshow("center", image);
 	cv::waitKey(0);
-	return retVal;
+	return;
 }
 
 Occ::Occ(int nonZ, float avgD) {
@@ -504,4 +419,26 @@ void KinectMotion::findDirection(cv::Mat image) {
 	cv::waitKey(0);
 
 	return;
+}
+
+std::vector<cv::Point> getContour(cv::Mat image) {
+	
+	std::vector<std::vector<cv::Point>> contours;
+	cv::findContours(image, contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_NONE);
+
+	if (contours.size() == 1) return contours[0];
+
+	int max_size = 0;
+	int max_index;
+	for (int i = 0; i < contours.size(); ++i)
+	{
+		if (contours[i].size() > max_size)
+		{
+			max_size = contours[i].size();
+			max_index = i;
+		}
+	}
+
+	return contours[max_index];
+
 }
