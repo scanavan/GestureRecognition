@@ -19,6 +19,7 @@ public:
 	void setNewScaleFactor();
 	void setNewFingerTipDist();
 	void setFingerTipAngles();
+	void setOldScaleFactor();
 	void writeToFile(std::string path);
 	int getNumFingers();
 	std::vector<float> getFingerTipDist();
@@ -72,6 +73,7 @@ private:
 
 	//new attributes
 	float newScaleFactor;
+	float oldScaleFactor;
 	std::vector<float> newFingerTipDistRefined;
 	std::vector<float> fingerTipAngles;
 	std::vector<Point> projectionPoints;

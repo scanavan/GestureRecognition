@@ -16,6 +16,7 @@ LeapData::LeapData(std::string path) {
 			counter++;
 		}
 		setNewScaleFactor();
+		setOldScaleFactor();
 		setNewFingerTipDist();
 		projectionPoints = getProjection();
 		setFingerTipAngles();
@@ -46,7 +47,7 @@ void LeapData::setFingerTipAngles() {
 			b = projectionPoints[i].getMagnitude(palmPosition);
 			c = projectionPoints[i].getMagnitude(fingerTipPosition[i]);
 			fingerTipAngles.push_back(acos((-powf(c, 2) + powf(a, 2) + powf(b, 2)) / (2 * a * b)));
-			fingerTipElevation.push_back(c / scaleFactor);
+			fingerTipElevation.push_back(c / oldScaleFactor);
 			//
 			//		scale factor 
 			//
@@ -62,7 +63,7 @@ void LeapData::setNewFingerTipDist() {
 			newFingerTipDistRefined.push_back(0.000000);
 		}
 		else {
-			newFingerTipDistRefined.push_back(fingerTipPosition[i].getMagnitude(palmPosition) / newScaleFactor);
+			newFingerTipDistRefined.push_back(fingerTipPosition[i].getMagnitude(palmPosition) / oldScaleFactor);
 		}
 	}
 }
@@ -85,6 +86,22 @@ void LeapData::setNewScaleFactor() {
 		Point p = Point(averageX / numFingers, averageY / numFingers, averageZ / numFingers);
 		newScaleFactor = p.getMagnitude(palmPosition);
 
+	}
+}
+
+void LeapData::setOldScaleFactor() {
+	if (numFingers == 0) {
+		oldScaleFactor = 1;
+	}
+	else {
+		oldScaleFactor = 0;
+		for (int i = 0; i < numFingers; ++i)
+		{
+			if (fingerTipDist[i] > oldScaleFactor)
+			{
+				oldScaleFactor = fingerTipDist[i];
+			}
+		}
 	}
 }
 
@@ -295,6 +312,7 @@ void LeapData::printAttributes() {
 	std::cout << std::endl;
 
 	std::cout << "New scale factor: " << newScaleFactor << std::endl;
+	std::cout << "Old scale factor: " << oldScaleFactor << std::endl;
 
 	std::cout << "newFingerTipDistRefined:" << " ";
 	for (int i = 0; i < newFingerTipDistRefined.size(); i++) {
@@ -477,6 +495,7 @@ float LeapData::getRotationProbability() {
 float LeapData::getScaleFactor() {
 	return scaleFactor;
 }
+
 float LeapData::getScaleProbability() {
 	return scaleProbability;
 }
