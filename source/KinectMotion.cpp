@@ -320,13 +320,12 @@ void KinectMotion::normalizeHand(cv::Mat image) {
 	minPoint.x = xMin - 10;
 	minPoint.y = yMin - 10;
 
-	image = makeEdgeImage(image);
-	//cv::rectangle(image, maxPoint, minPoint, cv::Scalar(0, 0, 255), 1, 8, 0);
+	cv::Mat tmp = makeEdgeImage(image);
 
-	cv::Mat croppedImage = image(cv::Rect(maxPoint, minPoint)); 
+	cv::Mat croppedImage = tmp(cv::Rect(maxPoint, minPoint)); 
 
 	cv::Mat dst;
-	cv::resize(croppedImage, dst, image.size());
+	cv::resize(croppedImage, dst, tmp.size());
 
 	cv::namedWindow("Scaled Image", cv::WINDOW_AUTOSIZE);
 	cv::imshow("Scaled Image", dst);
@@ -369,7 +368,8 @@ void KinectMotion::findDirection(cv::Mat image) {
 std::vector<cv::Point> getContour(cv::Mat image) {
 	
 	std::vector<std::vector<cv::Point>> contours;
-	cv::findContours(image, contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_NONE);
+	cv::Mat image_clone = image.clone();
+	cv::findContours(image_clone, contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_NONE);
 
 	if (contours.size() == 1) return contours[0];
 
