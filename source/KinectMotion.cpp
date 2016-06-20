@@ -306,45 +306,9 @@ cv::Mat KinectMotion::scaleHand(cv::Mat image) {
 
 	cv::Mat dst = cv::Mat::zeros(320,320,CV_8U);
 
-	std::vector<cv::Point> edges = getContour(image);
-	int xMin = 2000;
-	int xMax = 0;
-	int yMin = 2000;
-	int yMax = 0;
-	cv::Point maxPoint;
-	cv::Point minPoint;
-	int currentX;
-	int currentY;
+	cv::Rect rect = getRect(image);
 
-	for (int a = 0; a < edges.size(); a++)
-	{
-		currentX = edges.at(a).x;
-		currentY = edges.at(a).y;
-
-		if (currentX < xMin)
-		{
-			xMin = currentX;
-		}
-		if (currentY < yMin)
-		{
-			yMin = currentY;
-		}
-		if (currentX > xMax)
-		{
-			xMax = currentX;
-		}
-		if (currentY > yMax)
-		{
-			yMax = currentY;
-		}
-	}
-
-	maxPoint.x = xMax + 10;
-	maxPoint.y = yMax + 10;
-	minPoint.x = xMin - 10;
-	minPoint.y = yMin - 10;
-
-	cv::Mat croppedImage = image(cv::Rect(maxPoint, minPoint));
+	cv::Mat croppedImage = image(rect);
 
 	int width  = croppedImage.cols,
 		height = croppedImage.rows;
@@ -395,5 +359,59 @@ std::vector<float> KinectMotion::distContour(cv::Mat image) {
 			retVal.at(j) = retVal.at(j) / max;
 		}
 	}
+
+
+
 	return retVal;
+}
+
+cv::Rect KinectMotion::getRect(cv::Mat image)
+{
+	std::vector<cv::Point> edges = getContour(image);
+	int xMin = 2000;
+	int xMax = 0;
+	int yMin = 2000;
+	int yMax = 0;
+	cv::Point maxPoint;
+	cv::Point minPoint;
+	int currentX;
+	int currentY;
+
+	for (int a = 0; a < edges.size(); a++)
+	{
+		currentX = edges.at(a).x;
+		currentY = edges.at(a).y;
+
+		if (currentX < xMin)
+		{
+			xMin = currentX;
+		}
+		if (currentY < yMin)
+		{
+			yMin = currentY;
+		}
+		if (currentX > xMax)
+		{
+			xMax = currentX;
+		}
+		if (currentY > yMax)
+		{
+			yMax = currentY;
+		}
+	}
+
+	maxPoint.x = xMax + 10;
+	maxPoint.y = yMax + 10;
+	minPoint.x = xMin - 10;
+	minPoint.y = yMin - 10;
+
+	return cv::Rect(maxPoint, minPoint);
+}
+
+cv::Mat KinectMotion::rotateImage(cv::Mat image, float angle) {
+	cv::Point2f src_center(image.cols / 2.0F, image.rows / 2.0F);
+	cv::Mat rot_mat = getRotationMatrix2D(src_center, angle , 1.0);
+	cv::Mat dst;
+	cv::warpAffine(image, dst, rot_mat, image.size());
+	return dst;
 }
