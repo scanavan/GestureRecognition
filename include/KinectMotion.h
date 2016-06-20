@@ -27,6 +27,8 @@ public:
 	void findDirection(cv::Mat image);
 	cv::Mat scaleHand(cv::Mat image);
 	std::vector<float>distContour(cv::Mat image);
+	cv::Rect getRect(cv::Mat image);
+	cv::Mat rotateImage(cv::Mat image, float angle);
 	//void blob(cv::Mat imMat);
 	//int * palmCenter2(cv::Mat image);
 private:
