@@ -43,7 +43,7 @@
 	//image.at<cv::Vec3b>(yMax_p.i, yMax_p.j) = cv::Vec3b(255, 255, 255);
 	//image.at<cv::Vec3b>(maxMin_p.i, maxMin_p.j) = cv::Vec3b(255, 255, 255);
 	//image.at<cv::Vec3b>(edge_p.i, edge_p.j) = cv::Vec3b(255, 255, 255);
-//std::vector<Point> edges = findEdges(image);
+//	std::vector<Point> edges = findEdges(image);
 //	int xMin = 2000;
 //	int xMax = 0;
 //	int yMin = 2000;
