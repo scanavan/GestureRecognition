@@ -8,7 +8,7 @@ class RealTimeLeapData
 public:
 	//clear all of the data
 	void Clear();
-	//NOTE: These are public for use of use, can make them private with getters/setters
+	//NOTE: These are public for ease of use, can make them private with getters/setters
 	//extended fingers for current frame
 	std::vector<Leap::Finger::Type>extendedFingers;
 	//direction of fingers
