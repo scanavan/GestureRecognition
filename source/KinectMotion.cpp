@@ -2,6 +2,7 @@
 #include "KinectMotion.h"
 #include <opencv\cv.h>
 #include "Image.h"
+#include "LeapData.h"
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/features2d.hpp>
@@ -10,15 +11,19 @@
 #include <vector>
 #include <set>
 
-KinectMotion::KinectMotion(std::string iDepth, std::string iRgb) :depth(Image(iDepth)), rgb(Image(iRgb)) {
-
+KinectMotion::KinectMotion(const char * filepath){
+	FileNames my_files;
+	my_files.readDir(filepath);
+	leap = new LeapData(my_files.leap[_FILE_NUM_]);
+	depth = new Image(my_files.depth[_FILE_NUM_]);
+	rgb = new Image(my_files.rgb[_FILE_NUM_]);
 }
 
-Image KinectMotion::getDepth() {
+Image * KinectMotion::getDepth() {
 	return depth;
 }
 
-Image KinectMotion::getRgb() {
+Image * KinectMotion::getRgb() {
 	return rgb;
 }
 
@@ -68,9 +73,9 @@ cv::Mat KinectMotion::updateImage(int upperThresholdVal, int lowerThresholdVal, 
 
 	// get depth image determine hight and width of image
 	cv::Mat iDepthMat;
-	depth.returnImage().convertTo(iDepthMat,CV_8UC3);
-	int h = depth.getHeight();
-	int w = depth.getWidth();
+	depth->returnImage().convertTo(iDepthMat,CV_8UC3);
+	int h = depth->getHeight();
+	int w = depth->getWidth();
 
 	// threshold
 	for (int i = 0; i < h; i++) {
@@ -409,7 +414,11 @@ cv::Rect KinectMotion::getRect(cv::Mat image)
 	return cv::Rect(maxPoint, minPoint);
 }
 
-cv::Mat KinectMotion::rotateImage(cv::Mat image, float angle) {
+cv::Mat KinectMotion::rotateImage(cv::Mat image) {
+	float x = leap->getHandDirection().getX();
+	float y = leap->getHandDirection().getY();
+	float angle = atan(x / y) * (180 / PI);
+
 	cv::Point2f src_center(image.cols / 2.0F, image.rows / 2.0F);
 	cv::Mat rot_mat = getRotationMatrix2D(src_center, angle , 1.0);
 	cv::Mat dst;
