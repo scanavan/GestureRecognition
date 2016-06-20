@@ -25,6 +25,9 @@ LeapData::LeapData(std::string path) {
 		char gestureNumber = path.at(index - 1);
 		gesture = "G";
 		gesture.push_back(gestureNumber);
+		if (gesture == "Gd") {
+			std::cout << path << std::endl;
+		}
 	}
 	else {
 		std::cout << "bad file" << std::endl;
@@ -47,7 +50,7 @@ void LeapData::setFingerTipAngles() {
 			b = projectionPoints[i].getMagnitude(palmPosition);
 			c = projectionPoints[i].getMagnitude(fingerTipPosition[i]);
 			fingerTipAngles.push_back(acos((-powf(c, 2) + powf(a, 2) + powf(b, 2)) / (2 * a * b)));
-			fingerTipElevation.push_back(c / oldScaleFactor);
+			fingerTipElevation.push_back(c / newScaleFactor);
 			//
 			//		scale factor 
 			//
@@ -63,7 +66,7 @@ void LeapData::setNewFingerTipDist() {
 			newFingerTipDistRefined.push_back(0.000000);
 		}
 		else {
-			newFingerTipDistRefined.push_back(fingerTipPosition[i].getMagnitude(palmPosition) / oldScaleFactor);
+			newFingerTipDistRefined.push_back(fingerTipPosition[i].getMagnitude(palmPosition) / newScaleFactor);
 		}
 	}
 }
