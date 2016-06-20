@@ -22,23 +22,6 @@ Image KinectMotion::getRgb() {
 	return rgb;
 }
 
-void KinectMotion::blob(cv::Mat imMat) {
-	cv::SimpleBlobDetector::Params params;
-	params.minThreshold = 1;
-	params.maxThreshold = 25;
-	params.filterByArea = false;
-	params.filterByCircularity = false;
-	params.filterByConvexity = false;
-	params.filterByInertia = false;
-	cv::Ptr<cv::SimpleBlobDetector> detector = cv::SimpleBlobDetector::create(params);
-	std::vector<cv::KeyPoint> keypoints;
-	detector->detect(imMat, keypoints);
-	cv::Mat iDepthMat_with_keypoints;
-	drawKeypoints(imMat, keypoints, iDepthMat_with_keypoints, cv::Scalar(0, 0, 255), cv::DrawMatchesFlags::DRAW_RICH_KEYPOINTS);
-	imshow("keypoints", iDepthMat_with_keypoints);
-	cv::waitKey(0);
-}
-
 cv::Mat KinectMotion::getHand(cv::Mat image, double thresholdRatio) {
 	int top = 0;
 	bool foundHand = false;
@@ -84,7 +67,8 @@ cv::Mat KinectMotion::getHand(cv::Mat image, double thresholdRatio) {
 cv::Mat KinectMotion::updateImage(int upperThresholdVal, int lowerThresholdVal, bool make_binary) {
 
 	// get depth image determine hight and width of image
-	cv::Mat iDepthMat = depth.returnImage();
+	cv::Mat iDepthMat;
+	depth.returnImage().convertTo(iDepthMat,CV_8UC3);
 	int h = depth.getHeight();
 	int w = depth.getWidth();
 
@@ -104,7 +88,7 @@ cv::Mat KinectMotion::updateImage(int upperThresholdVal, int lowerThresholdVal, 
 		}
 	}
 
-	// calculate sum of each row as one column (this isn't really that useful because it's 32 bit)
+	// calculate sum of each row as one column 
 	cv::Mat row_sums;
 	cv::reduce(iDepthMat, row_sums, 1, CV_REDUCE_SUM, CV_32S);
 
@@ -131,35 +115,6 @@ cv::Mat KinectMotion::updateImage(int upperThresholdVal, int lowerThresholdVal, 
 			num_contiguous_rows = 0;
 		}
 	}
-
-	// fill in area between fingers and such
-	//std::vector <unsigned char> range_vector;
-	//int found_first = 0;
-	//int first_col = 0;
-	//int last_col = 0;
-	//for (int i = 0; i < iDepthMat.rows; i++) {
-	//	range_vector.push_back(0);
-	//	for (int j = 0; j < iDepthMat.cols; j++) {
-	//		if (iDepthMat.at<uchar>(i, j) != 0) {
-	//			if (found_first == 0) {
-	//				found_first = 1;
-	//				first_col = j;
-	//			}
-	//			last_col = j;
-	//		}
-	//	}
-	//	found_first = 0;
-	//	for (int j = first_col; j < last_col; j++) {
-	//		range_vector.back()++;
-	//	}
-	//}
-
-	// display row ranges
-	//for (int i = 0; i < h; i++) {
-	//	for (int j = 0; j < 20; j++) {
-	//		iDepthMat.at<uchar>(i, j) = range_vector[i];
-	//	}
-	//}
 
 	return iDepthMat;
 
@@ -198,183 +153,60 @@ float KinectMotion::blobMax(cv::Mat image) {
 	drawKeypoints(image, keypoints, im_with_keypoints, cv::Scalar(0, 0, 255), cv::DrawMatchesFlags::DRAW_RICH_KEYPOINTS);
 
 	// Show blobs
-	imshow("keypoints", im_with_keypoints);
-	cv::waitKey(0);
+
 	std::cout << maxKeyIndex << std::endl;
 
 	return max;
 }
 
-Point::Point(int i, int j) {
-	this->i = i;
-	this->j = j;
-}
+cv::Mat KinectMotion::makeContourImage(cv::Mat image) {
 
-
-std::vector <Point> KinectMotion::findEdges(cv::Mat image) {
+	cv::Mat contourImage(image.size(), CV_8UC3, cv::Scalar(0, 0, 0));
 	
-	std::vector <Point> edge_vector;
+	std::vector <std::vector<cv::Point>> contours;
+	contours.push_back(getContour(image));
+	cv::drawContours(contourImage, contours, 0, cv::Scalar(255,255,255));
 
-	for (int i = 1; i < image.rows; ++i)
-	{
-		for (int j = 1; j < image.cols; ++j)
-		{
-			if (image.at<uchar>(i - 1, j) != image.at<uchar>(i, j) || image.at<uchar>(i, j - 1) != image.at<uchar>(i, j)) {
-				edge_vector.push_back(Point(i, j));
-			}
-		}
-	}
-	return edge_vector;
+	return contourImage;
 
 }
 
-cv::Mat KinectMotion::makeEdgeImage(cv::Mat image) {
-
-	cv::Mat edge_image(image.rows, image.cols, CV_8UC3);
-
-	for (int i = 1; i < image.rows; ++i)
-	{
-		for (int j = 1; j < image.cols; ++j)
-		{
-			if (image.at<uchar>(i-1, j) != image.at<uchar>(i, j) || image.at<uchar>(i, j-1) != image.at<uchar>(i, j)) {
-				edge_image.at<cv::Vec3b>(i, j) = cv::Vec3b(0, 0, 255);
-			}
-			else {
-				edge_image.at<cv::Vec3b>(i, j) = cv::Vec3b(0, 0, 0);
-			}
-		}
-	}
-
-	return edge_image;
-
-}
-
-Point KinectMotion::handCenter(cv::Mat image) {
-	std::vector<Point> edges = findEdges(image);
+cv::Point KinectMotion::handCenter(cv::Mat image) {
+	std::vector<cv::Point> edges = getContour(image);
 	int xSum = 0;
 	int ySum = 0;
 	for (int a = 0; a < edges.size(); a++) {
-		xSum += edges.at(a).i;
-		ySum += edges.at(a).j;
+		xSum += edges.at(a).x;
+		ySum += edges.at(a).y;
 	}
-	Point retVal(xSum / edges.size(), ySum / edges.size());
-	image = makeEdgeImage(image);
-	image.at<cv::Vec3b>(retVal.i, retVal.j) = cv::Vec3b(255,255,255);
-	cv::namedWindow("center", cv::WINDOW_AUTOSIZE);
-	cv::imshow("center", image);
-	cv::waitKey(0);
+	cv::Point retVal(xSum / edges.size(), ySum / edges.size());
+	image = makeContourImage(image);
+	image.at<cv::Vec3b>(retVal.x, retVal.y) = cv::Vec3b(255,255,255);
+
 	return retVal;
 }
 
-int * KinectMotion::palmCenter(cv::Mat image) {
-
-	std::vector<Point> edges = findEdges(image);
-	int xMin = 2000;
-	int xMax = 0;
-	int yMin = 2000;
-	int yMax = 0;
-	Point xMin_p;
-	Point xMax_p;
-	Point yMin_p;
-	Point yMax_p;
-	int currentX;
-	int currentY;
-	for (int a = 0; a < edges.size(); a++)
-	{
-		currentX = edges.at(a).i;
-		currentY = edges.at(a).j;
-
-		if (currentX < xMin)
-		{
-			xMin = currentX;
-			xMin_p = edges.at(a);
-		}
-		if (currentY < yMin)
-		{
-			yMin = currentY;
-			yMin_p = edges.at(a);
-		}
-		if (currentX > xMax)
-		{
-			xMax = currentX;
-			xMax_p = edges.at(a);
-		}
-		if (currentY > yMax)
-		{
-			yMax = currentY;
-			yMax_p = edges.at(a);
-		}
-	}
-	int * retVal = new int[4]{ xMin,yMin,xMax,yMax };
-
-	//double current_distance;
-	//double current_min;
-	//double maxMin = 0;
-	//Point maxMin_p;
-	//Point edge_p;
-	//for (int i = xMin; i < xMax; ++i)
-	//{
-	//	for (int j = yMin; j < yMax; ++j)
-	//	{
-	//		current_min = 10000;
-	//		for (int k = 0; k < edges.size(); ++k)
-	//		{
-	//			int x = (edges.at(k).i - i);
-	//			int y = (edges.at(k).j - j);
-	//			current_distance = sqrt((x*x) + (y*y));
-	//			if (current_distance < current_min)
-	//			{
-	//				current_min = current_distance;
-	//				edge_p.i = edges.at(k).i;
-	//				edge_p.j = edges.at(k).j;
-	//			}
-	//		}
-	//		if (current_min > maxMin)
-	//		{
-	//			maxMin = current_min;
-	//			maxMin_p.i = i;
-	//			maxMin_p.j = j;
-	//		}
-	//	}
-	//}
-
-	//image = makeEdgeImage(image);
-	//image.at<cv::Vec3b>(xMin_p.i, xMin_p.j) = cv::Vec3b(255, 255, 255);
-	//image.at<cv::Vec3b>(yMin_p.i, yMin_p.j) = cv::Vec3b(255, 255, 255);
-	//image.at<cv::Vec3b>(xMax_p.i, xMax_p.j) = cv::Vec3b(255, 255, 255);
-	//image.at<cv::Vec3b>(yMax_p.i, yMax_p.j) = cv::Vec3b(255, 255, 255);
-	//image.at<cv::Vec3b>(maxMin_p.i, maxMin_p.j) = cv::Vec3b(255, 255, 255);
-	//image.at<cv::Vec3b>(edge_p.i, edge_p.j) = cv::Vec3b(255, 255, 255);
+cv::Point KinectMotion::palmCenter(cv::Mat image) {
 
 	cv::Mat new_image = image.clone();
 	cv::GaussianBlur(image, new_image, cv::Size(0, 0), 23, 23);
 
 	int max = 0;
+	cv::Point center;
 	for (int i = 0; i < new_image.rows; ++i)
 	{
 		for (int j = 0; j < new_image.cols; ++j)
 		{
-			if (static_cast<int>(new_image.at<uchar>(i, j)) > max)
+			if (static_cast<int>(new_image.at<uchar>(i, j)) >= max)
 			{
 				max = static_cast<int>(new_image.at<uchar>(i, j));
-			}
-		}
-	}
-	for (int i = 0; i < new_image.rows; ++i)
-	{
-		for (int j = 0; j < new_image.cols; ++j)
-		{
-			if (static_cast<int>(new_image.at<uchar>(i, j)) == max)
-			{
-				image.at<uchar>(i, j) = 0;
+				center = cv::Point(j, i);
 			}
 		}
 	}
 
-	cv::namedWindow("center", cv::WINDOW_AUTOSIZE);
-	cv::imshow("center", image);
-	cv::waitKey(0);
-	return retVal;
+	return center;
+
 }
 
 Occ::Occ(int nonZ, float avgD) {
@@ -387,7 +219,6 @@ std::vector<Occ> KinectMotion::cellOccupancy(cv::Mat image) {
 	int nonZ = 0;
 	float avgD = 0;
 	float maxD = 0;
-	//cv::Mat zero = cv::Mat::zeros(16, 16, CV_8U);
 	for (int i = 0; i < image.rows; i = i + 16) {
 		for (int j = 0; j < image.cols; j = j + 16) {
 			cv::Mat sub = image(cv::Range(i, i + 16), cv::Range(j, j + 16));
@@ -417,12 +248,66 @@ std::vector<Occ> KinectMotion::cellOccupancy(cv::Mat image) {
 		}
 	}
 	return retVal;
+} 
+
+void KinectMotion::findDirection(cv::Mat image) {
+
+	std::vector<cv::Point> edges = getContour(image);
+	double max_distance = 0;
+	double current_distance;
+	cv::Point ends[2];
+	for (int i = 0; i < edges.size() - 1; ++i)
+	{
+		for (int j = i + 1; j < edges.size(); ++j)
+		{
+			int x = (edges.at(i).x - edges.at(j).x);
+			int y = (edges.at(i).y - edges.at(j).y);
+			current_distance = sqrt((x*x) + (y*y));
+			if (current_distance > max_distance)
+			{
+				max_distance = current_distance;
+				ends[0] = edges.at(i);
+				ends[1] = edges.at(j);
+			}
+		}
+	}
+
+	cv::Mat edge_image = makeContourImage(image);
+	edge_image.at<cv::Vec3b>(ends[0].x,ends[0].y) = cv::Vec3b(255, 255, 0);
+	edge_image.at<cv::Vec3b>(ends[1].x,ends[1].y) = cv::Vec3b(255, 255, 0);
+
+	return;
 }
 
+std::vector<cv::Point> getContour(cv::Mat image) {
+	
+	cv::Mat image_clone;
+	image.convertTo(image_clone,CV_8U);
 
-void KinectMotion::normalizeHand(cv::Mat image) {
+	std::vector<std::vector<cv::Point>> contours;
+	cv::findContours(image_clone, contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_NONE);
 
-	std::vector<Point> edges = findEdges(image);
+	if (contours.size() == 1) return contours[0];
+
+	int max_size = 0;
+	int max_index;
+	for (int i = 0; i < contours.size(); ++i)
+	{
+		if (contours[i].size() > max_size)
+		{
+			max_size = contours[i].size();
+			max_index = i;
+		}
+	}
+
+	return contours[max_index];
+}
+
+cv::Mat KinectMotion::scaleHand(cv::Mat image) {
+
+	cv::Mat dst = cv::Mat::zeros(320,320,CV_8U);
+
+	std::vector<cv::Point> edges = getContour(image);
 	int xMin = 2000;
 	int xMax = 0;
 	int yMin = 2000;
@@ -430,12 +315,12 @@ void KinectMotion::normalizeHand(cv::Mat image) {
 	cv::Point maxPoint;
 	cv::Point minPoint;
 	int currentX;
-	int currentY; 
+	int currentY;
 
 	for (int a = 0; a < edges.size(); a++)
 	{
-		currentX = edges.at(a).j;
-		currentY = edges.at(a).i;
+		currentX = edges.at(a).x;
+		currentY = edges.at(a).y;
 
 		if (currentX < xMin)
 		{
@@ -460,48 +345,56 @@ void KinectMotion::normalizeHand(cv::Mat image) {
 	minPoint.x = xMin - 10;
 	minPoint.y = yMin - 10;
 
-	image = makeEdgeImage(image);
-	//cv::rectangle(image, maxPoint, minPoint, cv::Scalar(0, 0, 255), 1, 8, 0);
+	cv::Mat croppedImage = image(cv::Rect(maxPoint, minPoint));
 
-	cv::Mat croppedImage = image(cv::Rect(maxPoint, minPoint)); 
+	int width  = croppedImage.cols,
+		height = croppedImage.rows;
+	int max_dim = (width >= height) ? width : height;
 
-	cv::Mat dst;
-	cv::resize(croppedImage, dst, image.size());
+	float scale = ((float) 320) / max_dim;
+	cv::Rect roi;
+	if (width >= height)
+	{
+		roi.width = 320;
+		roi.x = 0;
+		roi.height = height * scale;
+		roi.y = (320 - roi.height) / 2;
+	}
+	else
+	{
+		roi.y = 0;
+		roi.height = 320;
+		roi.width = width * scale;
+		roi.x = (320 - roi.width) / 2;
+	}
+	cv::resize(croppedImage, dst(roi), roi.size());
 
-	cv::namedWindow("Scaled Image", cv::WINDOW_AUTOSIZE);
-	cv::imshow("Scaled Image", dst);
+	return dst;
+
+}
+
+void createWindow(cv::Mat image, std::string imageName) {
+	cv::namedWindow(imageName, cv::WINDOW_AUTOSIZE);
+	cv::imshow(imageName, image);
 	cv::waitKey(0);
 }
 
-void KinectMotion::findDirection(cv::Mat image) {
-
-	std::vector<Point> edges = findEdges(image);
-	double max_distance = 0;
-	double current_distance;
-	Point ends[2];
-	for (int i = 0; i < edges.size() - 1; ++i)
-	{
-		for (int j = i + 1; j < edges.size(); ++j)
-		{
-			int x = (edges.at(i).i - edges.at(j).i);
-			int y = (edges.at(i).j - edges.at(j).j);
-			current_distance = sqrt((x*x) + (y*y));
-			if (current_distance > max_distance)
-			{
-				max_distance = current_distance;
-				ends[0] = edges.at(i);
-				ends[1] = edges.at(j);
-			}
+std::vector<float> KinectMotion::distContour(cv::Mat image) {
+	std::vector<cv::Point> edges = getContour(image);
+	cv::Point center = palmCenter(image);
+	std::vector<float> retVal;
+	float max = 0;
+	for (int i = 0; i < edges.size(); i++) {
+		float temp = std::sqrt(std::pow(center.x - edges.at(i).x, 2) + std::pow(center.y - edges.at(i).y, 2));
+		retVal.push_back(temp);
+		if (temp > max) {
+			max = temp;
 		}
 	}
-
-	cv::Mat edge_image = makeEdgeImage(image);
-	edge_image.at<cv::Vec3b>(ends[0].i,ends[0].j) = cv::Vec3b(255, 255, 0);
-	edge_image.at<cv::Vec3b>(ends[1].i,ends[1].j) = cv::Vec3b(255, 255, 0);
-
-	cv::namedWindow("center", cv::WINDOW_AUTOSIZE);
-	cv::imshow("center", edge_image);
-	cv::waitKey(0);
-
-	return;
+	for (int j = 0; j < retVal.size(); j++) {
+		if (max != 0) {
+			retVal.at(j) = retVal.at(j) / max;
+		}
+	}
+	return retVal;
 }
