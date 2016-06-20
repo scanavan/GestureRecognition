@@ -4,13 +4,11 @@
 #include <opencv\cv.h>
 #include <vector>
 #include "Image.h"
+#include "LeapData.h"
 #include <set>
 
-struct Point {
-	int i;
-	int j;
-	Point(int i = 0, int j = 0);
-}; 
+#define _FILE_NUM_ 0
+#define PI 3.14159265
 
 struct Occ {
 	int nonZ;
@@ -20,22 +18,30 @@ struct Occ {
 
 class KinectMotion {
 public:
-	KinectMotion(std::string iDepth, std::string iRgb);
-	Image getDepth();
-	Image getRgb();
+	KinectMotion(const char * filepath);
+	Image * getDepth();
+	Image * getRgb();
 	cv::Mat updateImage(int upperThresholdVal, int lowerThresholdVal, bool make_binary = true);
-	void blob(cv::Mat imMat);
 	float blobMax(cv::Mat depth);
 	cv::Mat getHand(cv::Mat image, double ratio);
-	std::vector <Point> findEdges(cv::Mat image);
-	cv::Mat makeEdgeImage(cv::Mat image);
-	Point handCenter(cv::Mat image);
-	int * palmCenter(cv::Mat image);
+	cv::Mat makeContourImage(cv::Mat image);
+	cv::Point handCenter(cv::Mat image);
+	cv::Point palmCenter(cv::Mat image);
 	std::vector <Occ> cellOccupancy(cv::Mat image);
 	void findDirection(cv::Mat image);
-	void normalizeHand(cv::Mat image);
+	cv::Mat scaleHand(cv::Mat image);
+	std::vector<float>distContour(cv::Mat image);
+	cv::Rect getRect(cv::Mat image);
+	cv::Mat rotateImage(cv::Mat image);
+	//void blob(cv::Mat imMat);
+	//int * palmCenter2(cv::Mat image);
 private:
-	Image depth;
-	Image rgb;
+	Image * depth;
+	Image * rgb;
+	LeapData * leap;
 }; 
+
+std::vector<cv::Point> getContour(cv::Mat image);
+void createWindow(cv::Mat image, std::string imageName);
+
 #endif
