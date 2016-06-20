@@ -15,22 +15,22 @@ ARFFWriter::ARFFWriter(std::string path, std::vector<LeapData> data) {
 		"%\n" <<
 		"@RELATION gesture\n" <<
 		"\n" <<
-		/*"@ATTRIBUTE numFingers  NUMERIC\n" <<*/
+		"@ATTRIBUTE numFingers  NUMERIC\n" <<
 		/*"@ATTRIBUTE fingerTipDist_f1   NUMERIC\n" <<
 		"@ATTRIBUTE fingerTipDist_f2   NUMERIC\n" <<
 		"@ATTRIBUTE fingerTipDist_f3   NUMERIC\n" <<
 		"@ATTRIBUTE fingerTipDist_f4   NUMERIC\n" <<
 		"@ATTRIBUTE fingerTipDist_f5   NUMERIC\n" <<*/
-		/*"@ATTRIBUTE newFingerTipDistRefined_f1  NUMERIC\n" <<
+		"@ATTRIBUTE newFingerTipDistRefined_f1  NUMERIC\n" <<
 		"@ATTRIBUTE newFingerTipDistRefined_f2  NUMERIC\n" <<
 		"@ATTRIBUTE newFingerTipDistRefined_f3  NUMERIC\n" <<
 		"@ATTRIBUTE newFingerTipDistRefined_f4  NUMERIC\n" <<
-		"@ATTRIBUTE newFingerTipDistRefined_f5  NUMERIC\n" <<*/
+		"@ATTRIBUTE newFingerTipDistRefined_f5  NUMERIC\n" <<
 		/*"@ATTRIBUTE fingertipInterDist_d1   NUMERIC\n" <<
 		"@ATTRIBUTE fingertipInterDist_d2   NUMERIC\n" <<
 		"@ATTRIBUTE fingertipInterDist_d3   NUMERIC\n" <<
 		"@ATTRIBUTE fingertipInterDist_d4   NUMERIC\n" <<*/
-		"@ATTRIBUTE fingerTipPosition_f1x  NUMERIC\n" <<
+		/*"@ATTRIBUTE fingerTipPosition_f1x  NUMERIC\n" <<
 		"@ATTRIBUTE fingerTipPosition_f1y  NUMERIC\n" <<
 		"@ATTRIBUTE fingerTipPosition_f1z  NUMERIC\n" <<
 		"@ATTRIBUTE fingerTipPosition_f2x  NUMERIC\n" <<
@@ -44,7 +44,7 @@ ARFFWriter::ARFFWriter(std::string path, std::vector<LeapData> data) {
 		"@ATTRIBUTE fingerTipPosition_f4z  NUMERIC\n" <<
 		"@ATTRIBUTE fingerTipPosition_f5x  NUMERIC\n" <<
 		"@ATTRIBUTE fingerTipPosition_f5y  NUMERIC\n" <<
-		"@ATTRIBUTE fingerTipPosition_f5z  NUMERIC\n" <<
+		"@ATTRIBUTE fingerTipPosition_f5z  NUMERIC\n" <<*/
 		/*"@ATTRIBUTE handDirection_x   NUMERIC\n" <<
 		"@ATTRIBUTE handDirection_y   NUMERIC\n" <<
 		"@ATTRIBUTE handDirection_z   NUMERIC\n" <<
@@ -83,11 +83,11 @@ ARFFWriter::ARFFWriter(std::string path, std::vector<LeapData> data) {
 		"@ATTRIBUTE translation_y   NUMERIC\n" <<
 		"@ATTRIBUTE translation_z   NUMERIC\n" <<
 		"@ATTRIBUTE translationProbability  NUMERIC\n" <<*/
-		/*"@ATTRIBUTE fingerTipAngles_f1   NUMERIC\n" <<
+		"@ATTRIBUTE fingerTipAngles_f1   NUMERIC\n" <<
 		"@ATTRIBUTE fingerTipAngles_f2   NUMERIC\n" <<
 		"@ATTRIBUTE fingerTipAngles_f3   NUMERIC\n" <<
 		"@ATTRIBUTE fingerTipAngles_f4   NUMERIC\n" <<
-		"@ATTRIBUTE fingerTipAngles_f5   NUMERIC\n" <<*/
+		"@ATTRIBUTE fingerTipAngles_f5   NUMERIC\n" <<
 		/*"@ATTRIBUTE projectionPoints_f1x   NUMERIC\n" <<
 		"@ATTRIBUTE projectionPoints_f1y   NUMERIC\n" <<
 		"@ATTRIBUTE projectionPoints_f1z   NUMERIC\n" <<
@@ -103,16 +103,17 @@ ARFFWriter::ARFFWriter(std::string path, std::vector<LeapData> data) {
 		"@ATTRIBUTE projectionPoints_f5x   NUMERIC\n" <<
 		"@ATTRIBUTE projectionPoints_f5y   NUMERIC\n" <<
 		"@ATTRIBUTE projectionPoints_f5z   NUMERIC\n" <<*/
-		/*"@ATTRIBUTE fingerTipElevation_f1   NUMERIC\n" <<
+		"@ATTRIBUTE fingerTipElevation_f1   NUMERIC\n" <<
 		"@ATTRIBUTE fingerTipElevation_f2   NUMERIC\n" <<
 		"@ATTRIBUTE fingerTipElevation_f3   NUMERIC\n" <<
 		"@ATTRIBUTE fingerTipElevation_f4   NUMERIC\n" <<
-		"@ATTRIBUTE fingerTipElevation_f5   NUMERIC\n" <<*/
+		"@ATTRIBUTE fingerTipElevation_f5   NUMERIC\n" <<
+		"@ATTRIBUTE fingersExtended   NUMERIC\n" <<
 		"@ATTRIBUTE class { G0, G1, G2, G3, G4, G5, G6, G7, G8, G9 }\n" <<
 		"\n@DATA\n";
 
 	for (int i = 0; i < data.size(); i++) {
-		file << getFingerTipPosition(data[i]) << getGesture(data[i]) << "\n";
+		file << getNumFingers(data[i]) << getFingerTipDistRefined(data[i]) << getFingerTipAngles(data[i]) << getFingerTipElevation(data[i]) << getFingersExtends(data[i]) << getGesture(data[i]) << "\n";
 	}
 
 	file.close();
@@ -188,8 +189,7 @@ std::string ARFFWriter::writeData(LeapData leap) {
 	for (int i = 0; i < leap.getFingerTipElevation().size(); i++) {
 		returnVal = returnVal + std::to_string(leap.getFingerTipElevation()[i]) + ",";
 	}
-	returnVal = returnVal + "?";
-		//leap.getGesture();
+	returnVal = returnVal + getFingersExtends(leap) + leap.getGesture();
 
 	return returnVal;
 }
@@ -315,5 +315,39 @@ std::string ARFFWriter::getFingerTipElevation(LeapData leap) {
 }
 std::string ARFFWriter::getGesture(LeapData leap) {
 	return leap.getGesture();
+}
+
+std::string ARFFWriter::getFingersExtends(LeapData leap) {
+	std::string gest = leap.getGesture();
+	if (gest == "G0") {
+		return "01101,";
+	}
+	else if (gest == "G1") {
+		return "00000,";
+	}
+	else if (gest == "G2") {
+		return "01000,";
+	}
+	else if (gest == "G3") {
+		return "00001,";
+	}
+	else if (gest == "G4") {
+		return "11000,";
+	}
+	else if (gest == "G5") {
+		return "01100,";
+	}
+	else if (gest == "G6") {
+		return "01110,";
+	}
+	else if (gest == "G7") {
+		return "10001,";
+	}
+	else if (gest == "G8") {
+		return "11001,";
+	}
+	else if (gest == "G9") {
+		return "11111,";
+	}
 }
 
