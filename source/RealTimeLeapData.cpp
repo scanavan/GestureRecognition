@@ -1,87 +1,20 @@
-<<<<<<< HEAD
 #include "RealTimeLeapData.h"
-#include <algorithm>
-RealTimeLeapData::RealTimeLeapData(){
-	SampleListener listener;
-	Controller controller;
-	controller.addListener(listener);
 
+RealTimeLeapData::RealTimeLeapData() {
+	//empty constructor
+}
+
+void RealTimeLeapData::getData() {
+
+	//SampleListener listener;
+	Controller controller;
+	//controller.addListener(listener);
 
 	// Keep this process running until Enter is pressed
-	std::cout << "Press Enter to quit..." << std::endl;
-	std::cin.get();
-	extendedFingers = listener.getExtendedFingers();
-	fingerDirections = listener.getFingerDirections();
-	tipPositions = listener.getTipPositions();
-	handDirection = listener.getHandDirection();
-	palmNormal = listener.getPalmNormal();
-	palmPosition = listener.getPalmPosition();
-	numFingers = listener.getNumFingers();
-	std::cout << "Number of Fingers: " << numFingers << std::endl;
-	std::cout << "handDirection: ";
-	handDirection.printPoint();
-	std::cout << "\npalmNormal: ";
-	palmNormal.printPoint();
-	std::cout << "\npalmPosition: ";
-	palmPosition.printPoint();
-	std::cout << "\nextendedFingers: ";
-	for (int i = 0; i < extendedFingers.size(); i++) {
-		if (i == extendedFingers.size() - 1) {
-			std::cout << extendedFingers[i];
-		}
-		else {
-			std::cout << extendedFingers[i] << ",";
-		}
-		
-	}
-	std::cout << "\nfingerDirections: ";
-	for (int i = 0; i < fingerDirections.size(); i++) {
-		fingerDirections[i].printPoint();
-	}
-	std::cout << "\ntipPositions: ";
-	for (int i = 0; i < tipPositions.size(); i++) {
-		tipPositions[i].printPoint();
-	}
-
-
-	// Remove the sample listener when done
-	controller.removeListener(listener);
-
-
-}
-void SampleListener::Clear()
-{
-	extendedFingers.clear();
-	fingerDirections.clear();
-	tipPositions.clear();
-}
-
-void RealTimeLeapData::Clear()
-{
-	extendedFingers.clear();
-	fingerDirections.clear();
-	tipPositions.clear();
-}
-
-void SampleListener::onInit(const Controller& controller) {
-	std::cout << "Initialized" << std::endl;
-}
-
-void SampleListener::onConnect(const Controller& controller) {
-	std::cout << "Connected" << std::endl;
-}
-
-void SampleListener::onDisconnect(const Controller& controller) {
-	// Note: not dispatched when running in a debugger.
-	std::cout << "Disconnected" << std::endl;
-}
-
-void SampleListener::onExit(const Controller& controller) {
-	std::cout << "Exited" << std::endl;
-}
-
-void SampleListener::onFrame(const Controller& controller) {
-	// Get the most recent frame and report some basic information
+	std::cout << "Enter Gesture..." << std::endl;
+	std::string input;
+	std::cin >> input;
+	gesture = input;
 	const Frame frame = controller.frame();
 	Clear();
 	extendedFingers = { 0,0,0,0,0 };
@@ -145,65 +78,76 @@ void SampleListener::onFrame(const Controller& controller) {
 
 		}
 
-		
 	}
+	//std::cin.get();
+	//extendedFingers = listener.getExtendedFingers();
+	//fingerDirections = listener.getFingerDirections();
+	//tipPositions = listener.getTipPositions();
+	//handDirection = listener.getHandDirection();
+	//palmNormal = listener.getPalmNormal();
+	//palmPosition = listener.getPalmPosition();
+	//numFingers = listener.getNumFingers();
+	//std::cout << "Number of Fingers: " << numFingers << std::endl;
+	//std::cout << "handDirection: ";
+	//handDirection.printPoint();
+	//std::cout << "\npalmNormal: ";
+	//palmNormal.printPoint();
+	//std::cout << "\npalmPosition: ";
+	//palmPosition.printPoint();
+	//std::cout << "\nextendedFingers: ";
+	//for (int i = 0; i < extendedFingers.size(); i++) {
+	//	if (i == extendedFingers.size() - 1) {
+	//		std::cout << extendedFingers[i];
+	//	}
+	//	else {
+	//		std::cout << extendedFingers[i] << ",";
+	//	}
 
-}
+	//}
+	//std::cout << "\nfingerDirections: ";
+	//for (int i = 0; i < fingerDirections.size(); i++) {
+	//	fingerDirections[i].printPoint();
+	//}
+	//std::cout << "\ntipPositions: ";
+	//for (int i = 0; i < tipPositions.size(); i++) {
+	//	tipPositions[i].printPoint();
+	//}
 
-void SampleListener::onFocusGained(const Controller& controller) {
-	std::cout << "Focus Gained" << std::endl;
-}
+	//// Remove the sample listener when done
+	//controller.removeListener(listener);
 
-void SampleListener::onFocusLost(const Controller& controller) {
-	std::cout << "Focus Lost" << std::endl;
+	//std::cin >> gesture;
 }
-
-void SampleListener::onDeviceChange(const Controller& controller) {
-	std::cout << "Device Changed" << std::endl;
-	const DeviceList devices = controller.devices();
-
-	for (int i = 0; i < devices.count(); ++i) {
-		std::cout << "id: " << devices[i].toString() << std::endl;
-		std::cout << "  isStreaming: " << (devices[i].isStreaming() ? "true" : "false") << std::endl;
-	}
-}
-
-void SampleListener::onServiceConnect(const Controller& controller) {
-	std::cout << "Service Connected" << std::endl;
-}
-
-void SampleListener::onServiceDisconnect(const Controller& controller) {
-	std::cout << "Service Disconnected" << std::endl;
-}
-
-std::vector<int> SampleListener::getExtendedFingers() {
-	return extendedFingers;
-}
-std::vector<Point> SampleListener::getFingerDirections() {
-	return fingerDirections;
-}
-std::vector<Point> SampleListener::getTipPositions() {
-	return tipPositions;
-}
-Point SampleListener::getHandDirection() {
-	return handDirection;
-}
-Point SampleListener::getPalmNormal() {
-	return palmNormal;
-}
-Point SampleListener::getPalmPosition() {
-	return palmPosition;
-}
-
-int SampleListener::getNumFingers() {
-	return numFingers;
-=======
-#include "RealTimeLeapData.h"
 void RealTimeLeapData::Clear()
 {
-	//clear all of the vectors saving the data
 	extendedFingers.clear();
 	fingerDirections.clear();
 	tipPositions.clear();
->>>>>>> 5edf4a8a857148df591ecef302d0cb64643a7cc9
+}
+
+std::vector<int> RealTimeLeapData::getExtendedFingers() {
+	return extendedFingers;
+}
+std::vector<Point> RealTimeLeapData::getFingerDirections() {
+	return fingerDirections;
+}
+std::vector<Point> RealTimeLeapData::getTipPositions() {
+	return tipPositions;
+}
+Point RealTimeLeapData::getHandDirection() {
+	return handDirection;
+}
+Point RealTimeLeapData::getPalmNormal() {
+	return palmNormal;
+}
+Point RealTimeLeapData::getPalmPosition() {
+	return palmPosition;
+}
+
+int RealTimeLeapData::getNumFingers() {
+	return numFingers;
+}
+
+std::string RealTimeLeapData::getGesture() {
+	return gesture;
 }

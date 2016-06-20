@@ -1,6 +1,7 @@
 #include "LeapData.h"
 #include <sstream>
 
+
 // constructor
 LeapData::LeapData(std::string path) {
 	std::ifstream ifs;
@@ -20,6 +21,7 @@ LeapData::LeapData(std::string path) {
 		setNewFingerTipDist();
 		projectionPoints = getProjection();
 		setFingerTipAngles();
+
 		//gets the gesture based on the path
 		int index = path.find_last_of("/");
 		char gestureNumber = path.at(index - 1);
@@ -28,11 +30,58 @@ LeapData::LeapData(std::string path) {
 		if (gesture == "Gd") {
 			std::cout << path << std::endl;
 		}
+
+		if (gesture == "G0") {
+			extendedFingers = { 0,1,1,0,1 };
+		}
+		else if (gesture == "G1") {
+			extendedFingers = { 0,0,0,0,0 };
+		}
+		else if (gesture == "G2") {
+			extendedFingers = { 0,1,0,0,0 };
+		}
+		else if (gesture == "G3") {
+			extendedFingers = { 0,0,0,0,1 };
+		}
+		else if (gesture == "G4") {
+			extendedFingers = { 1,1,0,0,0 };
+		}
+		else if (gesture == "G5") {
+			extendedFingers = { 0,1,1,0,0 };
+		}
+		else if (gesture == "G6") {
+			extendedFingers = { 0,1,1,1,0 };
+		}
+		else if (gesture == "G7") {
+			extendedFingers = { 1,0,0,0,1 };
+		}
+		else if (gesture == "G8") {
+			extendedFingers = { 1,1,0,0,1 };
+		}
+		else if (gesture == "G9") {
+			extendedFingers = { 1,1,1,1,1 };
+		}
 	}
 	else {
 		std::cout << "bad file" << std::endl;
 	}
 	ifs.close();
+}
+
+LeapData::LeapData(RealTimeLeapData leapData) {
+	extendedFingers = leapData.getExtendedFingers();
+	fingerDirections = leapData.getFingerDirections();
+	fingerTipPosition = leapData.getTipPositions();
+	handDirection = leapData.getHandDirection();
+	palmNormal = leapData.getPalmNormal();
+	palmPosition = leapData.getPalmPosition();
+	numFingers = leapData.getNumFingers();
+	setNewScaleFactor();
+	setNewFingerTipDist();
+	projectionPoints = getProjection();
+	setFingerTipAngles();
+	gesture = leapData.getGesture();
+
 }
 
 // sets the fingerTipAngles and also fingerTipElevation
@@ -46,7 +95,7 @@ void LeapData::setFingerTipAngles() {
 			fingerTipElevation.push_back(0);
 		}
 		else {
-			a = fingerTipDist[i];
+			a = palmPosition.getMagnitude(fingerTipPosition[i]);;
 			b = projectionPoints[i].getMagnitude(palmPosition);
 			c = projectionPoints[i].getMagnitude(fingerTipPosition[i]);
 			fingerTipAngles.push_back(acos((-powf(c, 2) + powf(a, 2) + powf(b, 2)) / (2 * a * b)));
@@ -526,4 +575,8 @@ std::vector<float> LeapData::getFingerTipElevation() {
 
 std::string LeapData::getGesture() {
 	return gesture;
+}
+
+std::vector<int> LeapData::getExtendedFingers() {
+	return extendedFingers;
 }

@@ -318,36 +318,12 @@ std::string ARFFWriter::getGesture(LeapData leap) {
 }
 
 std::string ARFFWriter::getFingersExtends(LeapData leap) {
-	std::string gest = leap.getGesture();
-	if (gest == "G0") {
-		return "01101,";
+	std::vector<int> extend = leap.getExtendedFingers();
+	std::string returnVal;
+	for (int i = 0; i < extend.size(); i++) {
+		returnVal = returnVal + std::to_string(extend[i]);
 	}
-	else if (gest == "G1") {
-		return "00000,";
-	}
-	else if (gest == "G2") {
-		return "01000,";
-	}
-	else if (gest == "G3") {
-		return "00001,";
-	}
-	else if (gest == "G4") {
-		return "11000,";
-	}
-	else if (gest == "G5") {
-		return "01100,";
-	}
-	else if (gest == "G6") {
-		return "01110,";
-	}
-	else if (gest == "G7") {
-		return "10001,";
-	}
-	else if (gest == "G8") {
-		return "11001,";
-	}
-	else if (gest == "G9") {
-		return "11111,";
-	}
+	returnVal.push_back(',');
+	return returnVal;
 }
 

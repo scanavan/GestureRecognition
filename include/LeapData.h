@@ -6,11 +6,13 @@
 #include <fstream>
 #include <vector>
 #include "Point.h"
+#include "RealTimeLeapData.h"
 
 
 class LeapData {
 public:
 	LeapData(std::string path);
+	LeapData(RealTimeLeapData leapData);
 	void parse(int lineNum, std::string line);
 	std::vector<float> splitString(std::string line);
 	void printAttributes();
@@ -49,6 +51,7 @@ public:
 	std::vector<Point> getProjectionPoints();
 	std::vector<float> getFingerTipElevation();
 	std::string getGesture();
+	std::vector<int> getExtendedFingers();
 private:
 	int numFingers;
 	std::vector<float> fingerTipDist;
@@ -79,6 +82,8 @@ private:
 	std::vector<Point> projectionPoints;
 	std::vector<float> fingerTipElevation;
 	std::string gesture;
+	std::vector<int> extendedFingers;
+	std::vector<Point> fingerDirections;
 };
 
 #endif 
