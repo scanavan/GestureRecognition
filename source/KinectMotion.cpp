@@ -67,7 +67,8 @@ cv::Mat KinectMotion::getHand(cv::Mat image, double thresholdRatio) {
 cv::Mat KinectMotion::updateImage(int upperThresholdVal, int lowerThresholdVal, bool make_binary) {
 
 	// get depth image determine hight and width of image
-	cv::Mat iDepthMat = depth.returnImage();
+	cv::Mat iDepthMat;
+	depth.returnImage().convertTo(iDepthMat,CV_8UC3);
 	int h = depth.getHeight();
 	int w = depth.getWidth();
 
