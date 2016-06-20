@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 #include "RealTimeLeapData.h"
 #include <algorithm>
 RealTimeLeapData::RealTimeLeapData(){
@@ -196,4 +197,13 @@ Point SampleListener::getPalmPosition() {
 
 int SampleListener::getNumFingers() {
 	return numFingers;
+=======
+#include "RealTimeLeapData.h"
+void RealTimeLeapData::Clear()
+{
+	//clear all of the vectors saving the data
+	extendedFingers.clear();
+	fingerDirections.clear();
+	tipPositions.clear();
+>>>>>>> 5edf4a8a857148df591ecef302d0cb64643a7cc9
 }
