@@ -3,7 +3,7 @@
 #include <string>
 #include <opencv\cv.h>
 #include <vector>
-#include "Image.h"
+#include "KinectImage.h"
 #include "LeapData.h"
 #include <set>
 
