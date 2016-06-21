@@ -315,7 +315,7 @@ std::vector<cv::Point> getContour(cv::Mat image) {
 
 	int start = 0;
 	for (int i = 0; i < rawContour.size(); i++) {
-		if (rawContour[i].x <= pc.x && rawContour[i].y <= pc.y) {
+		if (rawContour[i].x == pc.x && rawContour[i].y <= pc.y) {
 			start = i;
 			break;
 		}
