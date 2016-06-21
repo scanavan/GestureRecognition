@@ -11,6 +11,7 @@
 
 class LeapData {
 public:
+	LeapData();
 	LeapData(std::string path);
 	LeapData(RealTimeLeapData leapData);
 	void parse(int lineNum, std::string line);

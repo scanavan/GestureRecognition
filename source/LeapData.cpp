@@ -2,6 +2,10 @@
 #include <sstream>
 
 
+LeapData::LeapData() {
+	//default constructor
+}
+
 // constructor
 LeapData::LeapData(std::string path) {
 	std::ifstream ifs;

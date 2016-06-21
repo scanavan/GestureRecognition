@@ -28,7 +28,7 @@ void SampleListener::onFrame(const Controller& controller) {
 	// Get the most recent frame and report some basic information
 	const Frame frame = controller.frame();
 	Clear();
-	//extendedFingers = { 0,0,0,0,0 };
+	extendedFingers = { 0,0,0,0,0 };
 
 	HandList hands = frame.hands();
 	for (HandList::const_iterator hl = hands.begin(); hl != hands.end(); ++hl) {
@@ -36,47 +36,49 @@ void SampleListener::onFrame(const Controller& controller) {
 		const Hand hand = *hl;
 		std::string handType = hand.isLeft() ? "Left hand" : "Right hand";
 		std::cout << std::string(2, ' ') << handType << std::endl;
-	//	// Get the hand's normal vector and direction
-		//const Vector normal = hand.palmNormal();
-	//	const Vector direction = hand.direction();
-	//	const Vector position = hand.palmPosition();
+		// Get the hand's normal vector and direction
+	/*	const Vector normal = hand.palmNormal();
+		const Vector direction = hand.direction();
+		const Vector position = hand.palmPosition();
 
-		//palmNormal = Point(normal.x, normal.y, normal.z);
-		//palmNormal.printPoint();
-	//	handDirection = Point(direction.x, direction.y, direction.z);
-	//	palmPosition = Point(position.x, position.y, position.z);
+		palmNormal = Point(normal.x, normal.y, normal.z);
+		palmNormal.printPoint();
+		handDirection = Point(direction.x, direction.y, direction.z);
+		handDirection.printPoint();
+		palmPosition = Point(position.x, position.y, position.z);
+		palmPosition.printPoint();*/
 
 		// Get fingers
-		//const FingerList fingers = hand.fingers();
-		//const FingerList extended = fingers.extended();
+		const FingerList fingers = hand.fingers();
+		const FingerList extended = fingers.extended();
 
-		//std::vector<Finger::Type> types;
-		//for (FingerList::const_iterator fl = extended.begin(); fl != extended.end(); ++fl) {
-		//	const Finger finger = *fl;
-		//	types.push_back(finger.type());
-		//}
-		//numFingers = types.size();
-		//for (int i = 0; i < types.size(); ++i)
-		//{
-		//	if (types[i] == Finger::TYPE_THUMB)
-		//		extendedFingers[0] = 1;
-		//	if (types[i] == Finger::TYPE_INDEX)
-		//		extendedFingers[1] = 1;
-		//	if (types[i] == Finger::TYPE_MIDDLE)
-		//		extendedFingers[2] = 1;
-		//	if (types[i] == Finger::TYPE_RING)
-		//		extendedFingers[3] = 1;
-		//	if (types[i] == Finger::TYPE_PINKY)
-		//		extendedFingers[4] = 1;
-		//}
-		//for (int i = 0; i < extendedFingers.size(); i++) {
-		//	if (i == extendedFingers.size() - 1) {
-		//		std::cout << extendedFingers[i];
-		//	}
-		//	else {
-		//		std::cout << extendedFingers[i] << ",";
-		//	}
-		//}
+		std::vector<Finger::Type> types;
+		for (FingerList::const_iterator fl = extended.begin(); fl != extended.end(); ++fl) {
+			const Finger finger = *fl;
+			types.push_back(finger.type());
+		}
+		numFingers = types.size();
+		for (int i = 0; i < types.size(); ++i)
+		{
+			if (types[i] == Finger::TYPE_THUMB)
+				extendedFingers[0] = 1;
+			if (types[i] == Finger::TYPE_INDEX)
+				extendedFingers[1] = 1;
+			if (types[i] == Finger::TYPE_MIDDLE)
+				extendedFingers[2] = 1;
+			if (types[i] == Finger::TYPE_RING)
+				extendedFingers[3] = 1;
+			if (types[i] == Finger::TYPE_PINKY)
+				extendedFingers[4] = 1;
+		}
+		for (int i = 0; i < extendedFingers.size(); i++) {
+			if (i == extendedFingers.size() - 1) {
+				std::cout << extendedFingers[i];
+			}
+			else {
+				std::cout << extendedFingers[i] << ",";
+			}
+		}
 	//	for (FingerList::const_iterator fl = fingers.begin(); fl != fingers.end(); ++fl) {
 	//		const Finger finger = *fl;
 	//		const Vector direction = finger.direction();
