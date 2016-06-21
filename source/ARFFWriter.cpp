@@ -109,11 +109,15 @@ ARFFWriter::ARFFWriter(std::string path, std::vector<LeapData> data) {
 		"@ATTRIBUTE fingerTipElevation_f4   NUMERIC\n" <<
 		"@ATTRIBUTE fingerTipElevation_f5   NUMERIC\n" <<
 		"@ATTRIBUTE fingersExtended   NUMERIC\n" <<
+		"@ATTRIBUTE fingersAreas_f1   NUMERIC\n" <<
+		"@ATTRIBUTE fingersAreas_f2   NUMERIC\n" <<
+		"@ATTRIBUTE fingersAreas_f3   NUMERIC\n" <<
+		"@ATTRIBUTE fingersAreas_f4   NUMERIC\n" <<
 		"@ATTRIBUTE class { G1, G2, G3, G4, G5, G6, G7, G8, G9, G0 }\n" <<
 		"\n@DATA\n";
 
 	for (int i = 0; i < data.size(); i++) {
-		file << getNumFingers(data[i]) << getNewFingerTipDistRefined(data[i]) << getFingerTipAngles(data[i]) << getFingerTipElevation(data[i]) << getFingersExtends(data[i]) << getGesture(data[i]) << "\n";
+		file << getNumFingers(data[i]) << getNewFingerTipDistRefined(data[i]) << getFingerTipAngles(data[i]) << getFingerTipElevation(data[i]) << getFingersExtends(data[i]) << getFingersArea(data[i])<< getGesture(data[i]) << "\n";
 	}
 
 	file.close();
@@ -327,6 +331,15 @@ std::string ARFFWriter::getFingersExtends(LeapData leap) {
 		returnVal = returnVal + std::to_string(extend[i]);
 	}
 	returnVal.push_back(',');
+	return returnVal;
+}
+std::string ARFFWriter::getFingersArea(LeapData leap)
+{
+	std::string returnVal;
+	for (int i = 0; i < leap.getFingerAreas().size(); i++) {
+		returnVal = returnVal + std::to_string(leap.getFingerAreas()[i]) +',';
+	}
+	
 	return returnVal;
 }
 

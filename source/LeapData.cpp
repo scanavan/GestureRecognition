@@ -99,9 +99,9 @@ void LeapData::setFingerAreas()
 		}
 		else if((i+1)<numFingers)
 		{
-			float a = fingerTipPosition[i].getMagnitude(palmPosition);
-			float b = fingerTipPosition[i].getMagnitude(fingerTipPosition[i + 1]);
-			float c = fingerTipPosition[i+1].getMagnitude(palmPosition);
+			float a = fingerTipPosition[i].getMagnitude(palmPosition)/newScaleFactor;
+			float b = fingerTipPosition[i].getMagnitude(fingerTipPosition[i + 1])/newScaleFactor;
+			float c = fingerTipPosition[i+1].getMagnitude(palmPosition)/newScaleFactor;
 			float s = (a + b + c) / 2;
 			float Area = sqrt(s*(s - a)*(s - b)*(s - c));
 			FingerAreas.push_back(Area);
