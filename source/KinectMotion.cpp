@@ -315,7 +315,7 @@ std::vector<cv::Point> getContour(cv::Mat image) {
 
 	int start = 0;
 	for (int i = 0; i < rawContour.size(); i++) {
-		if (rawContour[i].x <= pc.x && rawContour[i].y <= pc.y) {
+		if (rawContour[i].x == pc.x && rawContour[i].y <= pc.y) {
 			start = i;
 			break;
 		}
@@ -447,6 +447,55 @@ cv::Mat KinectMotion::rotateImage(cv::Mat image) {
 	cv::Mat dst;
 	cv::warpAffine(image, dst, rot_mat, image.size());
 	return dst;
+}
+
+float * silhouette(cv::Mat image)
+{
+	cv::Mat new_image = cv::Mat::zeros(image.size(), CV_8UC3);
+	cv::Mat uimage;
+	image.convertTo(uimage, CV_8U);
+	for (int i = 0; i < image.cols; ++i)
+	{
+		for (int j = 0; j < image.cols; ++j)
+		{
+			if (uimage.at<uchar>(i, j) > 10) uimage.at<uchar>(i, j) = 255;
+			else uimage.at<uchar>(i, j) = 0;
+		}
+	}
+	createWindow(uimage, "Ayy");
+	cv::Point center = cv::Point(image.cols / 2, image.rows / 2);
+	std::vector<cv::Point> contour = getContour(uimage);
+	std::vector<float> bins[32];
+
+	float angle, dist;
+	int x,y,bin;
+	for (int i = 0; i < contour.size(); ++i)
+	{
+		x = contour[i].x - center.x; y = center.y - contour[i].y;
+		angle = atan2(y,x);
+		if (angle < 0) {
+			angle = (2 * PI) + angle;
+		}
+		dist = sqrt((x*x) + (y*y));
+		bin = (int)(angle * 16 / PI);
+		bins[bin].push_back(dist);
+		new_image.at<cv::Vec3b>(contour[i].y, contour[i].x) = cv::Vec3b((bin * 255 / 32), 0, 255);
+	}
+	createWindow(new_image, "Ayy");
+
+	float * avgs = new float[32];
+	float sum;
+	for (int i = 0; i < 32; ++i)
+	{
+		sum = 0;
+		for (int j = 0; j < bins[i].size(); ++j)
+		{
+			sum += bins[i][j];
+		}
+		avgs[i] = sum / bins[i].size();
+		std::cout << avgs[i] << std::endl;
+	}
+	return avgs;
 }
 
 //cv::Mat KinectMotion::
