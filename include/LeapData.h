@@ -6,20 +6,21 @@
 #include <fstream>
 #include <vector>
 #include "Point.h"
-#include "RealTimeLeapData.h"
+//#include "RealTimeLeapData.h"
 
 
 class LeapData {
 public:
 	LeapData();
 	LeapData(std::string path);
-	LeapData(RealTimeLeapData leapData);
+	//LeapData(RealTimeLeapData leapData);
 	void parse(int lineNum, std::string line);
 	std::vector<float> splitString(std::string line);
 	void printAttributes();
 	std::vector<Point> getProjection();
 //	std::vector<float> getFingerTipDist();
 	void setNewScaleFactor();
+	void setFingerAreas();
 	void setNewFingerTipDist();
 	void setFingerTipAngles();
 	void setOldScaleFactor();
@@ -47,6 +48,7 @@ public:
 
 	//new attributes
 	float getNewScaleFactor();
+	std::vector<float> getFingerAreas();
 	std::vector<float> getNewFingerTipDistRefined();
 	std::vector<float> getFingerTipAngles();
 	std::vector<Point> getProjectionPoints();
@@ -78,6 +80,7 @@ private:
 	//new attributes
 	float newScaleFactor;
 	float oldScaleFactor;
+	std::vector<float> FingerAreas;
 	std::vector<float> newFingerTipDistRefined;
 	std::vector<float> fingerTipAngles;
 	std::vector<Point> projectionPoints;
