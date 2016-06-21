@@ -3,7 +3,7 @@
 #include <string>
 #include <opencv\cv.h>
 #include <vector>
-#include "Image.h"
+#include "KinectImage.h"
 #include "LeapData.h"
 #include <set>
 
@@ -26,7 +26,6 @@ public:
 	cv::Mat getHand(cv::Mat image, double ratio);
 	cv::Mat makeContourImage(cv::Mat image);
 	cv::Point handCenter(cv::Mat image);
-	cv::Point palmCenter(cv::Mat image);
 	std::vector <Occ> cellOccupancy(cv::Mat image);
 	void findDirection(cv::Mat image);
 	cv::Mat scaleHand(cv::Mat image);
@@ -41,6 +40,7 @@ private:
 	LeapData * leap;
 }; 
 
+cv::Point palmCenter(cv::Mat image);
 std::vector<cv::Point> getContour(cv::Mat image);
 void createWindow(cv::Mat image, std::string imageName);
 

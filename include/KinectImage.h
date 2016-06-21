@@ -1,5 +1,5 @@
-#ifndef IMAGE_H
-#define IMAGE_H
+#ifndef KINECTIMAGE_H
+#define KINECTIMAGE_H
 #include <string>
 #include <opencv\cv.h>
 

@@ -1,7 +1,7 @@
 #include <iostream>
 #include "KinectMotion.h"
 #include <opencv\cv.h>
-#include "Image.h"
+#include "KinectImage.h"
 #include "LeapData.h"
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
@@ -191,7 +191,7 @@ cv::Point KinectMotion::handCenter(cv::Mat image) {
 	return retVal;
 }
 
-cv::Point KinectMotion::palmCenter(cv::Mat image) {
+cv::Point palmCenter(cv::Mat image) {
 
 	cv::Mat new_image = image.clone();
 	cv::GaussianBlur(image, new_image, cv::Size(0, 0), 23, 23);
@@ -285,27 +285,50 @@ void KinectMotion::findDirection(cv::Mat image) {
 }
 
 std::vector<cv::Point> getContour(cv::Mat image) {
-	
+
+	std::vector<cv::Point> rawContour;
+	std::vector<cv::Point> sortedContour;
+	std::vector<cv::Point> sampleContour;
+	cv::Point pc = palmCenter(image);
 	cv::Mat image_clone;
-	image.convertTo(image_clone,CV_8U);
+	image.convertTo(image_clone, CV_8U);
 
 	std::vector<std::vector<cv::Point>> contours;
 	cv::findContours(image_clone, contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_NONE);
 
-	if (contours.size() == 1) return contours[0];
+	if (contours.size() == 1) rawContour = contours[0];
+	else {
 
-	int max_size = 0;
-	int max_index;
-	for (int i = 0; i < contours.size(); ++i)
-	{
-		if (contours[i].size() > max_size)
+		int max_size = 0;
+		int max_index;
+		for (int i = 0; i < contours.size(); ++i)
 		{
-			max_size = contours[i].size();
-			max_index = i;
+			if (contours[i].size() > max_size)
+			{
+				max_size = contours[i].size();
+				max_index = i;
+			}
 		}
+
+		rawContour = contours[max_index];
 	}
 
-	return contours[max_index];
+	int start = 0;
+	for (int i = 0; i < rawContour.size(); i++) {
+		if (rawContour[i].x <= pc.x && rawContour[i].y <= pc.y) {
+			start = i;
+			break;
+		}
+	}
+	for (int i = 0; i < rawContour.size(); i++) {
+		sortedContour.push_back(rawContour[(i + start) % rawContour.size()]);
+	}
+
+	for (float i = 0; i < sortedContour.size(); i += float(sortedContour.size()) / 179.0) {
+		sampleContour.push_back(sortedContour[(int)i]);
+	}
+
+	return sampleContour;
 }
 
 cv::Mat KinectMotion::scaleHand(cv::Mat image) {
@@ -425,3 +448,5 @@ cv::Mat KinectMotion::rotateImage(cv::Mat image) {
 	cv::warpAffine(image, dst, rot_mat, image.size());
 	return dst;
 }
+
+//cv::Mat KinectMotion::
