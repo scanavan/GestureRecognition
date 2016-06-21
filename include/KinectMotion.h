@@ -9,6 +9,7 @@
 
 #define _FILE_NUM_ 0
 #define PI 3.14159265
+#define _SCALE_ 480
 
 struct Occ {
 	int nonZ;

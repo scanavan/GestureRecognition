@@ -333,7 +333,7 @@ std::vector<cv::Point> getContour(cv::Mat image) {
 
 cv::Mat KinectMotion::scaleHand(cv::Mat image) {
 
-	cv::Mat dst = cv::Mat::zeros(320,320,CV_8U);
+	cv::Mat dst = cv::Mat::zeros(_SCALE_,_SCALE_,CV_8U);
 
 	cv::Rect rect = getRect(image);
 
@@ -343,21 +343,21 @@ cv::Mat KinectMotion::scaleHand(cv::Mat image) {
 		height = croppedImage.rows;
 	int max_dim = (width >= height) ? width : height;
 
-	float scale = ((float) 320) / max_dim;
+	float scale = ((float) _SCALE_) / max_dim;
 	cv::Rect roi;
 	if (width >= height)
 	{
-		roi.width = 320;
+		roi.width = _SCALE_;
 		roi.x = 0;
 		roi.height = height * scale;
-		roi.y = (320 - roi.height) / 2;
+		roi.y = (_SCALE_ - roi.height) / 2;
 	}
 	else
 	{
 		roi.y = 0;
-		roi.height = 320;
+		roi.height = _SCALE_;
 		roi.width = width * scale;
-		roi.x = (320 - roi.width) / 2;
+		roi.x = (_SCALE_ - roi.width) / 2;
 	}
 	cv::resize(croppedImage, dst(roi), roi.size());
 
