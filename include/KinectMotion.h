@@ -19,8 +19,8 @@ struct Occ {
 class KinectMotion {
 public:
 	KinectMotion(const char * filepath);
-	Image * getDepth();
-	Image * getRgb();
+	KinectImage * getDepth();
+	KinectImage * getRgb();
 	cv::Mat updateImage(int upperThresholdVal, int lowerThresholdVal, bool make_binary = true);
 	float blobMax(cv::Mat depth);
 	cv::Mat getHand(cv::Mat image, double ratio);
@@ -36,8 +36,8 @@ public:
 	//void blob(cv::Mat imMat);
 	//int * palmCenter2(cv::Mat image);
 private:
-	Image * depth;
-	Image * rgb;
+	KinectImage * depth;
+	KinectImage * rgb;
 	LeapData * leap;
 }; 
 

@@ -3,9 +3,9 @@
 #include <string>
 #include <opencv\cv.h>
 
-class Image {
+class KinectImage {
 public:
-	Image(std::string imageName);
+	KinectImage(std::string imageName);
 	int getHeight();
 	int getWidth();
 	void displayImage();

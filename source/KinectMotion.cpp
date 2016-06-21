@@ -15,15 +15,15 @@ KinectMotion::KinectMotion(const char * filepath){
 	FileNames my_files;
 	my_files.readDir(filepath);
 	leap = new LeapData(my_files.leap[_FILE_NUM_]);
-	depth = new Image(my_files.depth[_FILE_NUM_]);
-	rgb = new Image(my_files.rgb[_FILE_NUM_]);
+	depth = new KinectImage(my_files.depth[_FILE_NUM_]);
+	rgb = new KinectImage(my_files.rgb[_FILE_NUM_]);
 }
 
-Image * KinectMotion::getDepth() {
+KinectImage * KinectMotion::getDepth() {
 	return depth;
 }
 
-Image * KinectMotion::getRgb() {
+KinectImage * KinectMotion::getRgb() {
 	return rgb;
 }
 
