@@ -1,7 +1,7 @@
 #include <iostream>
 #include "KinectMotion.h"
 #include <opencv\cv.h>
-#include "Image.h"
+#include "KinectImage.h"
 #include "LeapData.h"
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
