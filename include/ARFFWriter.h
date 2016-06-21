@@ -34,6 +34,7 @@ public:
 	std::string getFingerTipElevation(LeapData leap);
 	std::string getGesture(LeapData leap);
 	std::string getFingersExtends(LeapData leap);
+	std::string getFingersArea(LeapData leap);
 
 };
 #endif // !ARFFWRITER_H
