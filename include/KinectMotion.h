@@ -44,5 +44,6 @@ private:
 cv::Point palmCenter(cv::Mat image);
 std::vector<cv::Point> getContour(cv::Mat image);
 void createWindow(cv::Mat image, std::string imageName);
+float * silhouette(cv::Mat image);
 
 #endif
