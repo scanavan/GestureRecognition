@@ -25,6 +25,8 @@ LeapData::LeapData(std::string path) {
 		setNewFingerTipDist();
 		projectionPoints = getProjection();
 		setFingerTipAngles();
+		setFingerAreas();
+
 
 		//gets the gesture based on the path
 		int index = path.find_last_of("/");
@@ -72,22 +74,43 @@ LeapData::LeapData(std::string path) {
 	ifs.close();
 }
 
-LeapData::LeapData(RealTimeLeapData leapData) {
-	extendedFingers = leapData.getExtendedFingers();
-	fingerDirections = leapData.getFingerDirections();
-	fingerTipPosition = leapData.getTipPositions();
-	handDirection = leapData.getHandDirection();
-	palmNormal = leapData.getPalmNormal();
-	palmPosition = leapData.getPalmPosition();
-	numFingers = leapData.getNumFingers();
-	setNewScaleFactor();
-	setNewFingerTipDist();
-	projectionPoints = getProjection();
-	setFingerTipAngles();
-	gesture = leapData.getGesture();
+//LeapData::LeapData(RealTimeLeapData leapData) {
+//	extendedFingers = leapData.getExtendedFingers();
+//	fingerDirections = leapData.getFingerDirections();
+//	fingerTipPosition = leapData.getTipPositions();
+//	handDirection = leapData.getHandDirection();
+//	palmNormal = leapData.getPalmNormal();
+//	palmPosition = leapData.getPalmPosition();
+//	numFingers = leapData.getNumFingers();
+//	setNewScaleFactor();
+//	setNewFingerTipDist();
+//	projectionPoints = getProjection();
+//	setFingerTipAngles();
+//	gesture = leapData.getGesture();
+//
+//}
 
+void LeapData::setFingerAreas()
+{
+	for (int i = 0; i < 4; i++) {
+		if (i+1 >= numFingers) 
+		{
+			FingerAreas.push_back(0.000000);
+		}
+		else if((i+1)<numFingers)
+		{
+			float a = fingerTipPosition[i].getMagnitude(palmPosition)/newScaleFactor;
+			float b = fingerTipPosition[i].getMagnitude(fingerTipPosition[i + 1])/newScaleFactor;
+			float c = fingerTipPosition[i+1].getMagnitude(palmPosition)/newScaleFactor;
+			float s = (a + b + c) / 2;
+			float Area = sqrt(s*(s - a)*(s - b)*(s - c));
+			FingerAreas.push_back(Area);
+
+		}
+
+
+		}
 }
-
 // sets the fingerTipAngles and also fingerTipElevation
 // fingerTipElevation = ||fingerTipPosition - projectedPoint|| / newScaleFactor
 // fingerTipAngles are determined using law of cosines
@@ -583,4 +606,7 @@ std::string LeapData::getGesture() {
 
 std::vector<int> LeapData::getExtendedFingers() {
 	return extendedFingers;
+}
+std::vector<float> LeapData::getFingerAreas() {
+	return FingerAreas;
 }

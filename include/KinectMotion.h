@@ -9,6 +9,7 @@
 
 #define _FILE_NUM_ 0
 #define PI 3.14159265
+#define _SCALE_ 480
 
 struct Occ {
 	int nonZ;
@@ -43,5 +44,6 @@ private:
 cv::Point palmCenter(cv::Mat image);
 std::vector<cv::Point> getContour(cv::Mat image);
 void createWindow(cv::Mat image, std::string imageName);
+float * silhouette(cv::Mat image);
 
 #endif
