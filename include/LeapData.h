@@ -6,14 +6,14 @@
 #include <fstream>
 #include <vector>
 #include "Point.h"
-//#include "RealTimeLeapData.h"
+#include "RealTimeLeapData.h"
 
 
 class LeapData {
 public:
 	LeapData();
 	LeapData(std::string path);
-	//LeapData(RealTimeLeapData leapData);
+	LeapData(RealTimeLeapData leapData);
 	void parse(int lineNum, std::string line);
 	std::vector<float> splitString(std::string line);
 	void printAttributes();
