@@ -549,13 +549,14 @@ float * hullAreas(cv::Mat image)
 	std::vector<std::vector<cv::Point>> thresholded_hull_contours;
 	for (int i = 0; i < contours.size(); ++i)
 	{
-		if (contourArea(contours[i]) > 250) thresholded_hull_contours.push_back(contours[i]);
+		if (contourArea(contours[i]) > 1000) thresholded_hull_contours.push_back(contours[i]);
 	}
 
 	for (int i = 0; i < thresholded_hull_contours.size(); ++i)
 	{
 		cv::drawContours(new_image, thresholded_hull_contours, i, cv::Scalar(i * 255 / thresholded_hull_contours.size(), 0, 255));
 		ret_array[i] = contourArea(thresholded_hull_contours[i]) / hand_area;
+		std::cout << contourArea(thresholded_hull_contours[i]) << std::endl;
 	}
 
 	std::cout << thresholded_hull_contours.size() << std::endl;
