@@ -74,21 +74,22 @@ LeapData::LeapData(std::string path) {
 	ifs.close();
 }
 
-//LeapData::LeapData(RealTimeLeapData leapData) {
-//	extendedFingers = leapData.getExtendedFingers();
-//	fingerDirections = leapData.getFingerDirections();
-//	fingerTipPosition = leapData.getTipPositions();
-//	handDirection = leapData.getHandDirection();
-//	palmNormal = leapData.getPalmNormal();
-//	palmPosition = leapData.getPalmPosition();
-//	numFingers = leapData.getNumFingers();
-//	setNewScaleFactor();
-//	setNewFingerTipDist();
-//	projectionPoints = getProjection();
-//	setFingerTipAngles();
-//	gesture = leapData.getGesture();
-//
-//}
+LeapData::LeapData(RealTimeLeapData leapData) {
+	extendedFingers = leapData.getExtendedFingers();
+	fingerDirections = leapData.getFingerDirections();
+	fingerTipPosition = leapData.getTipPositions();
+	handDirection = leapData.getHandDirection();
+	palmNormal = leapData.getPalmNormal();
+	palmPosition = leapData.getPalmPosition();
+	numFingers = leapData.getNumFingers();
+	setNewScaleFactor();
+	setNewFingerTipDist();
+	projectionPoints = getProjection();
+	setFingerTipAngles();
+	gesture = leapData.getGesture();
+	setFingerAreas();
+
+}
 
 void LeapData::setFingerAreas()
 {
@@ -99,11 +100,11 @@ void LeapData::setFingerAreas()
 		}
 		else if((i+1)<numFingers)
 		{
-			float a = fingerTipPosition[i].getMagnitude(palmPosition)/newScaleFactor;
-			float b = fingerTipPosition[i].getMagnitude(fingerTipPosition[i + 1])/newScaleFactor;
-			float c = fingerTipPosition[i+1].getMagnitude(palmPosition)/newScaleFactor;
+			float a = fingerTipPosition[i].getMagnitude(palmPosition);
+			float b = fingerTipPosition[i].getMagnitude(fingerTipPosition[i + 1]);
+			float c = fingerTipPosition[i+1].getMagnitude(palmPosition);
 			float s = (a + b + c) / 2;
-			float Area = sqrt(s*(s - a)*(s - b)*(s - c));
+			float Area = sqrt(s*(s - a)*(s - b)*(s - c))/newScaleFactor;
 			FingerAreas.push_back(Area);
 
 		}

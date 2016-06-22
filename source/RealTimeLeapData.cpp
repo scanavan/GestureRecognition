@@ -77,7 +77,7 @@ void RealTimeLeapData::getData() {
 			}
 
 		}
-
+		std::cout << "\n";
 	}
 	//std::cin.get();
 	//extendedFingers = listener.getExtendedFingers();

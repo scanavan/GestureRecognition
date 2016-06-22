@@ -27,6 +27,11 @@ KinectImage * KinectMotion::getRgb() {
 	return rgb;
 }
 
+/*
+	@def - recognize difference between wrist, hand and arm
+	cut's the image at the wrist
+	@param - thresholdRatio pixel difference between arm and wrist (percentage)
+*/
 cv::Mat KinectMotion::getHand(cv::Mat image, double thresholdRatio) {
 	int top = 0;
 	bool foundHand = false;
@@ -66,9 +71,14 @@ cv::Mat KinectMotion::getHand(cv::Mat image, double thresholdRatio) {
 	}
 
 	return image;
-
 }
 
+/*
+	@def - changes the image file to remove the background
+	@param - thresholdVals gets pixel intensity between thresholds and removes pixels not
+			 in threshold
+	make_binary - creates binary image, or creates greyscale image
+*/
 cv::Mat KinectMotion::updateImage(int upperThresholdVal, int lowerThresholdVal, bool make_binary) {
 
 	// get depth image determine hight and width of image
@@ -124,46 +134,11 @@ cv::Mat KinectMotion::updateImage(int upperThresholdVal, int lowerThresholdVal, 
 	return iDepthMat;
 
 }
-float KinectMotion::blobMax(cv::Mat image) {
-	// set up the parameters (check the defaults in opencv's code in blobdetector.cpp)
-	cv::SimpleBlobDetector::Params params;
-	params.minDistBetweenBlobs = 50.0f;
-	params.filterByInertia = false;
-	params.filterByConvexity = false;
-	params.filterByColor = false;
-	params.filterByCircularity = false;
-	params.filterByArea = false;
-	params.minArea = 750.0f;
-	params.maxArea = 2000.0f;
 
-	// set up and create the detector using the parameters
-	cv::Ptr<cv::SimpleBlobDetector> detector = cv::SimpleBlobDetector::create(params);
-
-	// detect!
-	std::vector<cv::KeyPoint> keypoints;
-	detector->detect(image, keypoints);
-
-	// extract the index of the largest blob
-	int maxKeyIndex;
-	float max = 0.0;
-	for (int i = 0; i < keypoints.size(); i++) {
-		if (keypoints[i].size > max) {
-			max = keypoints[i].size;
-			maxKeyIndex = i;
-		}
-	}
-	// Draw detected blobs as red circles.
-	// DrawMatchesFlags::DRAW_RICH_KEYPOINTS flag ensures the size of the circle corresponds to the size of blob
-	cv::Mat im_with_keypoints;
-	drawKeypoints(image, keypoints, im_with_keypoints, cv::Scalar(0, 0, 255), cv::DrawMatchesFlags::DRAW_RICH_KEYPOINTS);
-
-	// Show blobs
-
-	std::cout << maxKeyIndex << std::endl;
-
-	return max;
-}
-
+/*
+	@def - draws the contours
+	@param - image - the matrix image
+*/
 cv::Mat KinectMotion::makeContourImage(cv::Mat image) {
 
 	cv::Mat contourImage(image.size(), CV_8UC3, cv::Scalar(0, 0, 0));
@@ -176,21 +151,10 @@ cv::Mat KinectMotion::makeContourImage(cv::Mat image) {
 
 }
 
-cv::Point KinectMotion::handCenter(cv::Mat image) {
-	std::vector<cv::Point> edges = getContour(image);
-	int xSum = 0;
-	int ySum = 0;
-	for (int a = 0; a < edges.size(); a++) {
-		xSum += edges.at(a).x;
-		ySum += edges.at(a).y;
-	}
-	cv::Point retVal(xSum / edges.size(), ySum / edges.size());
-	image = makeContourImage(image);
-	image.at<cv::Vec3b>(retVal.x, retVal.y) = cv::Vec3b(255,255,255);
-
-	return retVal;
-}
-
+/*
+	@def - find center point of palm using GaussianBlur
+	@param - image - the matrix image
+*/
 cv::Point palmCenter(cv::Mat image) {
 
 	cv::Mat new_image = image.clone();
@@ -219,6 +183,12 @@ Occ::Occ(int nonZ, float avgD) {
 	this->avgD = avgD;
 }
 
+/*
+	TODO - make more general
+	@def - breaks image into equal squares and gets the area of each square
+		   as well as their average depths
+	@param - image - the matrix image
+*/
 std::vector<Occ> KinectMotion::cellOccupancy(cv::Mat image) {
 	std::vector<Occ> retVal;
 	int nonZ = 0;
@@ -255,6 +225,9 @@ std::vector<Occ> KinectMotion::cellOccupancy(cv::Mat image) {
 	return retVal;
 } 
 
+/*
+	@def - getbacktolater
+*/
 void KinectMotion::findDirection(cv::Mat image) {
 
 	std::vector<cv::Point> edges = getContour(image);
@@ -284,11 +257,14 @@ void KinectMotion::findDirection(cv::Mat image) {
 	return;
 }
 
+/*
+	@def - gets contours and sorts them starts at contour point directly above palm center
+	@param - image - the matrix image
+*/
 std::vector<cv::Point> getContour(cv::Mat image) {
 
 	std::vector<cv::Point> rawContour;
 	std::vector<cv::Point> sortedContour;
-	std::vector<cv::Point> sampleContour;
 	cv::Point pc = palmCenter(image);
 	cv::Mat image_clone;
 	image.convertTo(image_clone, CV_8U);
@@ -324,13 +300,13 @@ std::vector<cv::Point> getContour(cv::Mat image) {
 		sortedContour.push_back(rawContour[(i + start) % rawContour.size()]);
 	}
 
-	for (float i = 0; i < sortedContour.size(); i += float(sortedContour.size()) / 179.0) {
-		sampleContour.push_back(sortedContour[(int)i]);
-	}
-
-	return sampleContour;
+	return sortedContour;
 }
 
+/*
+	@def - scales hand to a fixed square image
+	@param - image - image matrix
+*/
 cv::Mat KinectMotion::scaleHand(cv::Mat image) {
 
 	cv::Mat dst = cv::Mat::zeros(_SCALE_,_SCALE_,CV_8U);
@@ -371,13 +347,24 @@ void createWindow(cv::Mat image, std::string imageName) {
 	cv::waitKey(0);
 }
 
+/*
+	@def - takes the sorted contours and gets a sample of 180 points
+		   calculates the distance from the palm center to each sampled point
+	@param - image - image matrix
+*/
 std::vector<float> KinectMotion::distContour(cv::Mat image) {
 	std::vector<cv::Point> edges = getContour(image);
 	cv::Point center = palmCenter(image);
+	std::vector<cv::Point> sampleContour;
 	std::vector<float> retVal;
+
+	for (int i = 0; i < _SAMPLE_SIZE_; i++) {
+		sampleContour.push_back(edges[(int)(i * (float)(edges.size()) / _SAMPLE_SIZE_)]);
+	}
+
 	float max = 0;
-	for (int i = 0; i < edges.size(); i++) {
-		float temp = std::sqrt(std::pow(center.x - edges.at(i).x, 2) + std::pow(center.y - edges.at(i).y, 2));
+	for (int i = 0; i < sampleContour.size(); i++) {
+		float temp = std::sqrt(std::pow(center.x - sampleContour.at(i).x, 2) + std::pow(center.y - sampleContour.at(i).y, 2));
 		retVal.push_back(temp);
 		if (temp > max) {
 			max = temp;
@@ -437,6 +424,10 @@ cv::Rect KinectMotion::getRect(cv::Mat image)
 	return cv::Rect(maxPoint, minPoint);
 }
 
+/*
+	@def - rotates image according to how leap data interprets upward direction
+	@param - image - image matrix
+*/
 cv::Mat KinectMotion::rotateImage(cv::Mat image) {
 	float x = leap->getHandDirection().getX();
 	float y = leap->getHandDirection().getY();
@@ -449,6 +440,10 @@ cv::Mat KinectMotion::rotateImage(cv::Mat image) {
 	return dst;
 }
 
+/*
+	@def - gets average distance of contour from image center for 32 radial sections
+	@param - image - image matrix
+*/
 float * silhouette(cv::Mat image)
 {
 	cv::Mat new_image = cv::Mat::zeros(image.size(), CV_8UC3);
@@ -497,5 +492,3 @@ float * silhouette(cv::Mat image)
 	}
 	return avgs;
 }
-
-//cv::Mat KinectMotion::
