@@ -25,7 +25,7 @@ LeapData::LeapData(std::string path) {
 		setNewFingertipDist();
 		projectionPoints = getProjection();
 		setFingertipAngles();
-		setFingerAreas();
+		
 
 
 		//gets the gesture based on the path
@@ -67,6 +67,8 @@ LeapData::LeapData(std::string path) {
 		else if (gesture == "G9") {
 			extendedFingers = { 1,1,1,1,1 };
 		}
+
+		setFingerAreas();
 	}
 	else {
 		std::cout << "bad file" << std::endl;
@@ -107,7 +109,10 @@ void LeapData::setFingerAreas()
 			float c = fingertipPosition[i+1].getMagnitude(palmPosition);
 			float s = (a + b + c) / 2;
 			float area = sqrt(s*(s - a)*(s - b)*(s - c))/newScaleFactor;
-			total = total + area;
+			//total = total + area;
+			if (area > total) {
+				total = area;
+			}
 
 		}
 		
@@ -181,7 +186,7 @@ void LeapData::setOldScaleFactor() {
 	}
 	else {
 		oldScaleFactor = 0;
-		for (int i = 0; i < numFingers; ++i)
+		for (int i = 0; i < 5; ++i)
 		{
 			if (fingertipDist[i] > oldScaleFactor)
 			{
