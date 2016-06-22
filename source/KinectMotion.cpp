@@ -492,3 +492,81 @@ float * silhouette(cv::Mat image)
 	}
 	return avgs;
 }
+
+/* 
+ * Convex Hull
+ * 
+ * Image -> getContour
+ * Contour -> convexHull
+ * Hull -> drawContours
+ * Hull image -> subtract image
+ * Components Image -> findContours
+ * Components contours -> contourArea
+ * Area threshold
+ * Area sort
+ */
+
+float * hullAreas(cv::Mat image)
+{
+	float * ret_array = new float[6] { 0,0,0,0,0,0 };
+
+	cv::Mat uimage;
+	image.convertTo(uimage, CV_8U);
+	for (int i = 0; i < image.cols; ++i)
+	{
+		for (int j = 0; j < image.cols; ++j)
+		{
+			if (uimage.at<uchar>(i, j) > 10) uimage.at<uchar>(i, j) = 255;
+			else uimage.at<uchar>(i, j) = 0;
+		}
+	}
+
+	std::vector<cv::Point> og_contour = getContour(uimage);
+	double hand_area = contourArea(og_contour);
+
+	std::vector<cv::Point> hull;
+	convexHull(og_contour, hull);
+
+	cv::Mat hull_image = cv::Mat::zeros(image.size(), CV_8U);
+	std::vector <std::vector<cv::Point>> contours;
+	contours.push_back(hull);
+	cv::drawContours(hull_image, contours, 0, cv::Scalar(255, 255, 255));
+
+	cv::Point seed = cv::Point(hull_image.rows/2,hull_image.cols/2);
+	floodFill(hull_image, seed, cv::Scalar(255, 255, 255));
+
+	for (int i = 0; i < image.rows; ++i)
+	{
+		for (int j = 0; j < image.cols; ++j)
+		{
+			if (uimage.at<uchar>(i, j) != 0) hull_image.at<uchar>(i, j) = 0;
+		}
+	}
+
+	cv::Mat image_clone = hull_image.clone();
+	cv::Mat new_image = cv::Mat::zeros(image.size(), CV_8UC3);
+	cv::findContours(image_clone, contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_NONE);
+	std::vector<std::vector<cv::Point>> thresholded_hull_contours;
+	for (int i = 0; i < contours.size(); ++i)
+	{
+		if (contourArea(contours[i]) > 1000) thresholded_hull_contours.push_back(contours[i]);
+	}
+
+	for (int i = 0; i < thresholded_hull_contours.size(); ++i)
+	{
+		cv::drawContours(new_image, thresholded_hull_contours, i, cv::Scalar(i * 255 / thresholded_hull_contours.size(), 0, 255));
+		ret_array[i] = contourArea(thresholded_hull_contours[i]) / hand_area;
+		std::cout << contourArea(thresholded_hull_contours[i]) << std::endl;
+	}
+
+	std::cout << thresholded_hull_contours.size() << std::endl;
+	createWindow(hull_image, "Hull");
+	createWindow(new_image, "Hull");
+
+	for (int i = 0; i < 6; ++i)
+	{
+		std::cout << ret_array[i] << std::endl;
+	}
+
+	return ret_array;
+}
