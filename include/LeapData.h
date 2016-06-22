@@ -18,18 +18,17 @@ public:
 	std::vector<float> splitString(std::string line);
 	void printAttributes();
 	std::vector<Point> getProjection();
-//	std::vector<float> getFingerTipDist();
+//	std::vector<float> getFingertipDist();
 	void setNewScaleFactor();
 	void setFingerAreas();
-	void setNewFingerTipDist();
-	void setFingerTipAngles();
+	void setNewFingertipDist();
+	void setFingertipAngles();
 	void setOldScaleFactor();
-	void writeToFile(std::string path);
 	int getNumFingers();
-	std::vector<float> getFingerTipDist();
-	std::vector<float> getFingerTipDistRefined();
-	std::vector<float> getFingerTipInterDist();
-	std::vector<Point> getFingerTipPosition();
+	std::vector<float> getFingertipDist();
+	std::vector<float> getFingertipDistRefined();
+	std::vector<float> getFingertipInterDist();
+	std::vector<Point> getFingertipPosition();
 	Point getHandDirection();
 	Point getHandSphereCenter();
 	float getHandSphereRadius();
@@ -48,19 +47,19 @@ public:
 
 	//new attributes
 	float getNewScaleFactor();
-	std::vector<float> getFingerAreas();
-	std::vector<float> getNewFingerTipDistRefined();
-	std::vector<float> getFingerTipAngles();
+	float getFingerArea();
+	std::vector<float> getNewFingertipDistRefined();
+	std::vector<float> getFingertipAngles();
 	std::vector<Point> getProjectionPoints();
-	std::vector<float> getFingerTipElevation();
+	std::vector<float> getFingertipElevation();
 	std::string getGesture();
 	std::vector<int> getExtendedFingers();
 private:
 	int numFingers;
-	std::vector<float> fingerTipDist;
-	std::vector<float> fingerTipDistRefined;
-	std::vector<float> fingerTipInterDist;
-	std::vector<Point> fingerTipPosition;
+	std::vector<float> fingertipDist;
+	std::vector<float> fingertipDistRefined;
+	std::vector<float> fingertipInterDist;
+	std::vector<Point> fingertipPosition;
 	Point handDirection;
 	Point handSphereCenter;
 	float handSphereRadius;
@@ -80,11 +79,11 @@ private:
 	//new attributes
 	float newScaleFactor;
 	float oldScaleFactor;
-	std::vector<float> FingerAreas;
-	std::vector<float> newFingerTipDistRefined;
-	std::vector<float> fingerTipAngles;
+	float fingerArea;
+	std::vector<float> newFingertipDistRefined;
+	std::vector<float> fingertipAngles;
 	std::vector<Point> projectionPoints;
-	std::vector<float> fingerTipElevation;
+	std::vector<float> fingertipElevation;
 	std::string gesture;
 	std::vector<int> extendedFingers;
 	std::vector<Point> fingerDirections;

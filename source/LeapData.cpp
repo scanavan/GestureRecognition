@@ -6,7 +6,7 @@ LeapData::LeapData() {
 	//default constructor
 }
 
-// constructor
+// constructor with a path as a parameter
 LeapData::LeapData(std::string path) {
 	std::ifstream ifs;
 	std::string line;
@@ -22,9 +22,9 @@ LeapData::LeapData(std::string path) {
 		}
 		setNewScaleFactor();
 		setOldScaleFactor();
-		setNewFingerTipDist();
+		setNewFingertipDist();
 		projectionPoints = getProjection();
-		setFingerTipAngles();
+		setFingertipAngles();
 		setFingerAreas();
 
 
@@ -74,82 +74,87 @@ LeapData::LeapData(std::string path) {
 	ifs.close();
 }
 
+// constructor with RealTimeLeapData object as parameter
 LeapData::LeapData(RealTimeLeapData leapData) {
 	extendedFingers = leapData.getExtendedFingers();
 	fingerDirections = leapData.getFingerDirections();
-	fingerTipPosition = leapData.getTipPositions();
+	fingertipPosition = leapData.getTipPositions();
 	handDirection = leapData.getHandDirection();
 	palmNormal = leapData.getPalmNormal();
 	palmPosition = leapData.getPalmPosition();
 	numFingers = leapData.getNumFingers();
 	setNewScaleFactor();
-	setNewFingerTipDist();
+	setNewFingertipDist();
 	projectionPoints = getProjection();
-	setFingerTipAngles();
+	setFingertipAngles();
 	gesture = leapData.getGesture();
 	setFingerAreas();
 
 }
 
+// sets fingerArea to the average area between the extended fingers
+// s = (fingerDistance[i] + fingerDistance[i+1] + distanceBetweenFingers) / 2
+// area = sqrt(s*(s - fingerDistance[i])*(s - fingerDistance[i+1])*(s - distanceBetweenFingers)) / newScaleFactor
+// fingerArea = area / numFingers
 void LeapData::setFingerAreas()
 {
+	float total;
 	for (int i = 0; i < 4; i++) {
-		if (i+1 >= numFingers) 
+		if((i+1)<numFingers)
 		{
-			FingerAreas.push_back(0.000000);
-		}
-		else if((i+1)<numFingers)
-		{
-			float a = fingerTipPosition[i].getMagnitude(palmPosition);
-			float b = fingerTipPosition[i].getMagnitude(fingerTipPosition[i + 1]);
-			float c = fingerTipPosition[i+1].getMagnitude(palmPosition);
+			float a = fingertipPosition[i].getMagnitude(palmPosition);
+			float b = fingertipPosition[i].getMagnitude(fingertipPosition[i + 1]);
+			float c = fingertipPosition[i+1].getMagnitude(palmPosition);
 			float s = (a + b + c) / 2;
-			float Area = sqrt(s*(s - a)*(s - b)*(s - c))/newScaleFactor;
-			FingerAreas.push_back(Area);
+			float area = sqrt(s*(s - a)*(s - b)*(s - c))/newScaleFactor;
+			total = total + area;
 
 		}
-
-
-		}
+		
+	}
+	if (numFingers >= 2) {
+		fingerArea = total / (numFingers - 1);
+	}
+	else {
+		fingerArea = 0.000000;
+	}
 }
-// sets the fingerTipAngles and also fingerTipElevation
-// fingerTipElevation = ||fingerTipPosition - projectedPoint|| / newScaleFactor
-// fingerTipAngles are determined using law of cosines
-void LeapData::setFingerTipAngles() {
+
+// sets the fingertipAngles and also fingertipElevation
+// fingertipElevation = ||fingertipPosition - projectedPoint|| / newScaleFactor
+// fingertipAngles are determined using law of cosines
+void LeapData::setFingertipAngles() {
 	float a, b, c;
 	for (int i = 0; i < 5; i++) {
 		if (i >= numFingers) {
-			fingerTipAngles.push_back(0);
-			fingerTipElevation.push_back(0);
+			fingertipAngles.push_back(0);
+			fingertipElevation.push_back(0);
 		}
 		else {
-			a = palmPosition.getMagnitude(fingerTipPosition[i]);;
+			a = palmPosition.getMagnitude(fingertipPosition[i]);;
 			b = projectionPoints[i].getMagnitude(palmPosition);
-			c = projectionPoints[i].getMagnitude(fingerTipPosition[i]);
-			fingerTipAngles.push_back(acos((-powf(c, 2) + powf(a, 2) + powf(b, 2)) / (2 * a * b)));
-			fingerTipElevation.push_back(c / newScaleFactor);
-			//
-			//		scale factor 
-			//
+			c = projectionPoints[i].getMagnitude(fingertipPosition[i]);
+			fingertipAngles.push_back(acos((-powf(c, 2) + powf(a, 2) + powf(b, 2)) / (2 * a * b)));
+			fingertipElevation.push_back(c / newScaleFactor);
 		}
 	}
 }
 
-// sets the newFingerTipDistance based on newScaleFactor
-// newFingerTipDist = dist(fingerTipPosition, palmPosition) / newScaleFactor
-void LeapData::setNewFingerTipDist() {
+// sets the newFingertipDistance based on newScaleFactor
+// newFingertipDist = dist(fingertipPosition, palmPosition) / newScaleFactor
+void LeapData::setNewFingertipDist() {
 	for (int i = 0; i < 5; i++) {
 		if (i >= numFingers) {
-			newFingerTipDistRefined.push_back(0.000000);
+			newFingertipDistRefined.push_back(0.000000);
 		}
 		else {
-			newFingerTipDistRefined.push_back(fingerTipPosition[i].getMagnitude(palmPosition) / newScaleFactor);
+			newFingertipDistRefined.push_back(fingertipPosition[i].getMagnitude(palmPosition) / newScaleFactor);
 		}
 	}
 }
 
 // calculates newScaleFactor
-// newScaleFactor = dist((avg(fingerTipPositions) / numFingers), palmPosition)
+// newScaleFactor = dist((avg(fingertipPositions) / numFingers), palmPosition)
 void LeapData::setNewScaleFactor() {
 	if (numFingers == 0) {
 		newScaleFactor = 1;
@@ -159,9 +164,9 @@ void LeapData::setNewScaleFactor() {
 		float averageY = 0;
 		float averageZ = 0;
 		for (int i = 0; i < numFingers; i++) {
-			averageX = averageX + fingerTipPosition[i].getX();
-			averageY = averageY + fingerTipPosition[i].getY();
-			averageZ = averageZ + fingerTipPosition[i].getZ();
+			averageX = averageX + fingertipPosition[i].getX();
+			averageY = averageY + fingertipPosition[i].getY();
+			averageZ = averageZ + fingertipPosition[i].getZ();
 		}
 		Point p = Point(averageX / numFingers, averageY / numFingers, averageZ / numFingers);
 		newScaleFactor = p.getMagnitude(palmPosition);
@@ -169,6 +174,7 @@ void LeapData::setNewScaleFactor() {
 	}
 }
 
+// scale factor based on longest finger
 void LeapData::setOldScaleFactor() {
 	if (numFingers == 0) {
 		oldScaleFactor = 1;
@@ -177,39 +183,32 @@ void LeapData::setOldScaleFactor() {
 		oldScaleFactor = 0;
 		for (int i = 0; i < numFingers; ++i)
 		{
-			if (fingerTipDist[i] > oldScaleFactor)
+			if (fingertipDist[i] > oldScaleFactor)
 			{
-				oldScaleFactor = fingerTipDist[i];
+				oldScaleFactor = fingertipDist[i];
 			}
 		}
 	}
 }
 
-//std::vector<float> LeapData::getFingerTipDist() {
-//	std::vector<float> returnVal;
-//	for (int i = 0; i < numFingers; i++) {
-//		returnVal.push_back(fingerTipPosition[i].getMagnitude(palmPosition));
-//	}
-//}
-
 // returns vector of Points projected into normal plane
-// projection = q(point to project) - dot(
+// projection = q(point to project) - dot(handDirection, distance between Point and plane)
 std::vector<Point> LeapData::getProjection() {
 	std::vector<Point> returnVal;
 	// p = (palmNormal / |palmnormal|) * 1
 	float k = 1 / palmPosition.getMagnitude(palmNormal);
 	Point p = Point(palmNormal.getX() * k, palmNormal.getY() * k, palmNormal.getZ() * k);
-	//d = fingerTipPosition - p
-	// returnVal = fingerTipPosition - dot(handDirection, d) * handDirection
+	//d = fingertipPosition - p
+	// returnVal = fingertipPosition - dot(handDirection, d) * handDirection
 	for (int i = 0; i < 5; i++) {
 		if (i >= numFingers) {
 			returnVal.push_back(Point(0,0,0));
 		}
 		else {
-			Point d = Point(fingerTipPosition[i].getX() - p.getX(), fingerTipPosition[i].getY() - p.getY(), fingerTipPosition[i].getZ() - p.getZ());
-			returnVal.push_back(Point(fingerTipPosition[i].getX() - handDirection.getDotProduct(d) * handDirection.getX(),
-				fingerTipPosition[i].getY() - handDirection.getDotProduct(d) * handDirection.getY(),
-				fingerTipPosition[i].getZ() - handDirection.getDotProduct(d) * handDirection.getZ()));
+			Point d = Point(fingertipPosition[i].getX() - p.getX(), fingertipPosition[i].getY() - p.getY(), fingertipPosition[i].getZ() - p.getZ());
+			returnVal.push_back(Point(fingertipPosition[i].getX() - handDirection.getDotProduct(d) * handDirection.getX(),
+				fingertipPosition[i].getY() - handDirection.getDotProduct(d) * handDirection.getY(),
+				fingertipPosition[i].getZ() - handDirection.getDotProduct(d) * handDirection.getZ()));
 		}
 	}
 	return returnVal;
@@ -224,19 +223,19 @@ void LeapData::parse(int lineNum, std::string line) {
 		numFingers = vect[0];
 		break;
 	case 1:
-		fingerTipDist = vect;
+		fingertipDist = vect;
 		break;
 	case 2:
-		fingerTipDistRefined = vect;
+		fingertipDistRefined = vect;
 		break;
 	case 3:
-		fingerTipInterDist = vect;
+		fingertipInterDist = vect;
 		break;
 	case 4:
 		for (int i = 0; i < 5; i++) {
 			pointVect.push_back(Point(vect[i], vect[i+5], vect[i+10]));
 		}
-		fingerTipPosition = pointVect;
+		fingertipPosition = pointVect;
 		break;
 	case 5:
 		handDirection = Point(vect[0], vect[1], vect[2]);
@@ -311,21 +310,21 @@ std::vector<float> LeapData::splitString(std::string line) {
 void LeapData::printAttributes() {
 	std::cout << "number of fingers: " << numFingers << std::endl;
 
-	std::cout << "fingerTipDist:" << " ";
-	for (int i = 0; i < fingerTipDist.size(); i++) {
-		std::cout << fingerTipDist[i] << " ";
+	std::cout << "fingertipDist:" << " ";
+	for (int i = 0; i < fingertipDist.size(); i++) {
+		std::cout << fingertipDist[i] << " ";
 	}
 	std::cout << std::endl;
 
-	std::cout << "fingerTipDistRefined:" << " ";
-	for (int i = 0; i < fingerTipDistRefined.size(); i++) {
-		std::cout << fingerTipDistRefined[i] << " ";
+	std::cout << "fingertipDistRefined:" << " ";
+	for (int i = 0; i < fingertipDistRefined.size(); i++) {
+		std::cout << fingertipDistRefined[i] << " ";
 	}
 	std::cout << std::endl;
 
-	std::cout << "fingerTipInterDist:" << " ";
-	for (int i = 0; i < fingerTipInterDist.size(); i++) {
-		std::cout << fingerTipInterDist[i] << " ";
+	std::cout << "fingertipInterDist:" << " ";
+	for (int i = 0; i < fingertipInterDist.size(); i++) {
+		std::cout << fingertipInterDist[i] << " ";
 	}
 	std::cout << std::endl;
 
@@ -373,9 +372,9 @@ void LeapData::printAttributes() {
 
 	std::cout << "translationProbability: " << translationProbability << std::endl;
 
-	std::cout << "fingerTipPosition:" << " ";
-	for (int i = 0; i < fingerTipPosition.size(); i++) {
-		fingerTipPosition[i].printPoint();
+	std::cout << "fingertipPosition:" << " ";
+	for (int i = 0; i < fingertipPosition.size(); i++) {
+		fingertipPosition[i].printPoint();
 	}
 	std::cout << std::endl;
 
@@ -394,15 +393,15 @@ void LeapData::printAttributes() {
 	std::cout << "New scale factor: " << newScaleFactor << std::endl;
 	std::cout << "Old scale factor: " << oldScaleFactor << std::endl;
 
-	std::cout << "newFingerTipDistRefined:" << " ";
-	for (int i = 0; i < newFingerTipDistRefined.size(); i++) {
-		std::cout << newFingerTipDistRefined[i] << " ";
+	std::cout << "newFingertipDistRefined:" << " ";
+	for (int i = 0; i < newFingertipDistRefined.size(); i++) {
+		std::cout << newFingertipDistRefined[i] << " ";
 	}
 	std::cout << std::endl;
 
-	std::cout << "fingerTipAngles:" << " ";
-	for (int i = 0; i < fingerTipAngles.size(); i++) {
-		std::cout << fingerTipAngles[i] << " ";
+	std::cout << "fingertipAngles:" << " ";
+	for (int i = 0; i < fingertipAngles.size(); i++) {
+		std::cout << fingertipAngles[i] << " ";
 	}
 	std::cout << std::endl;
 
@@ -412,132 +411,27 @@ void LeapData::printAttributes() {
 	}
 	std::cout << std::endl;
 
-	std::cout << "fingerTipElevation:" << " ";
-	for (int i = 0; i < fingerTipElevation.size(); i++) {
-		std::cout << fingerTipElevation[i] << " ";
+	std::cout << "fingertipElevation:" << " ";
+	for (int i = 0; i < fingertipElevation.size(); i++) {
+		std::cout << fingertipElevation[i] << " ";
 	}
 	std::cout << std::endl;
-}
-
-void LeapData::writeToFile(std::string path) {
-	std::ofstream file;
-	file.open(path);
-	std::cout << std::fixed;
-	file << "numFingers: " << numFingers << "\n";
-
-	file << "fingerTipDist: " ;
-	for (int i = 0; i < fingerTipDist.size(); i++) {
-		file << std::to_string(fingerTipDist[i]) << " ";
-	}
-	file << "\n";
-
-	file << "newFingerTipDistRefined: ";
-	for (int i = 0; i < newFingerTipDistRefined.size(); i++) {
-		file << std::to_string(newFingerTipDistRefined[i]) << " ";
-	}
-	file << "\n";
-
-	file << "fingerTipInterDist: ";
-	for (int i = 0; i < fingerTipInterDist.size(); i++) {
-		file << std::to_string(fingerTipInterDist[i]) << " ";
-	}
-	file << "\n";
-
-	file << "fingerTipPosition: ";
-	for (int i = 0; i < fingerTipPosition.size(); i++) {
-		file << fingerTipPosition[i].writePoint();
-	}
-	file << "\n";
-
-	file << "handDirection: ";
-	file << handDirection.writePoint();
-	file << "\n";
-
-	file << "handSphereCenter: ";
-	file << handSphereCenter.writePoint();
-	file << "\n";
-
-	file << "handSphereRadius: " << std::to_string(handSphereRadius) << std::endl;
-
-	file << "palmNormal: ";
-	file << palmNormal.writePoint();
-	file << "\n";
-
-	file << "palmPosition: ";
-	file << palmPosition.writePoint();
-	file << "\n";
-
-	file << "palmPositionRefined: ";
-	file << palmPositionRefined.writePoint();
-	file << "\n";
-
-	file << "palmVelocity: ";
-	for (int i = 0; i < palmVelocity.size(); i++) {
-		file << std::to_string(palmVelocity[i]) << " ";
-	}
-	file << "\n";
-
-	file << "rotationAngle: " << std::to_string(rotationAngle) << std::endl;
-
-	file << "rotationAxis: ";
-	for (int i = 0; i < rotationAxis.size(); i++) {
-		file << std::to_string(rotationAxis[i]) << " ";
-	}
-	file << "\n";
-
-	file << "rotationMatrix: ";
-	for (int i = 0; i < rotationMatrix.size(); i++) {
-		file << std::to_string(rotationMatrix[i]) << " ";
-	}
-	file << "\n";
-
-	file << "rotationProbability: " << std::to_string(rotationProbability) << std::endl;
-
-	file << "newScaleFactor: " << newScaleFactor << std::endl;
-
-	file << "translation: ";
-	for (int i = 0; i < translation.size(); i++) {
-		file << std::to_string(translation[i]) << " ";
-	}
-	file << "\n";
-
-	file << "translationProbability: " << std::to_string(translationProbability) << std::endl;
-
-	file << "fingerTipAngles: ";
-	for (int i = 0; i < fingerTipAngles.size(); i++) {
-		file << std::to_string(fingerTipAngles[i]) << " ";
-	}
-	file << "\n";
-
-	file << "projectionPoints: ";
-	for (int i = 0; i < projectionPoints.size(); i++) {
-		file << projectionPoints[i].writePoint();
-	}
-	file << "\n";
-
-	file << "fingerTipElevation: ";
-	for (int i = 0; i < fingerTipElevation.size(); i++) {
-		file << std::to_string(fingerTipElevation[i]) << " ";
-	}
-	file << "\n";
-
-	file.close();
 }
 
 int LeapData::getNumFingers() {
 	return numFingers;
 }
-std::vector<float> LeapData::getFingerTipDist() {
-	return fingerTipDist;
+std::vector<float> LeapData::getFingertipDist() {
+	return fingertipDist;
 }
-std::vector<float> LeapData::getFingerTipDistRefined() {
-	return fingerTipDistRefined;
+std::vector<float> LeapData::getFingertipDistRefined() {
+	return fingertipDistRefined;
 }
-std::vector<float> LeapData::getFingerTipInterDist() {
-	return fingerTipInterDist;
+std::vector<float> LeapData::getFingertipInterDist() {
+	return fingertipInterDist;
 }
-std::vector<Point> LeapData::getFingerTipPosition() {
-	return fingerTipPosition;
+std::vector<Point> LeapData::getFingertipPosition() {
+	return fingertipPosition;
 }
 Point LeapData::getHandDirection() {
 	return handDirection;
@@ -588,17 +482,17 @@ float LeapData::getTranslationProbability() {
 float LeapData::getNewScaleFactor() {
 	return newScaleFactor;
 }
-std::vector<float> LeapData::getNewFingerTipDistRefined() {
-	return newFingerTipDistRefined;
+std::vector<float> LeapData::getNewFingertipDistRefined() {
+	return newFingertipDistRefined;
 }
-std::vector<float> LeapData::getFingerTipAngles() {
-	return fingerTipAngles;
+std::vector<float> LeapData::getFingertipAngles() {
+	return fingertipAngles;
 }
 std::vector<Point> LeapData::getProjectionPoints() {
 	return projectionPoints;
 }
-std::vector<float> LeapData::getFingerTipElevation() {
-	return fingerTipElevation;
+std::vector<float> LeapData::getFingertipElevation() {
+	return fingertipElevation;
 }
 
 std::string LeapData::getGesture() {
@@ -608,6 +502,6 @@ std::string LeapData::getGesture() {
 std::vector<int> LeapData::getExtendedFingers() {
 	return extendedFingers;
 }
-std::vector<float> LeapData::getFingerAreas() {
-	return FingerAreas;
+float LeapData::getFingerArea() {
+	return fingerArea;
 }

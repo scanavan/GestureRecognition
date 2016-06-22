@@ -37,6 +37,7 @@ float Point::getZ() {
 	return z;
 }
 
+// returns Point as a string separated by commas
 std::string Point::writePoint() {
 	return std::to_string(x) + "," + std::to_string(y) + "," + std::to_string(z);
 }
