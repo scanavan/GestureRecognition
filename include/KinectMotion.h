@@ -7,10 +7,10 @@
 #include "LeapData.h"
 #include <set>
 
-#define _FILE_NUM_ 0
-#define PI 3.14159265
-#define _SCALE_ 480
-#define _SAMPLE_SIZE_ 180.0
+#define _FILE_NUM_		0
+#define PI				3.14159265
+#define _SCALE_			480
+#define _SAMPLE_SIZE_	180.0
 
 struct Occ {
 	int nonZ;
@@ -42,6 +42,7 @@ cv::Point palmCenter(cv::Mat image);
 std::vector<cv::Point> getContour(cv::Mat image);
 void createWindow(cv::Mat image, std::string imageName);
 float * silhouette(cv::Mat image);
+float * hullAreas(cv::Mat image)
 
 /*
  * FEATURES
