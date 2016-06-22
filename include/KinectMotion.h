@@ -10,6 +10,7 @@
 #define _FILE_NUM_ 0
 #define PI 3.14159265
 #define _SCALE_ 480
+#define _SAMPLE_SIZE_ 180.0
 
 struct Occ {
 	int nonZ;
@@ -20,22 +21,18 @@ struct Occ {
 class KinectMotion {
 public:
 	KinectMotion(const char * filepath);
-	KinectImage * getDepth();
-	KinectImage * getRgb();
 	cv::Mat updateImage(int upperThresholdVal, int lowerThresholdVal, bool make_binary = true);
-	float blobMax(cv::Mat depth);
 	cv::Mat getHand(cv::Mat image, double ratio);
 	cv::Mat makeContourImage(cv::Mat image);
-	cv::Point handCenter(cv::Mat image);
 	std::vector <Occ> cellOccupancy(cv::Mat image);
 	void findDirection(cv::Mat image);
 	cv::Mat scaleHand(cv::Mat image);
 	std::vector<float>distContour(cv::Mat image);
-	cv::Rect getRect(cv::Mat image);
 	cv::Mat rotateImage(cv::Mat image);
-	//void blob(cv::Mat imMat);
-	//int * palmCenter2(cv::Mat image);
 private:
+	cv::Rect getRect(cv::Mat image);
+	KinectImage * getDepth();
+	KinectImage * getRgb();
 	KinectImage * depth;
 	KinectImage * rgb;
 	LeapData * leap;
