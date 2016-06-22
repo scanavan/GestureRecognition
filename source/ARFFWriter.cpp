@@ -109,10 +109,11 @@ ARFFWriter::ARFFWriter(std::string path, std::vector<LeapData> data) {
 		"@ATTRIBUTE fingerTipElevation_f4   NUMERIC\n" <<
 		"@ATTRIBUTE fingerTipElevation_f5   NUMERIC\n" <<
 		"@ATTRIBUTE fingersExtended   NUMERIC\n" <<
-		"@ATTRIBUTE fingersAreas_f1   NUMERIC\n" <<
+		/*"@ATTRIBUTE fingersAreas_f1   NUMERIC\n" <<
 		"@ATTRIBUTE fingersAreas_f2   NUMERIC\n" <<
 		"@ATTRIBUTE fingersAreas_f3   NUMERIC\n" <<
-		"@ATTRIBUTE fingersAreas_f4   NUMERIC\n" <<
+		"@ATTRIBUTE fingersAreas_f4   NUMERIC\n" <<*/
+		"@ATTRIBUTE fingersAreasAverage   NUMERIC\n" <<
 		"@ATTRIBUTE class { G1, G2, G3, G4, G5, G6, G7, G8, G9, G0 }\n" <<
 		"\n@DATA\n";
 
@@ -335,11 +336,19 @@ std::string ARFFWriter::getFingersExtends(LeapData leap) {
 }
 std::string ARFFWriter::getFingersArea(LeapData leap)
 {
-	std::string returnVal;
+	float total = 0;
+	//std::string returnVal;
 	for (int i = 0; i < leap.getFingerAreas().size(); i++) {
-		returnVal = returnVal + std::to_string(leap.getFingerAreas()[i]) +',';
+		total = total + leap.getFingerAreas()[i];
+		//returnVal = returnVal + std::to_string(leap.getFingerAreas()[i]) +',';
+	}
+	if (leap.getNumFingers() >= 2) {
+		return std::to_string(total / (leap.getNumFingers() - 1)) + ",";
+	}
+	else {
+		return "0.000000,";
 	}
 	
-	return returnVal;
+	//return returnVal;
 }
 
