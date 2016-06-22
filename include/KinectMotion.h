@@ -29,16 +29,16 @@ public:
 	cv::Mat scaleHand(cv::Mat image);
 	std::vector<float>distContour(cv::Mat image);
 	cv::Mat rotateImage(cv::Mat image);
+	KinectImage * getDepth();
 private:
 	cv::Rect getRect(cv::Mat image);
-	KinectImage * getDepth();
 	KinectImage * getRgb();
 	KinectImage * depth;
 	KinectImage * rgb;
 	LeapData * leap;
 }; 
 
-cv::Point palmCenter(cv::Mat image);
+cv::Point palmCenter(cv::Mat image, int thresh);
 std::vector<cv::Point> getContour(cv::Mat image);
 void createWindow(cv::Mat image, std::string imageName);
 float * silhouette(cv::Mat image);

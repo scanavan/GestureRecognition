@@ -90,7 +90,7 @@ cv::Mat KinectMotion::updateImage(int upperThresholdVal, int lowerThresholdVal, 
 	// threshold
 	for (int i = 0; i < h; i++) {
 		for (int j = 0; j < w; j++) {
-			if(i < 50 || j < 50 || i > h-150 || j > w-50) iDepthMat.at<uchar>(i, j) = 0;
+			if(i < 50 || j < 50 || i > h-100 || j > w-50) iDepthMat.at<uchar>(i, j) = 0;
 			else {
 				cv::Scalar intensity = iDepthMat.at<uchar>(i, j);
 				if (intensity.val[0] < upperThresholdVal && intensity.val[0] > lowerThresholdVal) {
@@ -155,10 +155,10 @@ cv::Mat KinectMotion::makeContourImage(cv::Mat image) {
 	@def - find center point of palm using GaussianBlur
 	@param - image - the matrix image
 */
-cv::Point palmCenter(cv::Mat image) {
+cv::Point palmCenter(cv::Mat image, int thresh) {
 
 	cv::Mat new_image = image.clone();
-	cv::GaussianBlur(image, new_image, cv::Size(0, 0), 23, 23);
+	cv::GaussianBlur(image, new_image, cv::Size(0, 0), thresh, thresh);
 
 	int max = 0;
 	cv::Point center;
@@ -265,7 +265,7 @@ std::vector<cv::Point> getContour(cv::Mat image) {
 
 	std::vector<cv::Point> rawContour;
 	std::vector<cv::Point> sortedContour;
-	cv::Point pc = palmCenter(image);
+	cv::Point pc = palmCenter(image,23);
 	cv::Mat image_clone;
 	image.convertTo(image_clone, CV_8U);
 
@@ -354,7 +354,7 @@ void createWindow(cv::Mat image, std::string imageName) {
 */
 std::vector<float> KinectMotion::distContour(cv::Mat image) {
 	std::vector<cv::Point> edges = getContour(image);
-	cv::Point center = palmCenter(image);
+	cv::Point center = palmCenter(image,23);
 	std::vector<cv::Point> sampleContour;
 	std::vector<float> retVal;
 
@@ -542,6 +542,7 @@ float * hullAreas(cv::Mat image)
 			if (uimage.at<uchar>(i, j) != 0) hull_image.at<uchar>(i, j) = 0;
 		}
 	}
+	cv::Point pc = palmCenter(uimage,40);
 
 	cv::Mat image_clone = hull_image.clone();
 	cv::Mat new_image = cv::Mat::zeros(image.size(), CV_8UC3);
@@ -549,7 +550,19 @@ float * hullAreas(cv::Mat image)
 	std::vector<std::vector<cv::Point>> thresholded_hull_contours;
 	for (int i = 0; i < contours.size(); ++i)
 	{
-		if (contourArea(contours[i]) > 1000) thresholded_hull_contours.push_back(contours[i]);
+		if (contourArea(contours[i]) > 1000)
+		{
+			bool good = true;
+			for (int j = 0; j < contours[i].size(); ++j)
+			{
+				if (contours[i][j].y > pc.y)
+				{
+					good = false;
+					break;
+				}
+			}
+			if(good) thresholded_hull_contours.push_back(contours[i]);
+		}
 	}
 
 	for (int i = 0; i < thresholded_hull_contours.size(); ++i)
@@ -558,6 +571,9 @@ float * hullAreas(cv::Mat image)
 		ret_array[i] = contourArea(thresholded_hull_contours[i]) / hand_area;
 		std::cout << contourArea(thresholded_hull_contours[i]) << std::endl;
 	}
+
+	hull_image.at<uchar>(pc.y, pc.x) = 255;
+	new_image.at<cv::Vec3b>(pc.y, pc.x) = cv::Vec3b(255,255,255);
 
 	std::cout << thresholded_hull_contours.size() << std::endl;
 	createWindow(hull_image, "Hull");
