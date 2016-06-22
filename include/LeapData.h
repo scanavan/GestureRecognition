@@ -24,7 +24,6 @@ public:
 	void setNewFingertipDist();
 	void setFingertipAngles();
 	void setOldScaleFactor();
-	void writeToFile(std::string path);
 	int getNumFingers();
 	std::vector<float> getFingertipDist();
 	std::vector<float> getFingertipDistRefined();

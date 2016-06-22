@@ -6,7 +6,6 @@
 class ARFFWriter {
 public:
 	ARFFWriter(std::string path, std::vector<LeapData> data);
-	std::string writeData(LeapData leap);
 	std::string getNumFingers(LeapData leap);
 	std::string getFingertipDist(LeapData leap);
 	std::string getFingertipInterDist(LeapData leap);
