@@ -37,7 +37,7 @@ void SampleListener::onFrame(const Controller& controller) {
 		std::string handType = hand.isLeft() ? "Left hand" : "Right hand";
 		std::cout << std::string(2, ' ') << handType << std::endl;
 		// Get the hand's normal vector and direction
-	/*	const Vector normal = hand.palmNormal();
+		const Vector normal = hand.palmNormal();
 		const Vector direction = hand.direction();
 		const Vector position = hand.palmPosition();
 
@@ -46,7 +46,7 @@ void SampleListener::onFrame(const Controller& controller) {
 		handDirection = Point(direction.x, direction.y, direction.z);
 		handDirection.printPoint();
 		palmPosition = Point(position.x, position.y, position.z);
-		palmPosition.printPoint();*/
+		palmPosition.printPoint();
 
 		// Get fingers
 		const FingerList fingers = hand.fingers();
@@ -79,25 +79,25 @@ void SampleListener::onFrame(const Controller& controller) {
 				std::cout << extendedFingers[i] << ",";
 			}
 		}
-	//	for (FingerList::const_iterator fl = fingers.begin(); fl != fingers.end(); ++fl) {
-	//		const Finger finger = *fl;
-	//		const Vector direction = finger.direction();
-	//		fingerDirections.push_back(Point(direction.x, direction.y, direction.z));
-	//		const Bone distal = finger.bone(Bone::TYPE_DISTAL);
-	//		const Vector tip = distal.nextJoint();
-	//		tipPositions.push_back(Point(tip.x, tip.y, tip.z));
-	//	}
-	//	std::cout << "Number of Fingers: " << numFingers << std::endl;
-	//	std::cout << "\nextendedFingers: ";
-	//	for (int i = 0; i < extendedFingers.size(); i++) {
-	//		if (i == extendedFingers.size() - 1) {
-	//			std::cout << extendedFingers[i];
-	//		}
-	//		else {
-	//			std::cout << extendedFingers[i] << ",";
-	//		}
+		for (FingerList::const_iterator fl = fingers.begin(); fl != fingers.end(); ++fl) {
+			const Finger finger = *fl;
+			const Vector direction = finger.direction();
+			fingerDirections.push_back(Point(direction.x, direction.y, direction.z));
+			const Bone distal = finger.bone(Bone::TYPE_DISTAL);
+			const Vector tip = distal.nextJoint();
+			tipPositions.push_back(Point(tip.x, tip.y, tip.z));
+		}
+		std::cout << "Number of Fingers: " << numFingers << std::endl;
+		std::cout << "\nextendedFingers: ";
+		for (int i = 0; i < extendedFingers.size(); i++) {
+			if (i == extendedFingers.size() - 1) {
+				std::cout << extendedFingers[i];
+			}
+			else {
+				std::cout << extendedFingers[i] << ",";
+			}
 
-	//	}
+		}
 
 
 	}
