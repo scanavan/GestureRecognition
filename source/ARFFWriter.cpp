@@ -30,7 +30,7 @@ ARFFWriter::ARFFWriter(std::string path, std::vector<LeapData> data) {
 		"@ATTRIBUTE fingertipInterDist_d2   NUMERIC\n" <<
 		"@ATTRIBUTE fingertipInterDist_d3   NUMERIC\n" <<
 		"@ATTRIBUTE fingertipInterDist_d4   NUMERIC\n" <<*/
-		"@ATTRIBUTE fingertipPosition_f1x  NUMERIC\n" <<
+		/*"@ATTRIBUTE fingertipPosition_f1x  NUMERIC\n" <<
 		"@ATTRIBUTE fingertipPosition_f1y  NUMERIC\n" <<
 		"@ATTRIBUTE fingertipPosition_f1z  NUMERIC\n" <<
 		"@ATTRIBUTE fingertipPosition_f2x  NUMERIC\n" <<
@@ -44,7 +44,7 @@ ARFFWriter::ARFFWriter(std::string path, std::vector<LeapData> data) {
 		"@ATTRIBUTE fingertipPosition_f4z  NUMERIC\n" <<
 		"@ATTRIBUTE fingertipPosition_f5x  NUMERIC\n" <<
 		"@ATTRIBUTE fingertipPosition_f5y  NUMERIC\n" <<
-		"@ATTRIBUTE fingertipPosition_f5z  NUMERIC\n" <<
+		"@ATTRIBUTE fingertipPosition_f5z  NUMERIC\n" <<*/
 		/*"@ATTRIBUTE handDirection_x   NUMERIC\n" <<
 		"@ATTRIBUTE handDirection_y   NUMERIC\n" <<
 		"@ATTRIBUTE handDirection_z   NUMERIC\n" <<
@@ -119,7 +119,7 @@ ARFFWriter::ARFFWriter(std::string path, std::vector<LeapData> data) {
 
 	// goes through the data LeapData vector and gets the values for the arff file
 	for (int i = 0; i < data.size(); i++) {
-		file << getNumFingers(data[i]) << getNewFingertipDistRefined(data[i]) << getFingertipPosition(data[i]) << getFingertipAngles(data[i]) << getFingertipElevation(data[i]) << getFingersExtends(data[i]) << getFingersArea(data[i]) << getGesture(data[i]) << "\n";
+		file << getNumFingers(data[i]) << getNewFingertipDistRefined(data[i]) << getFingertipAngles(data[i]) << getFingertipElevation(data[i]) << getFingersExtends(data[i]) << getFingersArea(data[i]) << getGesture(data[i]) << "\n";
 	}
 
 	file.close();
