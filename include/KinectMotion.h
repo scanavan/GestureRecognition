@@ -38,7 +38,8 @@ private:
 	LeapData * leap;
 }; 
 
-cv::Point palmCenter(cv::Mat image, int thresh);
+cv::Mat binarize(cv::Mat image, int threshold = 5);
+cv::Point palmCenter(cv::Mat image, int thresh = 23);
 std::vector<cv::Point> getContour(cv::Mat image);
 void createWindow(cv::Mat image, std::string imageName);
 float * silhouette(cv::Mat image);

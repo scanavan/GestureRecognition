@@ -11,7 +11,8 @@
 #include <vector>
 #include <set>
 
-KinectMotion::KinectMotion(const char * filepath){
+KinectMotion::KinectMotion(const char * filepath)
+{
 	FileNames my_files;
 	my_files.readDir(filepath);
 	leap = new LeapData(my_files.leap[_FILE_NUM_]);
@@ -19,11 +20,13 @@ KinectMotion::KinectMotion(const char * filepath){
 	rgb = new KinectImage(my_files.rgb[_FILE_NUM_]);
 }
 
-KinectImage * KinectMotion::getDepth() {
+KinectImage * KinectMotion::getDepth() 
+{
 	return depth;
 }
 
-KinectImage * KinectMotion::getRgb() {
+KinectImage * KinectMotion::getRgb() 
+{
 	return rgb;
 }
 
@@ -32,7 +35,8 @@ KinectImage * KinectMotion::getRgb() {
 	cut's the image at the wrist
 	@param - thresholdRatio pixel difference between arm and wrist (percentage)
 */
-cv::Mat KinectMotion::getHand(cv::Mat image, double thresholdRatio) {
+cv::Mat KinectMotion::getHand(cv::Mat image, double thresholdRatio) 
+{
 	int top = 0;
 	bool foundHand = false;
 	int handToWrist = 0;
@@ -41,22 +45,29 @@ cv::Mat KinectMotion::getHand(cv::Mat image, double thresholdRatio) {
 	bool atWrist = false;
 	int tmp = 0;
 	
-	for (int i = 0; i < image.rows; i++) {
-		for (int j = 0; j < image.cols; j++) {
-			if (image.at<uchar>(i, j) != 0) {
+	for (int i = 0; i < image.rows; i++) 
+	{
+		for (int j = 0; j < image.cols; j++) 
+		{
+			if (image.at<uchar>(i, j) != 0) 
+			{
 				numPixels++;
-				if (!foundHand) {
+				if (!foundHand) 
+				{
 					top = i;
 					foundHand = true;
 				}
 			}
 		}
-		if (numPixels > 0 && !atWrist) {
+		if (numPixels > 0 && !atWrist) 
+		{
 			handToWrist++;
-			if (numPixels > max) {
+			if (numPixels > max) 
+			{
 				max = numPixels;
 			}
-			if (i > top + 50 && tmp != 0 && numPixels <= tmp * thresholdRatio && tmp <= max*.75) {
+			if (i > top + 50 && tmp != 0 && numPixels <= tmp * thresholdRatio && tmp <= max*.75) 
+			{
 				atWrist = true;
 			}
 			tmp = numPixels;
@@ -64,8 +75,10 @@ cv::Mat KinectMotion::getHand(cv::Mat image, double thresholdRatio) {
 		}
 	}
 
-	for (int i = (top + handToWrist + 10); i < image.rows; i++) {
-		for (int j = 0; j < image.cols; j++) {
+	for (int i = (top + handToWrist + 10); i < image.rows; i++) 
+	{
+		for (int j = 0; j < image.cols; j++) 
+		{
 			image.at<uchar>(i, j) = 0;
 		}
 	}
@@ -79,8 +92,8 @@ cv::Mat KinectMotion::getHand(cv::Mat image, double thresholdRatio) {
 			 in threshold
 	make_binary - creates binary image, or creates greyscale image
 */
-cv::Mat KinectMotion::updateImage(int upperThresholdVal, int lowerThresholdVal, bool make_binary) {
-
+cv::Mat KinectMotion::updateImage(int upperThresholdVal, int lowerThresholdVal, bool make_binary) 
+{
 	// get depth image determine hight and width of image
 	cv::Mat iDepthMat;
 	depth->returnImage().convertTo(iDepthMat,CV_8UC3);
@@ -88,15 +101,20 @@ cv::Mat KinectMotion::updateImage(int upperThresholdVal, int lowerThresholdVal, 
 	int w = depth->getWidth();
 
 	// threshold
-	for (int i = 0; i < h; i++) {
-		for (int j = 0; j < w; j++) {
+	for (int i = 0; i < h; i++) 
+	{
+		for (int j = 0; j < w; j++) 
+		{
 			if(i < 50 || j < 50 || i > h-100 || j > w-50) iDepthMat.at<uchar>(i, j) = 0;
-			else {
+			else 
+			{
 				cv::Scalar intensity = iDepthMat.at<uchar>(i, j);
-				if (intensity.val[0] < upperThresholdVal && intensity.val[0] > lowerThresholdVal) {
+				if (intensity.val[0] < upperThresholdVal && intensity.val[0] > lowerThresholdVal) 
+				{
 					if (make_binary) iDepthMat.at<uchar>(i, j) = 255;
 				}
-				else {
+				else 
+				{
 					iDepthMat.at<uchar>(i, j) = 0;
 				}
 			}
@@ -112,16 +130,22 @@ cv::Mat KinectMotion::updateImage(int upperThresholdVal, int lowerThresholdVal, 
 	int first_contiguous_row = 0;
 	int last_contiguous_row = 0;
 	for (int i = 0; i < h; i++) {
-		if (row_sums.at<int>(i) != 0) {
+		if (row_sums.at<int>(i) != 0) 
+		{
 			if (num_contiguous_rows == 0) first_contiguous_row = i;
 			else last_contiguous_row = i;
 			num_contiguous_rows++;
 		}
-		else {
-			if (num_contiguous_rows != 0) {
-				if (num_contiguous_rows < 50) {
-					for (int i = first_contiguous_row; i <= last_contiguous_row; i++) {
-						for (int j = 0; j < iDepthMat.cols; j++) {
+		else 
+		{
+			if (num_contiguous_rows != 0) 
+			{
+				if (num_contiguous_rows < 50) 
+				{
+					for (int i = first_contiguous_row; i <= last_contiguous_row; i++) 
+					{
+						for (int j = 0; j < iDepthMat.cols; j++) 
+						{
 							iDepthMat.at<uchar>(i, j) = 0;
 						}
 					}
@@ -132,23 +156,26 @@ cv::Mat KinectMotion::updateImage(int upperThresholdVal, int lowerThresholdVal, 
 	}
 
 	return iDepthMat;
-
 }
 
 /*
 	@def - draws the contours
 	@param - image - the matrix image
 */
-cv::Mat KinectMotion::makeContourImage(cv::Mat image) {
-
+cv::Mat KinectMotion::makeContourImage(cv::Mat image) 
+{
 	cv::Mat contourImage(image.size(), CV_8UC3, cv::Scalar(0, 0, 0));
 	
 	std::vector <std::vector<cv::Point>> contours;
 	contours.push_back(getContour(image));
 	cv::drawContours(contourImage, contours, 0, cv::Scalar(255,255,255));
 
-	return contourImage;
+	cv::Moments m = moments(contours[0]);
+	cv::Point centroid = cv::Point((int)(m.m10 / m.m00), (int)(m.m01 / m.m00));
 
+	contourImage.at<cv::Vec3b>(centroid.y, centroid.x) = cv::Vec3b(0, 255, 0);
+
+	return contourImage;
 }
 
 /*
@@ -175,7 +202,6 @@ cv::Point palmCenter(cv::Mat image, int thresh) {
 	}
 
 	return center;
-
 }
 
 Occ::Occ(int nonZ, float avgD) {
@@ -189,7 +215,8 @@ Occ::Occ(int nonZ, float avgD) {
 		   as well as their average depths
 	@param - image - the matrix image
 */
-std::vector<Occ> KinectMotion::cellOccupancy(cv::Mat image) {
+std::vector<Occ> KinectMotion::cellOccupancy(cv::Mat image) 
+{
 	std::vector<Occ> retVal;
 	int nonZ = 0;
 	float avgD = 0;
@@ -217,18 +244,22 @@ std::vector<Occ> KinectMotion::cellOccupancy(cv::Mat image) {
 			avgD = 0;
 		}
 	}
-	if (maxD != 0) {
-		for (int x = 0; x < retVal.size(); x++) {
+	if (maxD != 0) 
+	{
+		for (int x = 0; x < retVal.size(); x++) 
+		{
 			retVal.at(x).avgD = retVal.at(x).avgD / maxD;
 		}
 	}
+
 	return retVal;
 } 
 
 /*
 	@def - getbacktolater
 */
-void KinectMotion::findDirection(cv::Mat image) {
+void KinectMotion::findDirection(cv::Mat image) 
+{
 
 	std::vector<cv::Point> edges = getContour(image);
 	double max_distance = 0;
@@ -261,20 +292,19 @@ void KinectMotion::findDirection(cv::Mat image) {
 	@def - gets contours and sorts them starts at contour point directly above palm center
 	@param - image - the matrix image
 */
-std::vector<cv::Point> getContour(cv::Mat image) {
-
+std::vector<cv::Point> getContour(cv::Mat image) 
+{
 	std::vector<cv::Point> rawContour;
 	std::vector<cv::Point> sortedContour;
-	cv::Point pc = palmCenter(image,23);
-	cv::Mat image_clone;
-	image.convertTo(image_clone, CV_8U);
+	cv::Mat image_clone = binarize(image);
+	cv::Point pc = palmCenter(image_clone,23);
 
 	std::vector<std::vector<cv::Point>> contours;
 	cv::findContours(image_clone, contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_NONE);
 
 	if (contours.size() == 1) rawContour = contours[0];
-	else {
-
+	else 
+	{
 		int max_size = 0;
 		int max_index;
 		for (int i = 0; i < contours.size(); ++i)
@@ -285,18 +315,20 @@ std::vector<cv::Point> getContour(cv::Mat image) {
 				max_index = i;
 			}
 		}
-
 		rawContour = contours[max_index];
 	}
 
 	int start = 0;
-	for (int i = 0; i < rawContour.size(); i++) {
-		if (rawContour[i].x == pc.x && rawContour[i].y <= pc.y) {
+	for (int i = 0; i < rawContour.size(); i++) 
+	{
+		if (rawContour[i].x == pc.x && rawContour[i].y <= pc.y) 
+		{
 			start = i;
 			break;
 		}
 	}
-	for (int i = 0; i < rawContour.size(); i++) {
+	for (int i = 0; i < rawContour.size(); i++) 
+	{
 		sortedContour.push_back(rawContour[(i + start) % rawContour.size()]);
 	}
 
@@ -307,7 +339,8 @@ std::vector<cv::Point> getContour(cv::Mat image) {
 	@def - scales hand to a fixed square image
 	@param - image - image matrix
 */
-cv::Mat KinectMotion::scaleHand(cv::Mat image) {
+cv::Mat KinectMotion::scaleHand(cv::Mat image) 
+{
 
 	cv::Mat dst = cv::Mat::zeros(_SCALE_,_SCALE_,CV_8U);
 
@@ -338,10 +371,10 @@ cv::Mat KinectMotion::scaleHand(cv::Mat image) {
 	cv::resize(croppedImage, dst(roi), roi.size());
 
 	return dst;
-
 }
 
-void createWindow(cv::Mat image, std::string imageName) {
+void createWindow(cv::Mat image, std::string imageName) 
+{
 	cv::namedWindow(imageName, cv::WINDOW_AUTOSIZE);
 	cv::imshow(imageName, image);
 	cv::waitKey(0);
@@ -352,31 +385,35 @@ void createWindow(cv::Mat image, std::string imageName) {
 		   calculates the distance from the palm center to each sampled point
 	@param - image - image matrix
 */
-std::vector<float> KinectMotion::distContour(cv::Mat image) {
+std::vector<float> KinectMotion::distContour(cv::Mat image) 
+{
 	std::vector<cv::Point> edges = getContour(image);
 	cv::Point center = palmCenter(image,23);
 	std::vector<cv::Point> sampleContour;
 	std::vector<float> retVal;
 
-	for (int i = 0; i < _SAMPLE_SIZE_; i++) {
+	for (int i = 0; i < _SAMPLE_SIZE_; i++) 
+	{
 		sampleContour.push_back(edges[(int)(i * (float)(edges.size()) / _SAMPLE_SIZE_)]);
 	}
 
 	float max = 0;
-	for (int i = 0; i < sampleContour.size(); i++) {
+	for (int i = 0; i < sampleContour.size(); i++) 
+	{
 		float temp = std::sqrt(std::pow(center.x - sampleContour.at(i).x, 2) + std::pow(center.y - sampleContour.at(i).y, 2));
 		retVal.push_back(temp);
-		if (temp > max) {
+		if (temp > max) 
+		{
 			max = temp;
 		}
 	}
-	for (int j = 0; j < retVal.size(); j++) {
-		if (max != 0) {
+	for (int j = 0; j < retVal.size(); j++) 
+	{
+		if (max != 0) 
+		{
 			retVal.at(j) = retVal.at(j) / max;
 		}
 	}
-
-
 
 	return retVal;
 }
@@ -428,7 +465,8 @@ cv::Rect KinectMotion::getRect(cv::Mat image)
 	@def - rotates image according to how leap data interprets upward direction
 	@param - image - image matrix
 */
-cv::Mat KinectMotion::rotateImage(cv::Mat image) {
+cv::Mat KinectMotion::rotateImage(cv::Mat image) 
+{
 	float x = leap->getHandDirection().getX();
 	float y = leap->getHandDirection().getY();
 	float angle = atan(x / y) * (180 / PI);
@@ -468,9 +506,7 @@ float * silhouette(cv::Mat image)
 	{
 		x = contour[i].x - center.x; y = center.y - contour[i].y;
 		angle = atan2(y,x);
-		if (angle < 0) {
-			angle = (2 * PI) + angle;
-		}
+		if (angle < 0) angle = (2 * PI) + angle;
 		dist = sqrt((x*x) + (y*y));
 		bin = (int)(angle * 16 / PI);
 		bins[bin].push_back(dist);
@@ -490,21 +526,9 @@ float * silhouette(cv::Mat image)
 		avgs[i] = sum / bins[i].size();
 		std::cout << avgs[i] << std::endl;
 	}
+
 	return avgs;
 }
-
-/* 
- * Convex Hull
- * 
- * Image -> getContour
- * Contour -> convexHull
- * Hull -> drawContours
- * Hull image -> subtract image
- * Components Image -> findContours
- * Components contours -> contourArea
- * Area threshold
- * Area sort
- */
 
 float * hullAreas(cv::Mat image)
 {
@@ -565,24 +589,48 @@ float * hullAreas(cv::Mat image)
 		}
 	}
 
+	std::vector<float> angles;
 	for (int i = 0; i < thresholded_hull_contours.size(); ++i)
 	{
 		cv::drawContours(new_image, thresholded_hull_contours, i, cv::Scalar(i * 255 / thresholded_hull_contours.size(), 0, 255));
+		cv::Moments m = moments(thresholded_hull_contours[i]);
+		cv::Point centroid = cv::Point((int)(m.m10 / m.m00), (int)(m.m01 / m.m00));
+		angles.push_back(atan2(pc.y - centroid.y, centroid.x - pc.x));
+		if (angles[i] < 0) angles[i] = (2 * PI) + angles[i];
 		ret_array[i] = contourArea(thresholded_hull_contours[i]) / hand_area;
-		std::cout << contourArea(thresholded_hull_contours[i]) << std::endl;
+	}
+
+	for (int i = 1; i < angles.size(); ++i)
+	{
+		for (int j = 1; j < angles.size(); ++j)
+		{
+			float temp_angle,temp_area;
+			if (angles[j - 1] > angles[j])
+			{
+				temp_angle = angles[j - 1]; angles[j - 1] = angles[j]; angles[j] = temp_angle;
+				temp_area = ret_array[j - 1]; ret_array[j - 1] = ret_array[j]; ret_array[j] = temp_area;
+			}
+		}
 	}
 
 	hull_image.at<uchar>(pc.y, pc.x) = 255;
 	new_image.at<cv::Vec3b>(pc.y, pc.x) = cv::Vec3b(255,255,255);
 
-	std::cout << thresholded_hull_contours.size() << std::endl;
-	createWindow(hull_image, "Hull");
-	createWindow(new_image, "Hull");
+	return ret_array;
+}
 
-	for (int i = 0; i < 6; ++i)
+cv::Mat binarize(cv::Mat image, int threshold)
+{
+	cv::Mat binary_image;
+	image.convertTo(binary_image, CV_8U);
+	for (int i = 0; i < binary_image.rows; ++i)
 	{
-		std::cout << ret_array[i] << std::endl;
+		for (int j = 0; j < binary_image.cols; ++j)
+		{
+			if (binary_image.at<uchar>(i, j) >= threshold) binary_image.at<uchar>(i, j) = 255;
+			else binary_image.at<uchar>(i, j) = 0;
+		}
 	}
 
-	return ret_array;
+	return binary_image;
 }
