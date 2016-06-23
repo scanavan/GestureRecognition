@@ -44,6 +44,9 @@ std::vector<cv::Point> getContour(cv::Mat image);
 void createWindow(cv::Mat image, std::string imageName);
 float * silhouette(cv::Mat image);
 float * hullAreas(cv::Mat image);
+bool compareContourAreas(std::vector<cv::Point> contour1, std::vector<cv::Point> contour2);
+
+cv::Mat newThreshold(cv::Mat image);
 
 /*
  * FEATURES

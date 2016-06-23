@@ -574,18 +574,18 @@ float * hullAreas(cv::Mat image)
 	std::vector<std::vector<cv::Point>> thresholded_hull_contours;
 	for (int i = 0; i < contours.size(); ++i)
 	{
-		if (contourArea(contours[i]) > 1000)
+		if (contourArea(contours[i]) > 800)
 		{
-			bool good = true;
-			for (int j = 0; j < contours[i].size(); ++j)
-			{
-				if (contours[i][j].y > pc.y)
-				{
-					good = false;
-					break;
-				}
-			}
-			if(good) thresholded_hull_contours.push_back(contours[i]);
+			thresholded_hull_contours.push_back(contours[i]);
+		}
+	}
+	
+	if (thresholded_hull_contours.size() > 6) 
+	{
+		std::sort(thresholded_hull_contours.begin(), thresholded_hull_contours.end(),compareContourAreas);
+		while (thresholded_hull_contours.size() > 6)
+		{
+			thresholded_hull_contours.pop_back();
 		}
 	}
 
@@ -615,6 +615,7 @@ float * hullAreas(cv::Mat image)
 
 	hull_image.at<uchar>(pc.y, pc.x) = 255;
 	new_image.at<cv::Vec3b>(pc.y, pc.x) = cv::Vec3b(255,255,255);
+	createWindow(new_image, "New Image");
 
 	return ret_array;
 }
@@ -633,4 +634,34 @@ cv::Mat binarize(cv::Mat image, int threshold)
 	}
 
 	return binary_image;
+}
+
+bool compareContourAreas(std::vector<cv::Point> contour1, std::vector<cv::Point> contour2) 
+{
+	double i = fabs(contourArea(cv::Mat(contour1)));
+	double j = fabs(contourArea(cv::Mat(contour2)));
+	return (i > j);
+}
+
+cv::Mat newThreshold(cv::Mat image) 
+{
+	cv::Mat uimage; image.convertTo(uimage, CV_8U);
+	int min = 255;
+	for (int i = 0; i < image.rows; i++)
+	{
+		for (int j = 0; j < image.cols; j++)
+		{
+			if (uimage.at<uchar>(i, j) < 16) uimage.at<uchar>(i, j) = 255;
+			else if (uimage.at<uchar>(i, j) < min) min = uimage.at<uchar>(i, j);
+		}
+	}
+	for (int i = 0; i < image.rows; i++)
+	{
+		for (int j = 0; j < image.cols; j++)
+		{
+			if (uimage.at<uchar>(i, j) > min + 4) uimage.at<uchar>(i, j) = 255;
+		}
+	}
+
+	return uimage;
 }
