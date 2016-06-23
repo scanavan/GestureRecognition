@@ -49,7 +49,7 @@ float * hullAreas(cv::Mat image);
  * 
  * Silhouette			float[32]
  * Contour Distances	float[180] 
- * Cell Occupancy		float[?] - depends on scaled image size
+ * Cell Occupancy		int[?], float[?] - depends on scaled image size
  * Convex Hull			float[6]
  * 
  */
