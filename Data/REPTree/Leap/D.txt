@@ -1,0 +1,183 @@
+
+
+REPTree
+============
+
+fingertipElevation_f3 < 0.7
+|   fingertipElevation_f2 < 0.05
+|   |   fingertipElevation_f1 < 0.1 : G1 (110/37) [66/26]
+|   |   fingertipElevation_f1 >= 0.1
+|   |   |   fingertipElevation_f1 < 1.7 : G2 (91/39) [33/11]
+|   |   |   fingertipElevation_f1 >= 1.7 : G3 (78/30) [46/22]
+|   fingertipElevation_f2 >= 0.05
+|   |   fingertipElevation_f1 < 2.24
+|   |   |   fingertipElevation_f1 < 0.96
+|   |   |   |   fingertipElevation_f2 < 0.56 : G7 (11/5) [9/3]
+|   |   |   |   fingertipElevation_f2 >= 0.56 : G4 (26/13) [7/5]
+|   |   |   fingertipElevation_f1 >= 0.96
+|   |   |   |   fingertipElevation_f2 < 0.99 : G2 (7/3) [1/0]
+|   |   |   |   fingertipElevation_f2 >= 0.99
+|   |   |   |   |   fingertipElevation_f2 < 2.23
+|   |   |   |   |   |   fingertipElevation_f1 < 1.65
+|   |   |   |   |   |   |   fingertipElevation_f2 < 1.71
+|   |   |   |   |   |   |   |   fingertipElevation_f1 < 1.29 : G4 (15/8) [3/1]
+|   |   |   |   |   |   |   |   fingertipElevation_f1 >= 1.29 : G5 (18/5) [10/2]
+|   |   |   |   |   |   |   fingertipElevation_f2 >= 1.71 : G4 (20/0) [10/6]
+|   |   |   |   |   |   fingertipElevation_f1 >= 1.65
+|   |   |   |   |   |   |   fingertipElevation_f2 < 1.98 : G5 (35/7) [12/2]
+|   |   |   |   |   |   |   fingertipElevation_f2 >= 1.98
+|   |   |   |   |   |   |   |   fingertipElevation_f1 < 1.96 : G4 (8/1) [8/3]
+|   |   |   |   |   |   |   |   fingertipElevation_f1 >= 1.96 : G5 (11/1) [9/2]
+|   |   |   |   |   fingertipElevation_f2 >= 2.23 : G4 (17/5) [9/2]
+|   |   fingertipElevation_f1 >= 2.24
+|   |   |   fingertipElevation_f2 < 3.84
+|   |   |   |   fingertipElevation_f2 < 2.5 : G0 (16/12) [8/4]
+|   |   |   |   fingertipElevation_f2 >= 2.5 : G7 (61/31) [23/10]
+|   |   |   fingertipElevation_f2 >= 3.84
+|   |   |   |   fingertipElevation_f3 < 0.13
+|   |   |   |   |   fingertipElevation_f1 < 3.65 : G3 (3/0) [0/0]
+|   |   |   |   |   fingertipElevation_f1 >= 3.65 : G7 (7/5) [6/2]
+|   |   |   |   fingertipElevation_f3 >= 0.13 : G4 (2/2) [3/1]
+fingertipElevation_f3 >= 0.7
+|   fingertipElevation_f5 < 0.36
+|   |   fingertipElevation_f2 < 3.09
+|   |   |   fingertipElevation_f2 < 2.09
+|   |   |   |   fingertipElevation_f3 < 1.93
+|   |   |   |   |   fingertipElevation_f2 < 1.66
+|   |   |   |   |   |   fingertipElevation_f3 < 1.42
+|   |   |   |   |   |   |   fingertipElevation_f2 < 1.21 : G7 (8/3) [4/1]
+|   |   |   |   |   |   |   fingertipElevation_f2 >= 1.21 : G6 (8/1) [6/0]
+|   |   |   |   |   |   fingertipElevation_f3 >= 1.42 : G7 (5/0) [0/0]
+|   |   |   |   |   fingertipElevation_f2 >= 1.66
+|   |   |   |   |   |   fingertipElevation_f3 < 1.36 : G8 (4/3) [8/4]
+|   |   |   |   |   |   fingertipElevation_f3 >= 1.36 : G6 (30/4) [17/4]
+|   |   |   |   fingertipElevation_f3 >= 1.93 : G7 (12/5) [4/1]
+|   |   |   fingertipElevation_f2 >= 2.09
+|   |   |   |   fingertipElevation_f1 < 1.92
+|   |   |   |   |   fingertipElevation_f3 < 1.37 : G4 (8/0) [1/0]
+|   |   |   |   |   fingertipElevation_f3 >= 1.37
+|   |   |   |   |   |   fingertipElevation_f1 < 1.68 : G8 (14/2) [9/2]
+|   |   |   |   |   |   fingertipElevation_f1 >= 1.68
+|   |   |   |   |   |   |   fingertipElevation_f3 < 1.75 : G4 (4/0) [1/0]
+|   |   |   |   |   |   |   fingertipElevation_f3 >= 1.75 : G8 (7/1) [5/2]
+|   |   |   |   fingertipElevation_f1 >= 1.92
+|   |   |   |   |   fingertipElevation_f3 < 1.92 : G0 (19/4) [20/8]
+|   |   |   |   |   fingertipElevation_f3 >= 1.92
+|   |   |   |   |   |   fingertipElevation_f3 < 2.6
+|   |   |   |   |   |   |   fingertipElevation_f2 < 2.76
+|   |   |   |   |   |   |   |   fingertipElevation_f3 < 2.17
+|   |   |   |   |   |   |   |   |   fingertipElevation_f2 < 2.39 : G6 (16/2) [8/2]
+|   |   |   |   |   |   |   |   |   fingertipElevation_f2 >= 2.39 : G0 (19/0) [10/1]
+|   |   |   |   |   |   |   |   fingertipElevation_f3 >= 2.17 : G6 (28/2) [13/2]
+|   |   |   |   |   |   |   fingertipElevation_f2 >= 2.76
+|   |   |   |   |   |   |   |   fingertipElevation_f1 < 2.43
+|   |   |   |   |   |   |   |   |   fingertipElevation_f1 < 2.2 : G4 (2/1) [1/0]
+|   |   |   |   |   |   |   |   |   fingertipElevation_f1 >= 2.2 : G8 (3/0) [0/0]
+|   |   |   |   |   |   |   |   fingertipElevation_f1 >= 2.43 : G0 (12/0) [3/0]
+|   |   |   |   |   |   fingertipElevation_f3 >= 2.6 : G6 (11/5) [2/0]
+|   |   fingertipElevation_f2 >= 3.09
+|   |   |   fingertipElevation_f1 < 3.94
+|   |   |   |   fingertipElevation_f1 < 2.79 : G8 (26/2) [11/3]
+|   |   |   |   fingertipElevation_f1 >= 2.79
+|   |   |   |   |   fingertipElevation_f2 < 3.67 : G0 (23/5) [8/3]
+|   |   |   |   |   fingertipElevation_f2 >= 3.67
+|   |   |   |   |   |   fingertipElevation_f1 < 3.69 : G8 (25/1) [10/2]
+|   |   |   |   |   |   fingertipElevation_f1 >= 3.69
+|   |   |   |   |   |   |   fingertipElevation_f2 < 4.12 : G0 (4/0) [1/0]
+|   |   |   |   |   |   |   fingertipElevation_f2 >= 4.12 : G8 (6/0) [2/0]
+|   |   |   fingertipElevation_f1 >= 3.94
+|   |   |   |   fingertipElevation_f2 < 4.91 : G7 (8/4) [6/4]
+|   |   |   |   fingertipElevation_f2 >= 4.91 : G8 (15/8) [9/4]
+|   fingertipElevation_f5 >= 0.36 : G9 (80/0) [45/1]
+
+Size of the tree : 87
+
+Time taken to build model: 0.1 seconds
+Time taken to test model on training data: 0.02 seconds
+
+=== Error on training data ===
+
+Correctly Classified Instances         997               71.2143 %
+Incorrectly Classified Instances       403               28.7857 %
+Kappa statistic                          0.6802
+Mean absolute error                      0.0841
+Root mean squared error                  0.2051
+Relative absolute error                 46.7218 %
+Root relative squared error             68.3534 %
+Total Number of Instances             1400     
+
+
+=== Detailed Accuracy By Class ===
+
+                 TP Rate  FP Rate  Precision  Recall   F-Measure  MCC      ROC Area  PRC Area  Class
+                 0.807    0.050    0.642      0.807    0.715      0.685    0.955     0.594     G1
+                 0.564    0.042    0.598      0.564    0.581      0.536    0.928     0.493     G2
+                 0.536    0.041    0.591      0.536    0.562      0.516    0.918     0.497     G3
+                 0.693    0.038    0.669      0.693    0.681      0.645    0.941     0.690     G4
+                 0.543    0.015    0.800      0.543    0.647      0.630    0.928     0.649     G5
+                 0.836    0.017    0.842      0.836    0.839      0.821    0.978     0.829     G6
+                 0.643    0.059    0.549      0.643    0.592      0.545    0.916     0.537     G7
+                 0.857    0.027    0.779      0.857    0.816      0.796    0.982     0.851     G8
+                 0.886    0.001    0.992      0.886    0.936      0.931    0.989     0.944     G9
+                 0.757    0.029    0.741      0.757    0.749      0.721    0.962     0.795     G0
+Weighted Avg.    0.712    0.032    0.720      0.712    0.712      0.683    0.950     0.688     
+
+
+=== Confusion Matrix ===
+
+   a   b   c   d   e   f   g   h   i   j   <-- classified as
+ 113   8  17   2   0   0   0   0   0   0 |   a = G1
+  39  79  16   0   1   0   2   1   0   2 |   b = G2
+  14  27  75  17   0   0   5   1   0   1 |   c = G3
+   0   7   3  97   2   0  14  12   0   5 |   d = G4
+   7   6   5  11  76   0  24   1   0  10 |   e = G5
+   0   0   4   1   3 117   6   1   0   8 |   f = G6
+   3   3   4  14  12   6  90   3   0   5 |   g = G7
+   0   0   0   2   0   1  12 120   0   5 |   h = G8
+   0   1   2   0   0   3   1   8 124   1 |   i = G9
+   0   1   1   1   1  12  10   7   1 106 |   j = G0
+
+
+
+=== Stratified cross-validation ===
+
+Correctly Classified Instances         908               64.8571 %
+Incorrectly Classified Instances       492               35.1429 %
+Kappa statistic                          0.6095
+Mean absolute error                      0.0922
+Root mean squared error                  0.2265
+Relative absolute error                 51.224  %
+Root relative squared error             75.498  %
+Total Number of Instances             1400     
+
+
+=== Detailed Accuracy By Class ===
+
+                 TP Rate  FP Rate  Precision  Recall   F-Measure  MCC      ROC Area  PRC Area  Class
+                 0.814    0.052    0.637      0.814    0.715      0.685    0.944     0.562     G1
+                 0.493    0.046    0.543      0.493    0.517      0.467    0.896     0.482     G2
+                 0.486    0.050    0.519      0.486    0.502      0.449    0.876     0.445     G3
+                 0.571    0.034    0.650      0.571    0.608      0.569    0.890     0.576     G4
+                 0.571    0.036    0.640      0.571    0.604      0.564    0.878     0.591     G5
+                 0.750    0.033    0.719      0.750    0.734      0.704    0.924     0.652     G6
+                 0.429    0.075    0.387      0.429    0.407      0.338    0.796     0.355     G7
+                 0.779    0.035    0.712      0.779    0.744      0.715    0.955     0.738     G8
+                 0.886    0.006    0.947      0.886    0.915      0.907    0.971     0.919     G9
+                 0.707    0.025    0.762      0.707    0.733      0.706    0.890     0.709     G0
+Weighted Avg.    0.649    0.039    0.652      0.649    0.648      0.610    0.902     0.603     
+
+
+=== Confusion Matrix ===
+
+   a   b   c   d   e   f   g   h   i   j   <-- classified as
+ 114   7  17   1   0   0   1   0   0   0 |   a = G1
+  41  69  21   0   2   0   7   0   0   0 |   b = G2
+  15  31  68  14   0   1   9   2   0   0 |   c = G3
+   0   6   7  80  10   1  19  14   0   3 |   d = G4
+   7   7   6   4  80   2  29   2   0   3 |   e = G5
+   0   0   4   4   3 105   7   3   0  14 |   f = G6
+   2   5   5  12  24  20  60   5   0   7 |   g = G7
+   0   0   0   6   1   5  12 109   5   2 |   h = G8
+   0   1   2   0   0   3   0   8 124   2 |   i = G9
+   0   1   1   2   5   9  11  10   2  99 |   j = G0
+
