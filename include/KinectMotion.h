@@ -11,6 +11,8 @@
 #define PI				3.14159265
 #define _SCALE_			480
 #define _SAMPLE_SIZE_	180.0
+#define CELL_DIVS		8
+#define NUM_CELLS		CELL_DIVS * CELL_DIVS
 
 struct Occ {
 	int nonZ;
@@ -54,7 +56,7 @@ cv::Mat newThreshold(cv::Mat image);
  * 
  * Silhouette			float[32]
  * Contour Distances	float[180] 
- * Cell Occupancy		int[?], float[?] - depends on scaled image size
+ * Cell Occupancy		int[256], float[256] - size depends on scaled image size
  * Convex Hull			float[6]
  * 
  */

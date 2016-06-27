@@ -675,31 +675,22 @@ cv::Mat newThreshold(cv::Mat image)
 
 void cellStuff(cv::Mat image)
 {
-	int i_size = image.rows / 16; int j_size = image.cols / 16;
-	//std::cout << i_size << " " << j_size << std::endl;
+	int i_size = image.rows / CELL_DIVS; int j_size = image.cols / CELL_DIVS;
 	int box_size = i_size * j_size;
-	double avgs[256]; int nonZs[256]; int sums[256] = { 0 };
+	double avgs[NUM_CELLS]; int nonZs[NUM_CELLS]; double sums[NUM_CELLS] = { 0 };
 	for (int i = 0; i < image.rows; ++i)
 	{
 		for (int j = 0; j < image.cols; ++j)
 		{
 			if (image.at<uchar>(i, j) != 0)
 			{
-				//std::cout << (j / j_size)*16 + (i / i_size) << std::endl;
-				sums[(j / j_size)*16 + (i / i_size)] += image.at<uchar>(i, j);
-				nonZs[(j / j_size)*16 + (i / i_size)]++;
+				sums[(j / j_size)*CELL_DIVS + (i / i_size)] += image.at<uchar>(i, j);
+				nonZs[(j / j_size)*CELL_DIVS + (i / i_size)]++;
 			}
-			//if ((j / j_size)*j_size + (i / i_size) > 255)
-			//{
-			//	std::cout << i << ' ' << j << "\t";
-			//	std::cout << j/j_size << ' ' << (j/j_size)*16 << ' ' << i/i_size << std::endl;
-			//}
 		}
 	}
-	for (int i = 0; i < 256; ++i)
+	for (int i = 0; i < NUM_CELLS; ++i)
 	{
-		std::cout << sums[i] << "\t\t";
 		avgs[i] = sums[i] / box_size;
-		std::cout << avgs[i] << std::endl;
 	}
 }
