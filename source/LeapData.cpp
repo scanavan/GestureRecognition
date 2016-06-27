@@ -25,6 +25,7 @@ LeapData::LeapData(std::string path) {
 		setNewFingertipDist();
 		projectionPoints = getProjection();
 		setFingertipAngles();
+		setRatio();
 		
 
 
@@ -91,7 +92,7 @@ LeapData::LeapData(RealTimeLeapData leapData) {
 	setFingertipAngles();
 	gesture = leapData.getGesture();
 	setFingerAreas();
-
+	setRatio();
 }
 
 // sets fingerArea to the average area between the extended fingers
@@ -124,7 +125,93 @@ void LeapData::setFingerAreas()
 		fingerArea = 0.000000;
 	}
 }
+void LeapData::setRatio()
+{
+	//fingertipDistRefined
+	float maxX = 0;
+	float maxY = 0;
+	int leftFingerAddr;
+	int rightFingerAddr;
+	Point right;
+	Point left;
+	float tmp;
+	for (int i = 0; i < fingertipPosition.size(); i++)
+		{
+			if ((fingertipPosition[i].getX() != 0) && (fingertipPosition[i].getY() != 0) && (fingertipPosition[i].getZ() != 0))
+			{
+				tmp = fingertipPosition[i].getY()-palmPosition.getY() ;
+			}
+			if (tmp < 0)
+			{
+				tmp = tmp*-1;
+			}
+			
+			if (tmp > maxY)
+			{
+				maxY = tmp;
+			}
+		}
+	
+	for (int i = 0; i < fingertipPosition.size(); i++)
+	{
+		if ((fingertipPosition[i].getX() != 0)&& (fingertipPosition[i].getY() != 0)&& (fingertipPosition[i].getZ() != 0))
+		{
+			leftFingerAddr = i;
+			left = fingertipPosition[leftFingerAddr];
+			break;
+		}
+	}
+	for (int i=fingertipPosition.size()-1; i >= 0; i--)
+	{
+		if ((fingertipPosition[i].getX() != 0) && (fingertipPosition[i].getY() != 0) && (fingertipPosition[i].getZ() != 0))
+		{
+			rightFingerAddr = i;
+			right = fingertipPosition[rightFingerAddr];
+			break;
+		}
+	}
+	
+/*	std::cout << "rightFingerAddr: " << rightFingerAddr<<std::endl;
+	std::cout << "right finger: "; right.printPoint();
+	
+	std::cout << "leftFingerAddr: " << leftFingerAddr << std::endl;
+	std::cout << "left finger: "; left.printPoint();
 
+	std::cout << "fingertipPosition:" << " ";
+	for (int i = 0; i < fingertipPosition.size(); i++) {
+		fingertipPosition[i].printPoint();
+	}
+	std::cout << std::endl;
+	
+	std::cout << "extended Finger:" << " ";
+	for (int i = 0; i < extendedFingers.size(); i++) {
+		std::cout << extendedFingers[i];
+	}
+	std::cout << std::endl;*/
+
+	maxX = right.getX() - left.getX();
+	//maxX = right.getMagnitude(left);
+	
+	ratio = maxY / maxX;
+
+	if (ratio < 0)
+	{
+		ratio = ratio*-1;
+	}
+	if (numFingers == 1)
+	{
+		ratio = maxY;
+	}
+	if (numFingers == 0)
+	{
+		ratio = 0;
+	}
+	/*std::cout << 
+		"maxX: " << maxX << "\n" << 
+		"maxY: " << maxY << "\n" << 
+		"ratio: " << ratio<<"\n";*/
+
+}
 // sets the fingertipAngles and also fingertipElevation
 // fingertipElevation = ||fingertipPosition - projectedPoint|| / newScaleFactor
 // fingertipAngles are determined using law of cosines
@@ -509,4 +596,7 @@ std::vector<int> LeapData::getExtendedFingers() {
 }
 float LeapData::getFingerArea() {
 	return fingerArea;
+}
+float LeapData::getRatio() {
+	return ratio;
 }

@@ -114,12 +114,13 @@ ARFFWriter::ARFFWriter(std::string path, std::vector<LeapData> data) {
 		"@ATTRIBUTE fingersAreas_f3   NUMERIC\n" <<
 		"@ATTRIBUTE fingersAreas_f4   NUMERIC\n" <<*/
 		"@ATTRIBUTE fingersAreasAverage   NUMERIC\n" <<
+		"@ATTRIBUTE ratio   NUMERIC\n"<<
 		"@ATTRIBUTE class { G1, G2, G3, G4, G5, G6, G7, G8, G9, G0 }\n" <<
 		"\n@DATA\n";
 
 	// goes through the data LeapData vector and gets the values for the arff file
 	for (int i = 0; i < data.size(); i++) {
-		file << getNumFingers(data[i]) << getNewFingertipDistRefined(data[i]) << getFingertipAngles(data[i]) << getFingertipElevation(data[i]) << getFingersExtends(data[i]) << getFingersArea(data[i]) << getGesture(data[i]) << "\n";
+		file << getNumFingers(data[i]) << getNewFingertipDistRefined(data[i]) << getFingertipAngles(data[i]) << getFingertipElevation(data[i]) << getFingersExtends(data[i]) << getFingersArea(data[i])<< getRatio(data[i]) << getGesture(data[i]) << "\n";
 	}
 
 	file.close();
@@ -267,4 +268,7 @@ std::string ARFFWriter::getFingersArea(LeapData leap)
 {
 	return std::to_string(leap.getFingerArea()) + ",";
 }
-
+std::string ARFFWriter::getRatio(LeapData leap)
+{
+	return std::to_string(leap.getRatio()) + ",";
+}
