@@ -1,6 +1,4 @@
 
-Options: -S 1 
-
 
 REPTree
 ============

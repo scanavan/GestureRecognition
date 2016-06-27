@@ -1,6 +1,4 @@
 
-Options: -S 1 
-
 
 REPTree
 ============
@@ -94,8 +92,8 @@ fingertipElevation_f3 >= 0.7
 
 Size of the tree : 87
 
-Time taken to build model: 0.11 seconds
-Time taken to test model on training data: 0.03 seconds
+Time taken to build model: 0.1 seconds
+Time taken to test model on training data: 0.02 seconds
 
 === Error on training data ===
 
