@@ -627,15 +627,22 @@ bool compareContourAreas(std::vector<cv::Point> contour1, std::vector<cv::Point>
 cv::Mat newThreshold(cv::Mat image) 
 {
 	cv::Mat uimage; image.convertTo(uimage, CV_8U);
+
+	// find closest pixel and remove noise
 	int min = 255;
 	for (int i = 0; i < image.rows; i++)
 	{
 		for (int j = 0; j < image.cols; j++)
 		{
-			if (uimage.at<uchar>(i, j) < 16) uimage.at<uchar>(i, j) = 0;
-			else if (uimage.at<uchar>(i, j) < min) min = uimage.at<uchar>(i, j);
+			if(j < 50 || i > image.rows-50 || j > image.cols-50) image.at<uchar>(i, j) = 0;
+			else {
+				if (uimage.at<uchar>(i, j) < 16) uimage.at<uchar>(i, j) = 0;
+				else if (uimage.at<uchar>(i, j) < min) min = uimage.at<uchar>(i, j);
+			}
 		}
 	}
+	
+	// threshold behind closest object
 	for (int i = 0; i < image.rows; i++)
 	{
 		for (int j = 0; j < image.cols; j++)
