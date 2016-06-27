@@ -102,23 +102,47 @@ LeapData::LeapData(RealTimeLeapData leapData) {
 void LeapData::setFingerAreas()
 {
 	float total;
-	float a, b, c;
-	for (int i = 0; i < 4; i++) {
-		if((i+1)<numFingers)
-		{
-			a = fingertipPosition[i].getMagnitude(palmPosition);
-			b = fingertipPosition[i].getMagnitude(fingertipPosition[i + 1]);
-			c = fingertipPosition[i+1].getMagnitude(palmPosition);
-			float s = (a + b + c) / 2;
-			float area = sqrt(s*(s - a)*(s - b)*(s - c))/newScaleFactor;
-			//total = total + area;
-			if (area > total) {
-				total = area;
-			}
+	float a, b, c, first, last;
+	//for (int i = 0; i < 4; i++) {
+	//	if((i+1)<numFingers)
+	//	{
+	//		a = fingertipPosition[i].getMagnitude(palmPosition);
+	//		b = fingertipPosition[i].getMagnitude(fingertipPosition[i + 1]);
+	//		c = fingertipPosition[i+1].getMagnitude(palmPosition);
+	//		float s = (a + b + c) / 2;
+	//		float area = sqrt(s*(s - a)*(s - b)*(s - c))/newScaleFactor;
+	//		//total = total + area;
+	//		if (area > total) {
+	//			total = area;
+	//		}
 
+	//	}
+	//	
+	//}
+
+	for (int i = 0; i < fingertipPosition.size(); i++)
+	{
+		if ((fingertipPosition[i].getX() != 0) && (fingertipPosition[i].getY() != 0) && (fingertipPosition[i].getZ() != 0))
+		{
+			first = i;
+			break;
 		}
-		
 	}
+	for (int i = fingertipPosition.size() - 1; i >= 0; i--)
+	{
+		if ((fingertipPosition[i].getX() != 0) && (fingertipPosition[i].getY() != 0) && (fingertipPosition[i].getZ() != 0))
+		{
+			last = i;
+			break;
+		}
+	}
+
+	a = fingertipPosition[first].getMagnitude(palmPosition);
+	b = fingertipPosition[first].getMagnitude(fingertipPosition[last]);
+	c = fingertipPosition[last].getMagnitude(palmPosition);
+	float s = (a + b + c) / 2;
+	total = sqrt(s*(s - a)*(s - b)*(s - c))/newScaleFactor;
+
 	if (numFingers >= 2) {
 		fingerArea = total / (numFingers - 1);
 	}
