@@ -1,6 +1,10 @@
 #include "filenames.h"
 #include <iostream>
 
+FileNames::FileNames(const char * path)
+{
+	readDir(path);
+}
 void FileNames::readDir(const char * path) {
 	tinydir_dir tempDir;
 	tinydir_open(&tempDir, path);
