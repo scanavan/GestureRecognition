@@ -7,10 +7,10 @@
 #include "LeapData.h"
 #include <set>
 
-#define _FILE_NUM_		0
+#define FILE_NUM		0
 #define PI				3.14159265
-#define _SCALE_			480
-#define _SAMPLE_SIZE_	180.0
+#define SCALE			480
+#define SAMPLE_SIZE		180.0
 #define CELL_DIVS		8
 #define NUM_CELLS		CELL_DIVS * CELL_DIVS
 
@@ -56,7 +56,7 @@ cv::Mat newThreshold(cv::Mat image);
  * 
  * Silhouette			float[32]
  * Contour Distances	float[180] 
- * Cell Occupancy		int[256], float[256] - size depends on scaled image size
+ * Cell Occupancy		int[64/256], float[64/256] - size depends on scaled image size
  * Convex Hull			float[6]
  * 
  */

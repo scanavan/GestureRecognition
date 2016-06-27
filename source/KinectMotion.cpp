@@ -15,9 +15,9 @@ KinectMotion::KinectMotion(const char * filepath)
 {
 	FileNames my_files;
 	my_files.readDir(filepath);
-	leap = new LeapData(my_files.leap[_FILE_NUM_]);
-	depth = new KinectImage(my_files.depth[_FILE_NUM_]);
-	rgb = new KinectImage(my_files.rgb[_FILE_NUM_]);
+	leap = new LeapData(my_files.leap[FILE_NUM]);
+	depth = new KinectImage(my_files.depth[FILE_NUM]);
+	rgb = new KinectImage(my_files.rgb[FILE_NUM]);
 }
 
 KinectImage * KinectMotion::getDepth() 
@@ -349,7 +349,7 @@ std::vector<cv::Point> getContour(cv::Mat image)
 cv::Mat KinectMotion::scaleHand(cv::Mat image) 
 {
 
-	cv::Mat dst = cv::Mat::zeros(_SCALE_,_SCALE_,CV_8U);
+	cv::Mat dst = cv::Mat::zeros(SCALE,SCALE,CV_8U);
 
 	cv::Rect rect = getRect(image);
 
@@ -359,21 +359,21 @@ cv::Mat KinectMotion::scaleHand(cv::Mat image)
 		height = croppedImage.rows;
 	int max_dim = (width >= height) ? width : height;
 
-	float scale = ((float) _SCALE_) / max_dim;
+	float scale = ((float) SCALE) / max_dim;
 	cv::Rect roi;
 	if (width >= height)
 	{
-		roi.width = _SCALE_;
+		roi.width = SCALE;
 		roi.x = 0;
 		roi.height = height * scale;
-		roi.y = (_SCALE_ - roi.height) / 2;
+		roi.y = (SCALE - roi.height) / 2;
 	}
 	else
 	{
 		roi.y = 0;
-		roi.height = _SCALE_;
+		roi.height = SCALE;
 		roi.width = width * scale;
-		roi.x = (_SCALE_ - roi.width) / 2;
+		roi.x = (SCALE - roi.width) / 2;
 	}
 	cv::resize(croppedImage, dst(roi), roi.size());
 
@@ -399,9 +399,9 @@ std::vector<float> KinectMotion::distContour(cv::Mat image)
 	std::vector<cv::Point> sampleContour;
 	std::vector<float> retVal;
 
-	for (int i = 0; i < _SAMPLE_SIZE_; i++) 
+	for (int i = 0; i < SAMPLE_SIZE; i++) 
 	{
-		sampleContour.push_back(edges[(int)(i * (float)(edges.size()) / _SAMPLE_SIZE_)]);
+		sampleContour.push_back(edges[(int)(i * (float)(edges.size()) / SAMPLE_SIZE)]);
 	}
 
 	float max = 0;
