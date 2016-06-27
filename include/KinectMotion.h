@@ -31,12 +31,12 @@ public:
 	cv::Mat scaleHand(cv::Mat image);
 	std::vector<float>distContour(cv::Mat image);
 	cv::Mat rotateImage(cv::Mat image);
-	KinectImage * getDepth();
+	cv::Mat getDepth();
 private:
 	cv::Rect getRect(cv::Mat image);
-	KinectImage * getRgb();
-	KinectImage * depth;
-	KinectImage * rgb;
+	cv::Mat getRgb();
+	cv::Mat depth;
+	cv::Mat rgb;
 	LeapData * leap;
 }; 
 
