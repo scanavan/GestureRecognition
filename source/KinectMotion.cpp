@@ -673,7 +673,7 @@ cv::Mat newThreshold(cv::Mat image)
 	return uimage;
 }
 
-void cellStuff(cv::Mat image)
+void cellOccupancy2(cv::Mat image)
 {
 	int i_size = image.rows / CELL_DIVS; int j_size = image.cols / CELL_DIVS;
 	int box_size = i_size * j_size;

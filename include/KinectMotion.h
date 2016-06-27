@@ -10,7 +10,7 @@
 #define FILE_NUM		0
 #define PI				3.14159265
 #define SCALE			480
-#define SAMPLE_SIZE		180.0
+#define SAMPLE_SIZE		150.0
 #define CELL_DIVS		8
 #define NUM_CELLS		CELL_DIVS * CELL_DIVS
 
@@ -40,7 +40,7 @@ private:
 	LeapData * leap;
 }; 
 
-void cellStuff(cv::Mat image);
+void cellOccupancy2(cv::Mat image);
 cv::Mat binarize(cv::Mat image, int threshold = 5);
 cv::Point palmCenter(cv::Mat image, int thresh = 23);
 std::vector<cv::Point> getContour(cv::Mat image);
