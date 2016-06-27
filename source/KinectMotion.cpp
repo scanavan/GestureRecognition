@@ -491,18 +491,8 @@ cv::Mat KinectMotion::rotateImage(cv::Mat image)
 */
 float * silhouette(cv::Mat image)
 {
-	cv::Mat new_image = cv::Mat::zeros(image.size(), CV_8UC3);
-	cv::Mat uimage;
-	image.convertTo(uimage, CV_8U);
-	for (int i = 0; i < image.cols; ++i)
-	{
-		for (int j = 0; j < image.cols; ++j)
-		{
-			if (uimage.at<uchar>(i, j) > 10) uimage.at<uchar>(i, j) = 255;
-			else uimage.at<uchar>(i, j) = 0;
-		}
-	}
-	createWindow(uimage, "Ayy");
+	cv::Mat uimage = binarize(image, 11);
+	
 	cv::Point center = cv::Point(image.cols / 2, image.rows / 2);
 	std::vector<cv::Point> contour = getContour(uimage);
 	std::vector<float> bins[32];
@@ -517,9 +507,7 @@ float * silhouette(cv::Mat image)
 		dist = sqrt((x*x) + (y*y));
 		bin = (int)(angle * 16 / PI);
 		bins[bin].push_back(dist);
-		new_image.at<cv::Vec3b>(contour[i].y, contour[i].x) = cv::Vec3b((bin * 255 / 32), 0, 255);
 	}
-	createWindow(new_image, "Ayy");
 
 	float * avgs = new float[32];
 	float sum;
@@ -531,7 +519,6 @@ float * silhouette(cv::Mat image)
 			sum += bins[i][j];
 		}
 		avgs[i] = sum / bins[i].size();
-		std::cout << avgs[i] << std::endl;
 	}
 
 	return avgs;
@@ -541,16 +528,7 @@ float * hullAreas(cv::Mat image)
 {
 	float * ret_array = new float[6] { 0,0,0,0,0,0 };
 
-	cv::Mat uimage;
-	image.convertTo(uimage, CV_8U);
-	for (int i = 0; i < image.cols; ++i)
-	{
-		for (int j = 0; j < image.cols; ++j)
-		{
-			if (uimage.at<uchar>(i, j) > 10) uimage.at<uchar>(i, j) = 255;
-			else uimage.at<uchar>(i, j) = 0;
-		}
-	}
+	cv::Mat uimage = binarize(image, 11);
 
 	std::vector<cv::Point> og_contour = getContour(uimage);
 	double hand_area = contourArea(og_contour);
@@ -620,10 +598,6 @@ float * hullAreas(cv::Mat image)
 		}
 	}
 
-	hull_image.at<uchar>(pc.y, pc.x) = 255;
-	new_image.at<cv::Vec3b>(pc.y, pc.x) = cv::Vec3b(255,255,255);
-	createWindow(new_image, "New Image");
-
 	return ret_array;
 }
 
@@ -658,7 +632,7 @@ cv::Mat newThreshold(cv::Mat image)
 	{
 		for (int j = 0; j < image.cols; j++)
 		{
-			if (uimage.at<uchar>(i, j) < 16) uimage.at<uchar>(i, j) = 255;
+			if (uimage.at<uchar>(i, j) < 16) uimage.at<uchar>(i, j) = 0;
 			else if (uimage.at<uchar>(i, j) < min) min = uimage.at<uchar>(i, j);
 		}
 	}
@@ -666,7 +640,7 @@ cv::Mat newThreshold(cv::Mat image)
 	{
 		for (int j = 0; j < image.cols; j++)
 		{
-			if (uimage.at<uchar>(i, j) > min + 4) uimage.at<uchar>(i, j) = 255;
+			if (uimage.at<uchar>(i, j) > min + 4) uimage.at<uchar>(i, j) = 0;
 		}
 	}
 
