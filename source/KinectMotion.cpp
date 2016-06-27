@@ -44,15 +44,15 @@ float * KinectMotion::getSil()
 {
 	return sil;
 }
-float * KinectMotion::getContour_dist()
+float * KinectMotion::getContourDist()
 {
 	return contour_dist;
 }
-int * KinectMotion::getOcc_nonz()
+int * KinectMotion::getOccNonz()
 {
 	return occ_nonz;
 }
-float * KinectMotion::getOcc_avg()
+float * KinectMotion::getOccAvg()
 {
 	return occ_avg;
 }
