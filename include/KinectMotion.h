@@ -10,7 +10,7 @@
 #define FILE_NUM		0
 #define PI				3.14159265
 #define SCALE			480
-#define SAMPLE_SIZE		150.0
+#define SAMPLE_SIZE		150
 #define CELL_DIVS		8
 #define NUM_CELLS		CELL_DIVS * CELL_DIVS
 
@@ -50,6 +50,15 @@ float * hullAreas(cv::Mat image);
 bool compareContourAreas(std::vector<cv::Point> contour1, std::vector<cv::Point> contour2);
 
 cv::Mat newThreshold(cv::Mat image);
+
+class KinectFeatures {
+public:
+	float sil[32]; 
+	float contour_dist[SAMPLE_SIZE];
+	int occ_nonz[NUM_CELLS];
+	float occ_avg[NUM_CELLS];
+	float hull[6];
+};
 
 /*
  * FEATURES
