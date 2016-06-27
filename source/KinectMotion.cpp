@@ -548,3 +548,4 @@ Occ KinectMotion::cellOccupancy(cv::Mat image)
 
 	return ret_val;
 }
+
