@@ -3,7 +3,6 @@
 #include <string>
 #include <opencv\cv.h>
 #include <vector>
-#include "KinectImage.h"
 #include "LeapData.h"
 #include <set>
 
@@ -29,7 +28,6 @@ public:
 	std::vector <Occ> cellOccupancy(cv::Mat image);
 	void findDirection(cv::Mat image);
 	cv::Mat scaleHand(cv::Mat image);
-	std::vector<float>distContour(cv::Mat image);
 	cv::Mat rotateImage(cv::Mat image);
 	cv::Mat getDepth();
 private:
@@ -47,6 +45,7 @@ std::vector<cv::Point> getContour(cv::Mat image);
 void createWindow(cv::Mat image, std::string imageName);
 float * silhouette(cv::Mat image);
 float * hullAreas(cv::Mat image);
+float * distContour(cv::Mat image);
 bool compareContourAreas(std::vector<cv::Point> contour1, std::vector<cv::Point> contour2);
 
 cv::Mat newThreshold(cv::Mat image);

@@ -391,12 +391,12 @@ void createWindow(cv::Mat image, std::string imageName)
 		   calculates the distance from the palm center to each sampled point
 	@param - image - image matrix
 */
-std::vector<float> KinectMotion::distContour(cv::Mat image) 
+float * distContour(cv::Mat image)
 {
 	std::vector<cv::Point> edges = getContour(image);
-	cv::Point center = palmCenter(image,23);
+	cv::Point center = palmCenter(image, 23);
 	std::vector<cv::Point> sampleContour;
-	std::vector<float> retVal;
+	float * retVal = new float[SAMPLE_SIZE];
 
 	for (int i = 0; i < SAMPLE_SIZE; i++) 
 	{
@@ -407,17 +407,17 @@ std::vector<float> KinectMotion::distContour(cv::Mat image)
 	for (int i = 0; i < sampleContour.size(); i++) 
 	{
 		float temp = std::sqrt(std::pow(center.x - sampleContour.at(i).x, 2) + std::pow(center.y - sampleContour.at(i).y, 2));
-		retVal.push_back(temp);
+		retVal[i] = temp;
 		if (temp > max) 
 		{
 			max = temp;
 		}
 	}
-	for (int j = 0; j < retVal.size(); j++) 
+	for (int j = 0; j < SAMPLE_SIZE; j++) 
 	{
 		if (max != 0) 
 		{
-			retVal.at(j) = retVal.at(j) / max;
+			retVal[j] = retVal[j] / max;
 		}
 	}
 
