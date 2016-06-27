@@ -10,13 +10,11 @@
 #include <vector>
 #include <set>
 
-KinectMotion::KinectMotion(const char * filepath)
+KinectMotion::KinectMotion(std::string fleap, std::string fdepth, std::string frgb)
 {
-	FileNames my_files;
-	my_files.readDir(filepath);
-	leap = new LeapData(my_files.leap[FILE_NUM]);
-	depth = cv::imread(my_files.depth[FILE_NUM], CV_LOAD_IMAGE_UNCHANGED);
-	rgb = cv::imread(my_files.rgb[FILE_NUM], CV_LOAD_IMAGE_UNCHANGED);
+	leap = new LeapData(fleap);
+	depth = cv::imread(fdepth,CV_LOAD_IMAGE_UNCHANGED);
+	rgb = cv::imread(frgb,CV_LOAD_IMAGE_UNCHANGED);
 }
 
 cv::Mat KinectMotion::getDepth() 
@@ -86,78 +84,6 @@ cv::Mat KinectMotion::getHand(cv::Mat image, double thresholdRatio)
 }
 
 /*
-	@def - changes the image file to remove the background
-	@param - thresholdVals gets pixel intensity between thresholds and removes pixels not
-			 in threshold
-	make_binary - creates binary image, or creates greyscale image
-*/
-cv::Mat KinectMotion::updateImage(int upperThresholdVal, int lowerThresholdVal, bool make_binary) 
-{
-	// get depth image determine hight and width of image
-	cv::Mat iDepthMat;
-	depth.convertTo(iDepthMat,CV_8UC3);
-	int h = depth.rows;
-	int w = depth.cols;
-
-	// threshold
-	for (int i = 0; i < h; i++) 
-	{
-		for (int j = 0; j < w; j++) 
-		{
-			if(i < 50 || j < 50 || i > h-100 || j > w-50) iDepthMat.at<uchar>(i, j) = 0;
-			else 
-			{
-				cv::Scalar intensity = iDepthMat.at<uchar>(i, j);
-				if (intensity.val[0] < upperThresholdVal && intensity.val[0] > lowerThresholdVal) 
-				{
-					if (make_binary) iDepthMat.at<uchar>(i, j) = 255;
-				}
-				else 
-				{
-					iDepthMat.at<uchar>(i, j) = 0;
-				}
-			}
-		}
-	}
-
-	// calculate sum of each row as one column 
-	cv::Mat row_sums;
-	cv::reduce(iDepthMat, row_sums, 1, CV_REDUCE_SUM, CV_32S);
-
-	// remove anything that isn't a hand (not tall enough)
-	int num_contiguous_rows = 0;
-	int first_contiguous_row = 0;
-	int last_contiguous_row = 0;
-	for (int i = 0; i < h; i++) {
-		if (row_sums.at<int>(i) != 0) 
-		{
-			if (num_contiguous_rows == 0) first_contiguous_row = i;
-			else last_contiguous_row = i;
-			num_contiguous_rows++;
-		}
-		else 
-		{
-			if (num_contiguous_rows != 0) 
-			{
-				if (num_contiguous_rows < 50) 
-				{
-					for (int i = first_contiguous_row; i <= last_contiguous_row; i++) 
-					{
-						for (int j = 0; j < iDepthMat.cols; j++) 
-						{
-							iDepthMat.at<uchar>(i, j) = 0;
-						}
-					}
-				}
-			}
-			num_contiguous_rows = 0;
-		}
-	}
-
-	return iDepthMat;
-}
-
-/*
 	@def - draws the contours
 	@param - image - the matrix image
 */
@@ -206,92 +132,6 @@ cv::Point palmCenter(cv::Mat image, int thresh) {
 Occ::Occ(int nonZ, float avgD) {
 	this->nonZ = nonZ;
 	this->avgD = avgD;
-}
-
-/*
-	TODO - make more general
-	@def - breaks image into equal squares and gets the area of each square
-		   as well as their average depths
-	@param - image - the matrix image
-*/
-std::vector<Occ> KinectMotion::cellOccupancy(cv::Mat image) 
-{
-	std::vector<Occ> retVal;
-	int nonZ = 0;
-	float avgD = 0;
-	float maxD = 0;
-	for (int i = 0; i < image.rows; i = i + 16) 
-	{
-		for (int j = 0; j < image.cols; j = j + 16) 
-		{
-			cv::Mat sub = image(cv::Range(i, i + 16), cv::Range(j, j + 16));
-			for (int a = 0; a < sub.rows; a++) 
-			{
-				for (int b = 0; b < sub.cols; b++) 
-				{
-					if (sub.at<uchar>(a, b) != 0) 
-					{
-						nonZ++;
-						avgD += sub.at<uchar>(a, b);
-					}
-				}
-			}
-			if (nonZ != 0) 
-			{
-				avgD = avgD / 256;
-				if (avgD > maxD) 
-				{
-					maxD = avgD;
-				}
-			}
-			Occ temp = Occ(nonZ, avgD);
-			retVal.push_back(temp);
-			nonZ = 0;
-			avgD = 0;
-		}
-	}
-	if (maxD != 0) 
-	{
-		for (int x = 0; x < retVal.size(); x++) 
-		{
-			retVal.at(x).avgD = retVal.at(x).avgD / maxD;
-		}
-	}
-
-	return retVal;
-} 
-
-/*
-	@def - getbacktolater
-*/
-void KinectMotion::findDirection(cv::Mat image) 
-{
-
-	std::vector<cv::Point> edges = getContour(image);
-	double max_distance = 0;
-	double current_distance;
-	cv::Point ends[2];
-	for (int i = 0; i < edges.size() - 1; ++i)
-	{
-		for (int j = i + 1; j < edges.size(); ++j)
-		{
-			int x = (edges.at(i).x - edges.at(j).x);
-			int y = (edges.at(i).y - edges.at(j).y);
-			current_distance = sqrt((x*x) + (y*y));
-			if (current_distance > max_distance)
-			{
-				max_distance = current_distance;
-				ends[0] = edges.at(i);
-				ends[1] = edges.at(j);
-			}
-		}
-	}
-
-	cv::Mat edge_image = makeContourImage(image);
-	edge_image.at<cv::Vec3b>(ends[0].x,ends[0].y) = cv::Vec3b(255, 255, 0);
-	edge_image.at<cv::Vec3b>(ends[1].x,ends[1].y) = cv::Vec3b(255, 255, 0);
-
-	return;
 }
 
 /*
@@ -623,7 +463,7 @@ bool compareContourAreas(std::vector<cv::Point> contour1, std::vector<cv::Point>
 	return (i > j);
 }
 
-cv::Mat newThreshold(cv::Mat image) 
+cv::Mat updateImage(cv::Mat image) 
 {
 	cv::Mat uimage; image.convertTo(uimage, CV_8U);
 
@@ -633,11 +473,11 @@ cv::Mat newThreshold(cv::Mat image)
 	{
 		for (int j = 0; j < image.cols; j++)
 		{
-			if(j < 50 || i > image.rows-50 || j > image.cols-50) image.at<uchar>(i, j) = 0;
-			else {
+			//if(j < 50 || i > image.rows-50 || j > image.cols-50) image.at<uchar>(i, j) = 0;
+			//else {
 				if (uimage.at<uchar>(i, j) < 16) uimage.at<uchar>(i, j) = 0;
 				else if (uimage.at<uchar>(i, j) < min) min = uimage.at<uchar>(i, j);
-			}
+			//}
 		}
 	}
 	
@@ -653,7 +493,7 @@ cv::Mat newThreshold(cv::Mat image)
 	return uimage;
 }
 
-void cellOccupancy2(cv::Mat image)
+void cellOccupancy(cv::Mat image)
 {
 	int i_size = image.rows / CELL_DIVS; int j_size = image.cols / CELL_DIVS;
 	int box_size = i_size * j_size;

@@ -6,7 +6,6 @@
 #include "LeapData.h"
 #include <set>
 
-#define FILE_NUM		0
 #define PI				3.14159265
 #define SCALE			480
 #define SAMPLE_SIZE		150
@@ -21,12 +20,9 @@ struct Occ {
 
 class KinectMotion {
 public:
-	KinectMotion(const char * filepath);
-	cv::Mat updateImage(int upperThresholdVal, int lowerThresholdVal, bool make_binary = true);
+	KinectMotion(std::string leap, std::string depth, std::string rgb);
 	cv::Mat getHand(cv::Mat image, double ratio);
 	cv::Mat makeContourImage(cv::Mat image);
-	std::vector <Occ> cellOccupancy(cv::Mat image);
-	void findDirection(cv::Mat image);
 	cv::Mat scaleHand(cv::Mat image);
 	cv::Mat rotateImage(cv::Mat image);
 	cv::Mat getDepth();
@@ -36,19 +32,26 @@ private:
 	cv::Mat depth;
 	cv::Mat rgb;
 	LeapData * leap;
+	float sil[32]; 
+	float contour_dist[SAMPLE_SIZE];
+	int occ_nonz[NUM_CELLS];
+	float occ_avg[NUM_CELLS];
+	float hull[6];
 }; 
 
-void cellOccupancy2(cv::Mat image);
 cv::Mat binarize(cv::Mat image, int threshold = 5);
 cv::Point palmCenter(cv::Mat image, int thresh = 23);
 std::vector<cv::Point> getContour(cv::Mat image);
 void createWindow(cv::Mat image, std::string imageName);
+
 float * silhouette(cv::Mat image);
-float * hullAreas(cv::Mat image);
 float * distContour(cv::Mat image);
+void cellOccupancy(cv::Mat image);
+float * hullAreas(cv::Mat image);
+
 bool compareContourAreas(std::vector<cv::Point> contour1, std::vector<cv::Point> contour2);
 
-cv::Mat newThreshold(cv::Mat image);
+cv::Mat updateImage(cv::Mat image);
 
 class KinectFeatures {
 public:
