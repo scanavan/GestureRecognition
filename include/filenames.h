@@ -10,6 +10,7 @@ class FileNames {
 		tinydir_dir dir;
 		
 	public:
+		FileNames(const char * path);
 		void readDir(const char * path);
 		void print();
 		
