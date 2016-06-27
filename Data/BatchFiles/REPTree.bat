@@ -1,66 +1,66 @@
-java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\A.arff           > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\A.txt          
-java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\B.arff           > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\B.txt          
-java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\C.arff           > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\C.txt          
-java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\D.arff           > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\D.txt          
-java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\E.arff           > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\E.txt          
-java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\F.arff           > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\F.txt          
-java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\A-B.arff         > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\A-B.txt         
-java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\A-C.arff         > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\A-C.txt         
-java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\A-D.arff         > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\A-D.txt         
-java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\A-E.arff         > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\A-E.txt         
-java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\A-F.arff         > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\A-F.txt         
-java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\B-C.arff         > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\B-C.txt         
-java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\B-D.arff         > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\B-D.txt         
-java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\B-E.arff         > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\B-E.txt         
-java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\B-F.arff         > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\B-F.txt         
-java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\C-D.arff         > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\C-D.txt         
-java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\C-E.arff         > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\C-E.txt         
-java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\C-F.arff         > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\C-F.txt         
-java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\D-E.arff         > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\D-E.txt         
-java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\D-F.arff         > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\D-F.txt         
-java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\E-F.arff         > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\E-F.txt         
-java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\A-B-C.arff       > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\A-B-C.txt      
-java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\A-B-D.arff       > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\A-B-D.txt      
-java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\A-B-E.arff       > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\A-B-E.txt      
-java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\A-B-F.arff       > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\A-B-F.txt      
-java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\A-C-D.arff       > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\A-C-D.txt      
-java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\A-C-E.arff       > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\A-C-E.txt      
-java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\A-C-F.arff       > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\A-C-F.txt      
-java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\A-D-E.arff       > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\A-D-E.txt      
-java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\A-D-F.arff       > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\A-D-F.txt      
-java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\A-E-F.arff       > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\A-E-F.txt      
-java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\B-C-D.arff       > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\B-C-D.txt      
-java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\B-C-E.arff       > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\B-C-E.txt      
-java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\B-C-F.arff       > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\B-C-F.txt      
-java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\B-D-E.arff       > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\B-D-E.txt      
-java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\B-D-F.arff       > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\B-D-F.txt      
-java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\B-E-F.arff       > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\B-E-F.txt      
-java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\C-D-E.arff       > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\C-D-E.txt      
-java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\C-D-F.arff       > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\C-D-F.txt      
-java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\C-E-F.arff       > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\C-E-F.txt      
-java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\D-E-F.arff       > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\D-E-F.txt      
-java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\A-B-C-D.arff     > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\A-B-C-D.txt     
-java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\A-B-C-E.arff     > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\A-B-C-E.txt     
-java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\A-B-C-F.arff     > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\A-B-C-F.txt     
-java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\A-B-D-E.arff     > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\A-B-D-E.txt     
-java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\A-B-D-F.arff     > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\A-B-D-F.txt     
-java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\A-B-E-F.arff     > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\A-B-E-F.txt     
-java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\A-C-D-E.arff     > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\A-C-D-E.txt     
-java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\A-C-D-F.arff     > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\A-C-D-F.txt     
-java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\A-C-E-F.arff     > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\A-C-E-F.txt     
-java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\A-D-E-F.arff     > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\A-D-E-F.txt     
-java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\B-C-D-E.arff     > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\B-C-D-E.txt     
-java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\B-C-D-F.arff     > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\B-C-D-F.txt     
-java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\B-C-E-F.arff     > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\B-C-E-F.txt     
-java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\B-D-E-F.arff     > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\B-D-E-F.txt     
-java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\C-D-E-F.arff     > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\C-D-E-F.txt     
-java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\A-B-C-D-E.arff   > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\A-B-C-D-E.txt   
-java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\A-B-C-D-F.arff   > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\A-B-C-D-F.txt   
-java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\A-B-C-E-F.arff   > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\A-B-C-E-F.txt   
-java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\A-B-D-E-F.arff   > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\A-B-D-E-F.txt   
-java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\A-C-D-E-F.arff   > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\A-C-D-E-F.txt   
-java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\B-C-D-E-F.arff   > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\B-C-D-E-F.txt   
-java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\A-B-C-D-E-F.arff > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\A-B-C-D-E-F.txt 
+java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\A.arff           -s 1 > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\A.txt          
+java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\B.arff           -s 1 > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\B.txt          
+java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\C.arff           -s 1 > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\C.txt          
+java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\D.arff           -s 1 > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\D.txt          
+java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\E.arff           -s 1 > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\E.txt          
+java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\F.arff           -s 1 > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\F.txt          
+java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\A-B.arff         -s 1 > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\A-B.txt         
+java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\A-C.arff         -s 1 > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\A-C.txt         
+java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\A-D.arff         -s 1 > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\A-D.txt         
+java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\A-E.arff         -s 1 > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\A-E.txt         
+java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\A-F.arff         -s 1 > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\A-F.txt         
+java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\B-C.arff         -s 1 > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\B-C.txt         
+java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\B-D.arff         -s 1 > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\B-D.txt         
+java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\B-E.arff         -s 1 > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\B-E.txt         
+java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\B-F.arff         -s 1 > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\B-F.txt         
+java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\C-D.arff         -s 1 > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\C-D.txt         
+java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\C-E.arff         -s 1 > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\C-E.txt         
+java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\C-F.arff         -s 1 > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\C-F.txt         
+java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\D-E.arff         -s 1 > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\D-E.txt         
+java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\D-F.arff         -s 1 > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\D-F.txt         
+java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\E-F.arff         -s 1 > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\E-F.txt         
+java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\A-B-C.arff       -s 1 > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\A-B-C.txt      
+java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\A-B-D.arff       -s 1 > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\A-B-D.txt      
+java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\A-B-E.arff       -s 1 > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\A-B-E.txt      
+java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\A-B-F.arff       -s 1 > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\A-B-F.txt      
+java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\A-C-D.arff       -s 1 > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\A-C-D.txt      
+java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\A-C-E.arff       -s 1 > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\A-C-E.txt      
+java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\A-C-F.arff       -s 1 > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\A-C-F.txt      
+java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\A-D-E.arff       -s 1 > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\A-D-E.txt      
+java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\A-D-F.arff       -s 1 > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\A-D-F.txt      
+java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\A-E-F.arff       -s 1 > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\A-E-F.txt      
+java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\B-C-D.arff       -s 1 > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\B-C-D.txt      
+java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\B-C-E.arff       -s 1 > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\B-C-E.txt      
+java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\B-C-F.arff       -s 1 > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\B-C-F.txt      
+java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\B-D-E.arff       -s 1 > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\B-D-E.txt      
+java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\B-D-F.arff       -s 1 > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\B-D-F.txt      
+java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\B-E-F.arff       -s 1 > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\B-E-F.txt      
+java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\C-D-E.arff       -s 1 > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\C-D-E.txt      
+java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\C-D-F.arff       -s 1 > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\C-D-F.txt      
+java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\C-E-F.arff       -s 1 > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\C-E-F.txt      
+java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\D-E-F.arff       -s 1 > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\D-E-F.txt      
+java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\A-B-C-D.arff     -s 1 > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\A-B-C-D.txt     
+java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\A-B-C-E.arff     -s 1 > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\A-B-C-E.txt     
+java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\A-B-C-F.arff     -s 1 > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\A-B-C-F.txt     
+java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\A-B-D-E.arff     -s 1 > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\A-B-D-E.txt     
+java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\A-B-D-F.arff     -s 1 > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\A-B-D-F.txt     
+java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\A-B-E-F.arff     -s 1 > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\A-B-E-F.txt     
+java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\A-C-D-E.arff     -s 1 > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\A-C-D-E.txt     
+java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\A-C-D-F.arff     -s 1 > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\A-C-D-F.txt     
+java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\A-C-E-F.arff     -s 1 > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\A-C-E-F.txt     
+java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\A-D-E-F.arff     -s 1 > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\A-D-E-F.txt     
+java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\B-C-D-E.arff     -s 1 > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\B-C-D-E.txt     
+java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\B-C-D-F.arff     -s 1 > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\B-C-D-F.txt     
+java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\B-C-E-F.arff     -s 1 > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\B-C-E-F.txt     
+java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\B-D-E-F.arff     -s 1 > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\B-D-E-F.txt     
+java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\C-D-E-F.arff     -s 1 > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\C-D-E-F.txt     
+java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\A-B-C-D-E.arff   -s 1 > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\A-B-C-D-E.txt   
+java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\A-B-C-D-F.arff   -s 1 > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\A-B-C-D-F.txt   
+java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\A-B-C-E-F.arff   -s 1 > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\A-B-C-E-F.txt   
+java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\A-B-D-E-F.arff   -s 1 > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\A-B-D-E-F.txt   
+java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\A-C-D-E-F.arff   -s 1 > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\A-C-D-E-F.txt   
+java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\B-C-D-E-F.arff   -s 1 > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\B-C-D-E-F.txt   
+java weka.classifiers.trees.REPTree -t  C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\A-B-C-D-E-F.arff -s 1 > C:\Users\IASA-FRI\Documents\SRI\Data\REPTree\Leap\A-B-C-D-E-F.txt 
 
 :: script for running LibSVM with the ARFF files
 :: java weka.classifiers.functions.LibSVM -t C:\Users\IASA-FRI\Documents\SRI\Data\arffFiles\Leap\test.arff
