@@ -102,12 +102,13 @@ LeapData::LeapData(RealTimeLeapData leapData) {
 void LeapData::setFingerAreas()
 {
 	float total;
+	float a, b, c;
 	for (int i = 0; i < 4; i++) {
 		if((i+1)<numFingers)
 		{
-			float a = fingertipPosition[i].getMagnitude(palmPosition);
-			float b = fingertipPosition[i].getMagnitude(fingertipPosition[i + 1]);
-			float c = fingertipPosition[i+1].getMagnitude(palmPosition);
+			a = fingertipPosition[i].getMagnitude(palmPosition);
+			b = fingertipPosition[i].getMagnitude(fingertipPosition[i + 1]);
+			c = fingertipPosition[i+1].getMagnitude(palmPosition);
 			float s = (a + b + c) / 2;
 			float area = sqrt(s*(s - a)*(s - b)*(s - c))/newScaleFactor;
 			//total = total + area;
@@ -121,8 +122,11 @@ void LeapData::setFingerAreas()
 	if (numFingers >= 2) {
 		fingerArea = total / (numFingers - 1);
 	}
-	else {
+	else if (numFingers == 0){
 		fingerArea = 0.000000;
+	}
+	else {
+		fingerArea = a / newScaleFactor;
 	}
 }
 void LeapData::setRatio()
@@ -139,7 +143,7 @@ void LeapData::setRatio()
 		{
 			if ((fingertipPosition[i].getX() != 0) && (fingertipPosition[i].getY() != 0) && (fingertipPosition[i].getZ() != 0))
 			{
-				tmp = fingertipPosition[i].getY()-palmPosition.getY() ;
+				tmp = fingertipPosition[i].getMagnitude(palmPosition);
 			}
 			if (tmp < 0)
 			{
@@ -189,8 +193,8 @@ void LeapData::setRatio()
 	}
 	std::cout << std::endl;*/
 
-	maxX = right.getX() - left.getX();
-	//maxX = right.getMagnitude(left);
+	//maxX = right.getX() - left.getX();
+	maxX = right.getMagnitude(left);
 	
 	ratio = maxY / maxX;
 
@@ -210,7 +214,7 @@ void LeapData::setRatio()
 		"maxX: " << maxX << "\n" << 
 		"maxY: " << maxY << "\n" << 
 		"ratio: " << ratio<<"\n";*/
-
+	ratio = ratio / newScaleFactor;
 }
 // sets the fingertipAngles and also fingertipElevation
 // fingertipElevation = ||fingertipPosition - projectedPoint|| / newScaleFactor
