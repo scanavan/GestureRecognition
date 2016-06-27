@@ -114,18 +114,17 @@ ARFFWriter::ARFFWriter(std::string path, std::vector<LeapData> data) {
 		"@ATTRIBUTE fingersAreas_f3   NUMERIC\n" <<
 		"@ATTRIBUTE fingersAreas_f4   NUMERIC\n" <<*/
 		"@ATTRIBUTE fingersAreasAverage   NUMERIC\n" <<
-		"@ATTRIBUTE ratio   NUMERIC\n"<<
+		"@ATTRIBUTE ratio   NUMERIC\n" <<
 		"@ATTRIBUTE class { G1, G2, G3, G4, G5, G6, G7, G8, G9, G0 }\n" <<
 		"\n@DATA\n";
 
 	// goes through the data LeapData vector and gets the values for the arff file
 	for (int i = 0; i < data.size(); i++) {
-		file << getNumFingers(data[i]) << getNewFingertipDistRefined(data[i]) << getFingertipAngles(data[i]) << getFingertipElevation(data[i]) << getFingersExtends(data[i]) << getFingersArea(data[i])<< getRatio(data[i]) << getGesture(data[i]) << "\n";
+		file << getNumFingers(data[i]) << getNewFingertipDistRefined(data[i]) << getFingertipAngles(data[i]) << getFingertipElevation(data[i]) << getFingersExtends(data[i]) << getFingersArea(data[i]) << getRatio(data[i]) << getGesture(data[i]) << "\n";
 	}
 
 	file.close();
 }
-
 // returns values as strings
 
 std::string ARFFWriter::getNumFingers(LeapData leap) {
@@ -229,12 +228,12 @@ std::string ARFFWriter::getNewFingertipDistRefined(LeapData leap) {
 }
 std::string ARFFWriter::getFingertipAngles(LeapData leap) {
 	std::string returnVal;
-	
+
 	for (int i = 0; i < leap.getFingertipAngles().size(); i++) {
-		
+
 		returnVal = returnVal + std::to_string(leap.getFingertipAngles()[i]) + ",";
 	}
-	
+
 	return returnVal;
 }
 std::string ARFFWriter::getProjectionPoints(LeapData leap) {
@@ -268,6 +267,73 @@ std::string ARFFWriter::getFingersArea(LeapData leap)
 {
 	return std::to_string(leap.getFingerArea()) + ",";
 }
+
+//Kinect
+std::string ARFFWriter::getSil(KinectMotion depth)
+{
+	float * silVals = depth.getSil();
+	std::string returnVal = "";
+	for (int i = 0; i < sizeof(silVals); i++) {
+		returnVal += silVals[i];
+		if (i != sizeof(silVals) - 1) {
+			returnVal += ", ";
+		}
+	}
+	return returnVal;
+}
+
+std::string ARFFWriter::getContourDist(KinectMotion depth)
+{
+	float * contourDistVals = depth.getContourDist();
+	std::string returnVal = "";
+	for (int i = 0; i < sizeof(contourDistVals); i++) {
+		returnVal += contourDistVals[i];
+		if (i != sizeof(contourDistVals) - 1) {
+			returnVal += ", ";
+		}
+	}
+	return returnVal;
+}
+
+std::string ARFFWriter::getHull(KinectMotion depth)
+{
+	float * hullVals = depth.getHull();
+	std::string returnVal = "";
+	for (int i = 0; i < sizeof(hullVals); i++) {
+		returnVal += hullVals[i];
+		if (i != sizeof(hullVals) - 1) {
+			returnVal += ", ";
+		}
+	}
+	return returnVal;
+}
+
+std::string ARFFWriter::getOccNonz(KinectMotion depth)
+{
+	int * nonzVals = depth.getOccNonz();
+	std::string returnVal = "";
+	for (int i = 0; i < sizeof(nonzVals); i++) {
+		returnVal += nonzVals[i];
+		if (i != sizeof(nonzVals) - 1) {
+			returnVal += ", ";
+		}
+	}
+	return returnVal;
+}
+
+std::string ARFFWriter::getOccAvg(KinectMotion depth)
+{
+	float * avgVals = depth.getOccAvg();
+	std::string returnVal = "";
+	for (int i = 0; i < sizeof(avgVals); i++) {
+		returnVal += avgVals[i];
+		if (i != sizeof(avgVals) - 1) {
+			returnVal += ", ";
+		}
+	}
+	return returnVal;
+}
+
 std::string ARFFWriter::getRatio(LeapData leap)
 {
 	return std::to_string(leap.getRatio()) + ",";

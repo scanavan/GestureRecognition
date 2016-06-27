@@ -3,62 +3,66 @@
 #include <string>
 #include <opencv\cv.h>
 #include <vector>
-#include "KinectImage.h"
 #include "LeapData.h"
 #include <set>
 
-#define FILE_NUM		0
 #define PI				3.14159265
 #define SCALE			480
-#define SAMPLE_SIZE		180.0
+#define SAMPLE_SIZE		150
 #define CELL_DIVS		8
 #define NUM_CELLS		CELL_DIVS * CELL_DIVS
 
 struct Occ {
-	int nonZ;
-	float avgD;
-	Occ(int nonZ, float avgD);
+	int * nonZ;
+	float * avgD;
 };
 
 class KinectMotion {
 public:
-	KinectMotion(const char * filepath);
-	cv::Mat updateImage(int upperThresholdVal, int lowerThresholdVal, bool make_binary = true);
+	KinectMotion(std::string leap, std::string depth, std::string rgb);
 	cv::Mat getHand(cv::Mat image, double ratio);
 	cv::Mat makeContourImage(cv::Mat image);
-	std::vector <Occ> cellOccupancy(cv::Mat image);
-	void findDirection(cv::Mat image);
 	cv::Mat scaleHand(cv::Mat image);
-	std::vector<float>distContour(cv::Mat image);
 	cv::Mat rotateImage(cv::Mat image);
-	KinectImage * getDepth();
+	cv::Mat getDepth();
+	float * getSil();
+	float * getContourDist();
+	int * getOccNonz();
+	float * getOccAvg();
+	float * getHull();
 private:
-	cv::Rect getRect(cv::Mat image);
-	KinectImage * getRgb();
-	KinectImage * depth;
-	KinectImage * rgb;
+	cv::Mat getRgb();
+	cv::Mat depth;
+	cv::Mat rgb;
 	LeapData * leap;
-}; 
+	float * sil;
+	float * contour_dist;
+	int * occ_nonz;
+	float * occ_avg;
+	float * hull;
 
-void cellStuff(cv::Mat image);
-cv::Mat binarize(cv::Mat image, int threshold = 5);
-cv::Point palmCenter(cv::Mat image, int thresh = 23);
-std::vector<cv::Point> getContour(cv::Mat image);
+	cv::Rect getRect(cv::Mat image);
+	float * silhouette(cv::Mat image);
+	float * distContour(cv::Mat image);
+	Occ cellOccupancy(cv::Mat image);
+	float * hullAreas(cv::Mat image);
+	cv::Mat binarize(cv::Mat image, int threshold = 5);
+	cv::Point palmCenter(cv::Mat image, int thresh = 23);
+	std::vector<cv::Point> getContour(cv::Mat image);
+	cv::Mat updateImage(cv::Mat image);
+};
+
 void createWindow(cv::Mat image, std::string imageName);
-float * silhouette(cv::Mat image);
-float * hullAreas(cv::Mat image);
 bool compareContourAreas(std::vector<cv::Point> contour1, std::vector<cv::Point> contour2);
 
-cv::Mat newThreshold(cv::Mat image);
-
 /*
- * FEATURES
- * 
- * Silhouette			float[32]
- * Contour Distances	float[180] 
- * Cell Occupancy		int[64/256], float[64/256] - size depends on scaled image size
- * Convex Hull			float[6]
- * 
- */
+* FEATURES
+*
+* Silhouette			float[32]
+* Contour Distances	float[180]
+* Cell Occupancy		int[64/256], float[64/256] - size depends on scaled image size
+* Convex Hull			float[6]
+*
+*/
 
 #endif
