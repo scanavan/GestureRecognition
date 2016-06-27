@@ -25,7 +25,7 @@ public:
 	cv::Mat scaleHand(cv::Mat image);
 	cv::Mat rotateImage(cv::Mat image);
 	cv::Mat getDepth();
-	float * getSil(); 
+	float * getSil();
 	float * getContourDist();
 	int * getOccNonz();
 	float * getOccAvg();
@@ -35,7 +35,7 @@ private:
 	cv::Mat depth;
 	cv::Mat rgb;
 	LeapData * leap;
-	float * sil; 
+	float * sil;
 	float * contour_dist;
 	int * occ_nonz;
 	float * occ_avg;
@@ -50,19 +50,19 @@ private:
 	cv::Point palmCenter(cv::Mat image, int thresh = 23);
 	std::vector<cv::Point> getContour(cv::Mat image);
 	cv::Mat updateImage(cv::Mat image);
-}; 
+};
 
 void createWindow(cv::Mat image, std::string imageName);
 bool compareContourAreas(std::vector<cv::Point> contour1, std::vector<cv::Point> contour2);
 
 /*
- * FEATURES
- * 
- * Silhouette			float[32]
- * Contour Distances	float[180] 
- * Cell Occupancy		int[64/256], float[64/256] - size depends on scaled image size
- * Convex Hull			float[6]
- * 
- */
+* FEATURES
+*
+* Silhouette			float[32]
+* Contour Distances	float[180]
+* Cell Occupancy		int[64/256], float[64/256] - size depends on scaled image size
+* Convex Hull			float[6]
+*
+*/
 
 #endif

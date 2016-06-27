@@ -2,10 +2,13 @@
 #define ARFFWRITER_H
 
 #include "LeapData.h"
+#include "KinectMotion.h"
 
 class ARFFWriter {
 public:
 	ARFFWriter(std::string path, std::vector<LeapData> data);
+	ARFFWriter(std::string path, std::vector<KinectMotion> data);
+
 	std::string getNumFingers(LeapData leap);
 	std::string getFingertipDist(LeapData leap);
 	std::string getFingertipInterDist(LeapData leap);
@@ -34,7 +37,13 @@ public:
 	std::string getGesture(LeapData leap);
 	std::string getFingersExtends(LeapData leap);
 	std::string getFingersArea(LeapData leap);
+	std::string getRatio(LeapData leap);
 
+	std::string getSil(KinectMotion depth);
+	std::string getContourDist(KinectMotion depth);
+	std::string getHull(KinectMotion depth);
+	std::string getOccNonz(KinectMotion depth);
+	std::string getOccAvg(KinectMotion depth);
 };
 #endif // !ARFFWRITER_H
 

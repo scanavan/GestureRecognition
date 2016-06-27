@@ -21,6 +21,7 @@ public:
 //	std::vector<float> getFingertipDist();
 	void setNewScaleFactor();
 	void setFingerAreas();
+	void setRatio();
 	void setNewFingertipDist();
 	void setFingertipAngles();
 	void setOldScaleFactor();
@@ -42,6 +43,7 @@ public:
 	float getRotationProbability();
 	float getScaleFactor();
 	float getScaleProbability();
+	float getRatio();
 	std::vector<float> getTranslation();
 	float getTranslationProbability();
 
@@ -60,6 +62,7 @@ private:
 	std::vector<float> fingertipDistRefined;
 	std::vector<float> fingertipInterDist;
 	std::vector<Point> fingertipPosition;
+	float ratio;
 	Point handDirection;
 	Point handSphereCenter;
 	float handSphereRadius;

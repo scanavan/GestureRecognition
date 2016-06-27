@@ -66,7 +66,7 @@ newFingerTipDistRefined_f2 >= 0.84
 
 Size of the tree : 61
 
-Time taken to build model: 0.12 seconds
+Time taken to build model: 0.14 seconds
 Time taken to test model on training data: 0.03 seconds
 
 === Error on training data ===

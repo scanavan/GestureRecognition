@@ -17,7 +17,7 @@ numFingers >= 2.5
 Size of the tree : 11
 
 Time taken to build model: 0.07 seconds
-Time taken to test model on training data: 0.01 seconds
+Time taken to test model on training data: 0.02 seconds
 
 === Error on training data ===
 
