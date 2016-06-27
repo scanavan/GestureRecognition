@@ -1,7 +1,6 @@
 #include <iostream>
 #include "KinectMotion.h"
 #include <opencv\cv.h>
-#include "KinectImage.h"
 #include "LeapData.h"
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
@@ -16,16 +15,16 @@ KinectMotion::KinectMotion(const char * filepath)
 	FileNames my_files;
 	my_files.readDir(filepath);
 	leap = new LeapData(my_files.leap[FILE_NUM]);
-	depth = new KinectImage(my_files.depth[FILE_NUM]);
-	rgb = new KinectImage(my_files.rgb[FILE_NUM]);
+	depth = cv::imread(my_files.depth[FILE_NUM], CV_LOAD_IMAGE_UNCHANGED);
+	rgb = cv::imread(my_files.rgb[FILE_NUM], CV_LOAD_IMAGE_UNCHANGED);
 }
 
-KinectImage * KinectMotion::getDepth() 
+cv::Mat KinectMotion::getDepth() 
 {
 	return depth;
 }
 
-KinectImage * KinectMotion::getRgb() 
+cv::Mat KinectMotion::getRgb() 
 {
 	return rgb;
 }
@@ -96,9 +95,9 @@ cv::Mat KinectMotion::updateImage(int upperThresholdVal, int lowerThresholdVal, 
 {
 	// get depth image determine hight and width of image
 	cv::Mat iDepthMat;
-	depth->returnImage().convertTo(iDepthMat,CV_8UC3);
-	int h = depth->getHeight();
-	int w = depth->getWidth();
+	depth.convertTo(iDepthMat,CV_8UC3);
+	int h = depth.rows;
+	int w = depth.cols;
 
 	// threshold
 	for (int i = 0; i < h; i++) 
