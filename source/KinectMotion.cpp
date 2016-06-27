@@ -15,6 +15,19 @@ KinectMotion::KinectMotion(std::string fleap, std::string fdepth, std::string fr
 	leap = new LeapData(fleap);
 	depth = cv::imread(fdepth,CV_LOAD_IMAGE_UNCHANGED);
 	rgb = cv::imread(frgb,CV_LOAD_IMAGE_UNCHANGED);
+
+	depth = updateImage(depth);
+	depth = rotateImage(depth);
+	getHand(depth, 0.95);
+	depth = scaleHand(depth);
+
+	sil = silhouette(depth);
+	contour_dist = distContour(depth);
+	hull = hullAreas(depth);
+	Occ occ_data = cellOccupancy(depth);
+	occ_avg = occ_data.avgD; 
+	occ_nonz = occ_data.nonZ; 
+
 }
 
 cv::Mat KinectMotion::getDepth() 
@@ -27,6 +40,26 @@ cv::Mat KinectMotion::getRgb()
 	return rgb;
 }
 
+float * KinectMotion::getSil()
+{
+	return sil;
+}
+float * KinectMotion::getContour_dist()
+{
+	return contour_dist;
+}
+int * KinectMotion::getOcc_nonz()
+{
+	return occ_nonz;
+}
+float * KinectMotion::getOcc_avg()
+{
+	return occ_avg;
+}
+float * KinectMotion::getHull()
+{
+	return hull;
+}
 /*
 	@def - recognize difference between wrist, hand and arm
 	cut's the image at the wrist
@@ -107,7 +140,7 @@ cv::Mat KinectMotion::makeContourImage(cv::Mat image)
 	@def - find center point of palm using GaussianBlur
 	@param - image - the matrix image
 */
-cv::Point palmCenter(cv::Mat image, int thresh) {
+cv::Point KinectMotion::palmCenter(cv::Mat image, int thresh) {
 
 	cv::Mat new_image = image.clone();
 	cv::GaussianBlur(image, new_image, cv::Size(0, 0), thresh, thresh);
@@ -129,16 +162,11 @@ cv::Point palmCenter(cv::Mat image, int thresh) {
 	return center;
 }
 
-Occ::Occ(int nonZ, float avgD) {
-	this->nonZ = nonZ;
-	this->avgD = avgD;
-}
-
 /*
 	@def - gets contours and sorts them starts at contour point directly above palm center
 	@param - image - the matrix image
 */
-std::vector<cv::Point> getContour(cv::Mat image) 
+std::vector<cv::Point> KinectMotion::getContour(cv::Mat image) 
 {
 	std::vector<cv::Point> rawContour;
 	std::vector<cv::Point> sortedContour;
@@ -231,7 +259,7 @@ void createWindow(cv::Mat image, std::string imageName)
 		   calculates the distance from the palm center to each sampled point
 	@param - image - image matrix
 */
-float * distContour(cv::Mat image)
+float * KinectMotion::distContour(cv::Mat image)
 {
 	std::vector<cv::Point> edges = getContour(image);
 	cv::Point center = palmCenter(image, 23);
@@ -328,7 +356,7 @@ cv::Mat KinectMotion::rotateImage(cv::Mat image)
 	@def - gets average distance of contour from image center for 32 radial sections
 	@param - image - image matrix
 */
-float * silhouette(cv::Mat image)
+float * KinectMotion::silhouette(cv::Mat image)
 {
 	cv::Mat uimage = binarize(image, 11);
 	
@@ -363,7 +391,7 @@ float * silhouette(cv::Mat image)
 	return avgs;
 }
 
-float * hullAreas(cv::Mat image)
+float * KinectMotion::hullAreas(cv::Mat image)
 {
 	float * ret_array = new float[6] { 0,0,0,0,0,0 };
 
@@ -440,7 +468,7 @@ float * hullAreas(cv::Mat image)
 	return ret_array;
 }
 
-cv::Mat binarize(cv::Mat image, int threshold)
+cv::Mat KinectMotion::binarize(cv::Mat image, int threshold)
 {
 	cv::Mat binary_image;
 	image.convertTo(binary_image, CV_8U);
@@ -463,7 +491,7 @@ bool compareContourAreas(std::vector<cv::Point> contour1, std::vector<cv::Point>
 	return (i > j);
 }
 
-cv::Mat updateImage(cv::Mat image) 
+cv::Mat KinectMotion::updateImage(cv::Mat image) 
 {
 	cv::Mat uimage; image.convertTo(uimage, CV_8U);
 
@@ -493,11 +521,11 @@ cv::Mat updateImage(cv::Mat image)
 	return uimage;
 }
 
-void cellOccupancy(cv::Mat image)
+Occ KinectMotion::cellOccupancy(cv::Mat image)
 {
 	int i_size = image.rows / CELL_DIVS; int j_size = image.cols / CELL_DIVS;
 	int box_size = i_size * j_size;
-	double avgs[NUM_CELLS]; int nonZs[NUM_CELLS]; double sums[NUM_CELLS] = { 0 };
+	float * avgs = new float[NUM_CELLS]; int * nonZs = new int[NUM_CELLS]; float * sums = new float[NUM_CELLS]{ 0 };
 	for (int i = 0; i < image.rows; ++i)
 	{
 		for (int j = 0; j < image.cols; ++j)
@@ -509,8 +537,14 @@ void cellOccupancy(cv::Mat image)
 			}
 		}
 	}
+
 	for (int i = 0; i < NUM_CELLS; ++i)
 	{
 		avgs[i] = sums[i] / box_size;
 	}
+
+	Occ ret_val;
+	ret_val.nonZ = nonZs; ret_val.avgD = avgs;
+
+	return ret_val;
 }

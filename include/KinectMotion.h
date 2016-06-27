@@ -13,9 +13,8 @@
 #define NUM_CELLS		CELL_DIVS * CELL_DIVS
 
 struct Occ {
-	int nonZ;
-	float avgD;
-	Occ(int nonZ, float avgD);
+	int * nonZ;
+	float * avgD;
 };
 
 class KinectMotion {
@@ -26,41 +25,35 @@ public:
 	cv::Mat scaleHand(cv::Mat image);
 	cv::Mat rotateImage(cv::Mat image);
 	cv::Mat getDepth();
+	float * getSil(); 
+	float * getContourDist();
+	int * getOccNonz();
+	float * getOccAvg();
+	float * getHull();
 private:
-	cv::Rect getRect(cv::Mat image);
 	cv::Mat getRgb();
 	cv::Mat depth;
 	cv::Mat rgb;
 	LeapData * leap;
-	float sil[32]; 
-	float contour_dist[SAMPLE_SIZE];
-	int occ_nonz[NUM_CELLS];
-	float occ_avg[NUM_CELLS];
-	float hull[6];
+	float * sil; 
+	float * contour_dist;
+	int * occ_nonz;
+	float * occ_avg;
+	float * hull;
+
+	cv::Rect getRect(cv::Mat image);
+	float * silhouette(cv::Mat image);
+	float * distContour(cv::Mat image);
+	Occ cellOccupancy(cv::Mat image);
+	float * hullAreas(cv::Mat image);
+	cv::Mat binarize(cv::Mat image, int threshold = 5);
+	cv::Point palmCenter(cv::Mat image, int thresh = 23);
+	std::vector<cv::Point> getContour(cv::Mat image);
+	cv::Mat updateImage(cv::Mat image);
 }; 
 
-cv::Mat binarize(cv::Mat image, int threshold = 5);
-cv::Point palmCenter(cv::Mat image, int thresh = 23);
-std::vector<cv::Point> getContour(cv::Mat image);
 void createWindow(cv::Mat image, std::string imageName);
-
-float * silhouette(cv::Mat image);
-float * distContour(cv::Mat image);
-void cellOccupancy(cv::Mat image);
-float * hullAreas(cv::Mat image);
-
 bool compareContourAreas(std::vector<cv::Point> contour1, std::vector<cv::Point> contour2);
-
-cv::Mat updateImage(cv::Mat image);
-
-class KinectFeatures {
-public:
-	float sil[32]; 
-	float contour_dist[SAMPLE_SIZE];
-	int occ_nonz[NUM_CELLS];
-	float occ_avg[NUM_CELLS];
-	float hull[6];
-};
 
 /*
  * FEATURES
