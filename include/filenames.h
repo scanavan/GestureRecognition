@@ -11,6 +11,7 @@ class FileNames {
 		
 	public:
 		FileNames(const char * path);
+		FileNames();
 		void readDir(const char * path);
 		void print();
 		
