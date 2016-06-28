@@ -7,10 +7,10 @@
 
 class FileNames {
 	private:
-		FileNames(const char * path);
 		tinydir_dir dir;
 		
 	public:
+		FileNames(const char * path);
 		void readDir(const char * path);
 		void print();
 		
