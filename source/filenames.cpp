@@ -1,6 +1,10 @@
 #include "filenames.h"
 #include <iostream>
 
+FileNames::FileNames()
+{
+	// Default construtor
+}
 FileNames::FileNames(const char * path)
 {
 	readDir(path);
