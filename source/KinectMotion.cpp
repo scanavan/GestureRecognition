@@ -22,7 +22,7 @@ KinectMotion::KinectMotion(std::string fleap, std::string fdepth)
 	depth = scaleHand(depth);
 
 	sil = silhouette(depth);
-	contour_dist = distContour(depth);
+	contour_dist = distContour(binarize(depth));
 	hull = hullAreas(depth);
 	Occ occ_data = cellOccupancy(depth);
 	occ_avg = occ_data.avgD;
@@ -83,7 +83,7 @@ cv::Mat KinectMotion::getHand(cv::Mat image, double thresholdRatio)
 	bool atWrist = false;
 	int tmp = 0;
 
-	for (int i = 0; i < image.rows; i++)
+	for (int i = 1; i < image.rows; i++)
 	{
 		for (int j = 0; j < image.cols; j++)
 		{
