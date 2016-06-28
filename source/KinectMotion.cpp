@@ -10,23 +10,23 @@
 #include <vector>
 #include <set>
 
-KinectMotion::KinectMotion(std::string fleap, std::string fdepth, std::string frgb)
+KinectMotion::KinectMotion(std::string fleap, std::string fdepth)
 {
 	leap = new LeapData(fleap);
 	depth = cv::imread(fdepth, CV_LOAD_IMAGE_UNCHANGED);
-	rgb = cv::imread(frgb, CV_LOAD_IMAGE_UNCHANGED);
+	//rgb = cv::imread(frgb, CV_LOAD_IMAGE_UNCHANGED);
 
 	depth = updateImage(depth);
 	depth = rotateImage(depth);
 	getHand(depth, 0.95);
 	depth = scaleHand(depth);
 
-	sil = silhouette(depth);
-	contour_dist = distContour(depth);
-	hull = hullAreas(depth);
-	Occ occ_data = cellOccupancy(depth);
-	occ_avg = occ_data.avgD;
-	occ_nonz = occ_data.nonZ;
+	//sil = silhouette(depth);
+	//contour_dist = distContour(depth);
+	//hull = hullAreas(depth);
+	//Occ occ_data = cellOccupancy(depth);
+	//occ_avg = occ_data.avgD;
+	//occ_nonz = occ_data.nonZ;
 
 	int index = fdepth.find_last_of("/");
 	char gestureNumber = fdepth.at(index - 1);
@@ -39,10 +39,10 @@ cv::Mat KinectMotion::getDepth()
 	return depth;
 }
 
-cv::Mat KinectMotion::getRgb()
-{
-	return rgb;
-}
+//cv::Mat KinectMotion::getRgb()
+//{
+//	return rgb;
+//}
 
 float * KinectMotion::getSil()
 {
@@ -335,10 +335,10 @@ cv::Rect KinectMotion::getRect(cv::Mat image)
 		}
 	}
 
-	maxPoint.x = xMax + 10;
-	maxPoint.y = yMax + 10;
-	minPoint.x = xMin - 10;
-	minPoint.y = yMin - 10;
+	maxPoint.x = xMax;
+	maxPoint.y = yMax;
+	minPoint.x = xMin;
+	minPoint.y = yMin;
 
 	return cv::Rect(maxPoint, minPoint);
 }
