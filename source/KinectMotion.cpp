@@ -21,12 +21,12 @@ KinectMotion::KinectMotion(std::string fleap, std::string fdepth)
 	getHand(depth, 0.95);
 	depth = scaleHand(depth);
 
-	//sil = silhouette(depth);
-	//contour_dist = distContour(depth);
-	//hull = hullAreas(depth);
-	//Occ occ_data = cellOccupancy(depth);
-	//occ_avg = occ_data.avgD;
-	//occ_nonz = occ_data.nonZ;
+	sil = silhouette(depth);
+	contour_dist = distContour(depth);
+	hull = hullAreas(depth);
+	Occ occ_data = cellOccupancy(depth);
+	occ_avg = occ_data.avgD;
+	occ_nonz = occ_data.nonZ;
 
 	int index = fdepth.find_last_of("/");
 	char gestureNumber = fdepth.at(index - 1);
