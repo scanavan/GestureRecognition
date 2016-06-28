@@ -28,6 +28,10 @@ KinectMotion::KinectMotion(std::string fleap, std::string fdepth, std::string fr
 	occ_avg = occ_data.avgD;
 	occ_nonz = occ_data.nonZ;
 
+	int index = fdepth.find_last_of("/");
+	char gestureNumber = fdepth.at(index - 1);
+	gesture = "G";
+	gesture.push_back(gestureNumber);
 }
 
 cv::Mat KinectMotion::getDepth()
@@ -59,6 +63,10 @@ float * KinectMotion::getOccAvg()
 float * KinectMotion::getHull()
 {
 	return hull;
+}
+std::string KinectMotion::getGesture()
+{
+	return gesture;
 }
 /*
 @def - recognize difference between wrist, hand and arm
@@ -525,7 +533,7 @@ Occ KinectMotion::cellOccupancy(cv::Mat image)
 {
 	int i_size = image.rows / CELL_DIVS; int j_size = image.cols / CELL_DIVS;
 	int box_size = i_size * j_size;
-	float * avgs = new float[NUM_CELLS]; int * nonZs = new int[NUM_CELLS]; float * sums = new float[NUM_CELLS] { 0 };
+	float * avgs = new float[NUM_CELLS]; int * nonZs = new int[NUM_CELLS] {0}; float * sums = new float[NUM_CELLS] { 0 };
 	for (int i = 0; i < image.rows; ++i)
 	{
 		for (int j = 0; j < image.cols; ++j)

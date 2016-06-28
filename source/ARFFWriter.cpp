@@ -131,7 +131,7 @@ ARFFWriter::ARFFWriter(std::string path, std::vector<KinectMotion> data)
 {
 	std::ofstream file;
 	file.open(path);
-	file << "% 1. Title: Leap Data Database\n" <<
+	file << "% 1. Title: Kinect Database\n" <<
 		"%\n" <<
 		"% 2. Sources :\n" <<
 		"% (a)Creator : Giulio Marin, Fabio Dominio, Pietro Zanuttigh, and Binghamton SRI 2016\n" <<
@@ -518,7 +518,7 @@ ARFFWriter::ARFFWriter(std::string path, std::vector<KinectMotion> data)
 
 	// goes through the data LeapData vector and gets the values for the arff file
 	for (int i = 0; i < data.size(); i++) {
-		file << << "\n";
+		file << getSil(data[i]) << getContourDist(data[i]) << getHull(data[i]) << getOccNonz(data[i]) << getOccAvg(data[i]) << getGesture(data[i]) << "\n";
 	}
 
 	file.close();
@@ -670,11 +670,9 @@ std::string ARFFWriter::getSil(KinectMotion depth)
 {
 	float * silVals = depth.getSil();
 	std::string returnVal = "";
-	for (int i = 0; i < sizeof(silVals); i++) {
-		returnVal += silVals[i];
-		if (i != sizeof(silVals) - 1) {
-			returnVal += ", ";
-		}
+	for (int i = 0; i < 32; i++) {
+		returnVal += std::to_string(silVals[i]);
+		returnVal += ",";
 	}
 	return returnVal;
 }
@@ -683,11 +681,9 @@ std::string ARFFWriter::getContourDist(KinectMotion depth)
 {
 	float * contourDistVals = depth.getContourDist();
 	std::string returnVal = "";
-	for (int i = 0; i < sizeof(contourDistVals); i++) {
-		returnVal += contourDistVals[i];
-		if (i != sizeof(contourDistVals) - 1) {
-			returnVal += ", ";
-		}
+	for (int i = 0; i < 150; i++) {
+		returnVal += std::to_string(contourDistVals[i]);
+		returnVal += ",";
 	}
 	return returnVal;
 }
@@ -696,11 +692,9 @@ std::string ARFFWriter::getHull(KinectMotion depth)
 {
 	float * hullVals = depth.getHull();
 	std::string returnVal = "";
-	for (int i = 0; i < sizeof(hullVals); i++) {
-		returnVal += hullVals[i];
-		if (i != sizeof(hullVals) - 1) {
-			returnVal += ", ";
-		}
+	for (int i = 0; i < 6; i++) {
+		returnVal += std::to_string(hullVals[i]);
+		returnVal += ",";
 	}
 	return returnVal;
 }
@@ -709,11 +703,9 @@ std::string ARFFWriter::getOccNonz(KinectMotion depth)
 {
 	int * nonzVals = depth.getOccNonz();
 	std::string returnVal = "";
-	for (int i = 0; i < sizeof(nonzVals); i++) {
-		returnVal += nonzVals[i];
-		if (i != sizeof(nonzVals) - 1) {
-			returnVal += ", ";
-		}
+	for (int i = 0; i < 64; i++) {
+		returnVal += std::to_string(nonzVals[i]);
+		returnVal += ",";
 	}
 	return returnVal;
 }
@@ -722,11 +714,9 @@ std::string ARFFWriter::getOccAvg(KinectMotion depth)
 {
 	float * avgVals = depth.getOccAvg();
 	std::string returnVal = "";
-	for (int i = 0; i < sizeof(avgVals); i++) {
-		returnVal += avgVals[i];
-		if (i != sizeof(avgVals) - 1) {
-			returnVal += ", ";
-		}
+	for (int i = 0; i < 64; i++) {
+		returnVal += std::to_string(avgVals[i]);
+		returnVal += ",";
 	}
 	return returnVal;
 }
@@ -734,4 +724,8 @@ std::string ARFFWriter::getOccAvg(KinectMotion depth)
 std::string ARFFWriter::getRatio(LeapData leap)
 {
 	return std::to_string(leap.getRatio()) + ",";
+}
+
+std::string ARFFWriter::getGesture(KinectMotion kinect) {
+	return kinect.getGesture();
 }

@@ -30,6 +30,7 @@ public:
 	int * getOccNonz();
 	float * getOccAvg();
 	float * getHull();
+	std::string getGesture();
 private:
 	cv::Mat getRgb();
 	cv::Mat depth;
@@ -40,6 +41,7 @@ private:
 	int * occ_nonz;
 	float * occ_avg;
 	float * hull;
+	std::string gesture;
 
 	cv::Rect getRect(cv::Mat image);
 	float * silhouette(cv::Mat image);
@@ -59,8 +61,8 @@ bool compareContourAreas(std::vector<cv::Point> contour1, std::vector<cv::Point>
 * FEATURES
 *
 * Silhouette			float[32]
-* Contour Distances	float[180]
-* Cell Occupancy		int[64/256], float[64/256] - size depends on scaled image size
+* Contour Distances		float[150]
+* Cell Occupancy		int[64], float[64]
 * Convex Hull			float[6]
 *
 */
