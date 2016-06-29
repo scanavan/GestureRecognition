@@ -21,7 +21,6 @@ class KinectMotion {
 public:
 	KinectMotion(std::string leap, std::string depth, std::string rgb);
 	cv::Mat getHand(cv::Mat image, double ratio);
-	cv::Mat getHand2(cv::Mat image);
 	cv::Mat makeContourImage(cv::Mat image);
 	cv::Mat scaleHand(cv::Mat image);
 	cv::Mat rotateImage(cv::Mat image);
@@ -31,6 +30,7 @@ public:
 	int * getOccNonz();
 	float * getOccAvg();
 	float * getHull();
+	std::string getGesture();
 private:
 	cv::Mat getRgb();
 	cv::Mat depth;
@@ -41,6 +41,7 @@ private:
 	int * occ_nonz;
 	float * occ_avg;
 	float * hull;
+	std::string gesture;
 
 	cv::Rect getRect(cv::Mat image);
 	float * silhouette(cv::Mat image);

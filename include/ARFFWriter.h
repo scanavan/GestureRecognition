@@ -47,6 +47,7 @@ public:
 	std::string getHull(KinectMotion depth);
 	std::string getOccNonz(KinectMotion depth);
 	std::string getOccAvg(KinectMotion depth);
+	std::string getGesture(KinectMotion kinect);
 
 };
 #endif // !ARFFWRITER_H

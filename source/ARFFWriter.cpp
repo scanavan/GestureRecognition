@@ -329,64 +329,6 @@ ARFFWriter::ARFFWriter(std::string path, std::vector<KinectMotion> data)
 		"@ATTRIBUTE convexHull4  NUMERIC\n" <<
 		"@ATTRIBUTE convexHull5  NUMERIC\n" <<
 		"@ATTRIBUTE convexHull6  NUMERIC\n" <<
-		"@ATTRIBUTE convexHull7  NUMERIC\n" <<
-		"@ATTRIBUTE convexHull8  NUMERIC\n" <<
-		"@ATTRIBUTE convexHull9  NUMERIC\n" <<
-		"@ATTRIBUTE convexHull10  NUMERIC\n" <<
-		"@ATTRIBUTE convexHull11  NUMERIC\n" <<
-		"@ATTRIBUTE convexHull12  NUMERIC\n" <<
-		"@ATTRIBUTE convexHull13  NUMERIC\n" <<
-		"@ATTRIBUTE convexHull14  NUMERIC\n" <<
-		"@ATTRIBUTE convexHull15  NUMERIC\n" <<
-		"@ATTRIBUTE convexHull16  NUMERIC\n" <<
-		"@ATTRIBUTE convexHull17  NUMERIC\n" <<
-		"@ATTRIBUTE convexHull18  NUMERIC\n" <<
-		"@ATTRIBUTE convexHull19  NUMERIC\n" <<
-		"@ATTRIBUTE convexHull20  NUMERIC\n" <<
-		"@ATTRIBUTE convexHull21  NUMERIC\n" <<
-		"@ATTRIBUTE convexHull22  NUMERIC\n" <<
-		"@ATTRIBUTE convexHull23  NUMERIC\n" <<
-		"@ATTRIBUTE convexHull24  NUMERIC\n" <<
-		"@ATTRIBUTE convexHull25  NUMERIC\n" <<
-		"@ATTRIBUTE convexHull26  NUMERIC\n" <<
-		"@ATTRIBUTE convexHull27  NUMERIC\n" <<
-		"@ATTRIBUTE convexHull28  NUMERIC\n" <<
-		"@ATTRIBUTE convexHull29  NUMERIC\n" <<
-		"@ATTRIBUTE convexHull30  NUMERIC\n" <<
-		"@ATTRIBUTE convexHull31  NUMERIC\n" <<
-		"@ATTRIBUTE convexHull32  NUMERIC\n" <<
-		"@ATTRIBUTE convexHull33  NUMERIC\n" <<
-		"@ATTRIBUTE convexHull34  NUMERIC\n" <<
-		"@ATTRIBUTE convexHull35  NUMERIC\n" <<
-		"@ATTRIBUTE convexHull36  NUMERIC\n" <<
-		"@ATTRIBUTE convexHull37  NUMERIC\n" <<
-		"@ATTRIBUTE convexHull38  NUMERIC\n" <<
-		"@ATTRIBUTE convexHull39  NUMERIC\n" <<
-		"@ATTRIBUTE convexHull40  NUMERIC\n" <<
-		"@ATTRIBUTE convexHull41  NUMERIC\n" <<
-		"@ATTRIBUTE convexHull42  NUMERIC\n" <<
-		"@ATTRIBUTE convexHull43  NUMERIC\n" <<
-		"@ATTRIBUTE convexHull44  NUMERIC\n" <<
-		"@ATTRIBUTE convexHull45  NUMERIC\n" <<
-		"@ATTRIBUTE convexHull46  NUMERIC\n" <<
-		"@ATTRIBUTE convexHull47  NUMERIC\n" <<
-		"@ATTRIBUTE convexHull48  NUMERIC\n" <<
-		"@ATTRIBUTE convexHull49  NUMERIC\n" <<
-		"@ATTRIBUTE convexHull50  NUMERIC\n" <<
-		"@ATTRIBUTE convexHull51  NUMERIC\n" <<
-		"@ATTRIBUTE convexHull52  NUMERIC\n" <<
-		"@ATTRIBUTE convexHull53  NUMERIC\n" <<
-		"@ATTRIBUTE convexHull54  NUMERIC\n" <<
-		"@ATTRIBUTE convexHull55  NUMERIC\n" <<
-		"@ATTRIBUTE convexHull56  NUMERIC\n" <<
-		"@ATTRIBUTE convexHull57  NUMERIC\n" <<
-		"@ATTRIBUTE convexHull58  NUMERIC\n" <<
-		"@ATTRIBUTE convexHull59  NUMERIC\n" <<
-		"@ATTRIBUTE convexHull60  NUMERIC\n" <<
-		"@ATTRIBUTE convexHull61  NUMERIC\n" <<
-		"@ATTRIBUTE convexHull62  NUMERIC\n" <<
-		"@ATTRIBUTE convexHull63  NUMERIC\n" <<
-		"@ATTRIBUTE convexHull64  NUMERIC\n" <<
 		"@ATTRIBUTE cellOccupancyNonZ1  NUMERIC\n" <<
 		"@ATTRIBUTE cellOccupancyNonZ2  NUMERIC\n" <<
 		"@ATTRIBUTE cellOccupancyNonZ3  NUMERIC\n" <<
@@ -520,7 +462,7 @@ ARFFWriter::ARFFWriter(std::string path, std::vector<KinectMotion> data)
 
 	// goes through the data LeapData vector and gets the values for the arff file
 	for (int i = 0; i < data.size(); i++) {
-		file << "\n";
+		file << getSil(data[i]) << getContourDist(data[i]) << getHull(data[i]) << getOccNonz(data[i]) << getOccAvg(data[i]) << getGesture(data[i]) << "\n";
 	}
 
 	file.close();
@@ -705,11 +647,9 @@ std::string ARFFWriter::getSil(KinectMotion depth)
 {
 	float * silVals = depth.getSil();
 	std::string returnVal = "";
-	for (int i = 0; i < sizeof(silVals); i++) {
-		returnVal += silVals[i];
-		if (i != sizeof(silVals) - 1) {
-			returnVal += ", ";
-		}
+	for (int i = 0; i < 32; i++) {
+		returnVal += std::to_string(silVals[i]);
+		returnVal += ", ";
 	}
 	return returnVal;
 }
@@ -718,11 +658,9 @@ std::string ARFFWriter::getContourDist(KinectMotion depth)
 {
 	float * contourDistVals = depth.getContourDist();
 	std::string returnVal = "";
-	for (int i = 0; i < sizeof(contourDistVals); i++) {
-		returnVal += contourDistVals[i];
-		if (i != sizeof(contourDistVals) - 1) {
-			returnVal += ", ";
-		}
+	for (int i = 0; i < 150; i++) {
+		returnVal += std::to_string(contourDistVals[i]);
+		returnVal += ", ";
 	}
 	return returnVal;
 }
@@ -731,11 +669,9 @@ std::string ARFFWriter::getHull(KinectMotion depth)
 {
 	float * hullVals = depth.getHull();
 	std::string returnVal = "";
-	for (int i = 0; i < sizeof(hullVals); i++) {
-		returnVal += hullVals[i];
-		if (i != sizeof(hullVals) - 1) {
-			returnVal += ", ";
-		}
+	for (int i = 0; i < 6; i++) {
+		returnVal += std::to_string(hullVals[i]);
+		returnVal += ", ";
 	}
 	return returnVal;
 }
@@ -744,11 +680,9 @@ std::string ARFFWriter::getOccNonz(KinectMotion depth)
 {
 	int * nonzVals = depth.getOccNonz();
 	std::string returnVal = "";
-	for (int i = 0; i < sizeof(nonzVals); i++) {
-		returnVal += nonzVals[i];
-		if (i != sizeof(nonzVals) - 1) {
-			returnVal += ", ";
-		}
+	for (int i = 0; i < 64; i++) {
+		returnVal += std::to_string(nonzVals[i]);
+		returnVal += ", ";
 	}
 	return returnVal;
 }
@@ -757,13 +691,15 @@ std::string ARFFWriter::getOccAvg(KinectMotion depth)
 {
 	float * avgVals = depth.getOccAvg();
 	std::string returnVal = "";
-	for (int i = 0; i < sizeof(avgVals); i++) {
-		returnVal += avgVals[i];
-		if (i != sizeof(avgVals) - 1) {
-			returnVal += ", ";
-		}
+	for (int i = 0; i < 64; i++) {
+		returnVal += std::to_string(avgVals[i]);
+		returnVal += ", ";
 	}
 	return returnVal;
+}
+
+std::string ARFFWriter::getGesture(KinectMotion Kinect) {
+	return Kinect.getGesture();
 }
 
 std::string ARFFWriter::getRatio(LeapData leap)
