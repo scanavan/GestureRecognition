@@ -18,7 +18,8 @@ KinectMotion::KinectMotion(std::string fleap, std::string fdepth, std::string fr
 
 	depth = updateImage(depth);
 	depth = rotateImage(depth);
-	getHand(depth, 0.95);
+	getHand2(depth);
+	createWindow(depth, "Image");
 	depth = scaleHand(depth);
 
 	sil = silhouette(depth);
@@ -547,5 +548,66 @@ Occ KinectMotion::cellOccupancy(cv::Mat image)
 	ret_val.nonZ = nonZs; ret_val.avgD = avgs;
 
 	return ret_val;
+}
+cv::Mat KinectMotion::getHand2(cv::Mat image)
+{
+	int top = 0;
+	bool foundHand = false;
+	int handToWrist = 0;
+	double numPixels = 0;
+	int max = 0;
+	bool atWrist = false;
+	int tmp = 0;
+	double thresholdRatio = 0;
+	double maxThresholdRatio = 0;
+	double previousNumPixels = 0;
+
+	for (int i = 1; i < image.rows; i++)
+	{
+		for (int j = 0; j < image.cols; j++)
+		{
+			if (image.at<uchar>(i, j) != 0)
+			{
+				numPixels++;
+				if (!foundHand)
+				{
+					top = i;
+					foundHand = true;
+				}
+			}
+		}
+		if (foundHand) {
+			thresholdRatio = previousNumPixels / numPixels;
+			if (maxThresholdRatio < thresholdRatio) {
+				maxThresholdRatio = thresholdRatio;
+				std::cout << maxThresholdRatio << std::endl;
+			}
+		}
+		previousNumPixels = numPixels;
+		if (numPixels > 0 && !atWrist)
+		{
+			handToWrist++;
+			if (numPixels > max)
+			{
+				max = numPixels;
+			}
+			if (i > top + 50 && tmp != 0 && numPixels <= tmp * thresholdRatio && tmp <= max*.75)
+			{
+				atWrist = true;
+			}
+			tmp = numPixels;
+			numPixels = 0;
+		}
+	}
+
+	for (int i = (top + handToWrist + 10); i < image.rows; i++)
+	{
+		for (int j = 0; j < image.cols; j++)
+		{
+			image.at<uchar>(i, j) = 0;
+		}
+	}
+
+	return image;
 }
 
