@@ -23,7 +23,8 @@ LeapData::LeapData(std::string path) {
 		setNewScaleFactor();
 		setOldScaleFactor();
 		
-		setNewFingertipDist();
+		//setNewFingertipDist();
+		newFingertipDistRefined = fingertipDist;
 		projectionPoints = getProjection();
 		setFingertipAngles();
 		setRatio();

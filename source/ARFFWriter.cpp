@@ -526,6 +526,39 @@ ARFFWriter::ARFFWriter(std::string path, std::vector<KinectMotion> data)
 	file.close();
 }
 
+ARFFWriter::ARFFWriter(std::string path, std::vector<LeapData> data, bool val) {
+	std::ofstream file;
+	file.open(path);
+	file << "% 1. Title: Leap Data Database\n" <<
+		"%\n" <<
+		"% 2. Sources :\n" <<
+		"% (a)Creator : Giulio Marin, Fabio Dominio, Pietro Zanuttigh, and Binghamton SRI 2016\n" <<
+		"% (b)Date : Summer 2016\n" <<
+		"%\n" <<
+		"@RELATION gesture\n" <<
+		"\n" <<
+		"@ATTRIBUTE numFingers  NUMERIC\n" <<
+		"@ATTRIBUTE fingersExtended   NUMERIC\n" <<
+		"@ATTRIBUTE ratio   NUMERIC\n" <<
+		"@ATTRIBUTE Max_X   NUMERIC\n" <<
+		"@ATTRIBUTE Max_Y   NUMERIC\n" <<
+		"@ATTRIBUTE fingersAreas   NUMERIC\n" <<
+		"@ATTRIBUTE newFingerTipDistRefined_f1  NUMERIC\n" <<
+		"@ATTRIBUTE newFingerTipDistRefined_f2  NUMERIC\n" <<
+		"@ATTRIBUTE newFingerTipDistRefined_f3  NUMERIC\n" <<
+		"@ATTRIBUTE newFingerTipDistRefined_f4  NUMERIC\n" <<
+		"@ATTRIBUTE newFingerTipDistRefined_f5  NUMERIC\n" <<
+		"@ATTRIBUTE class { G1, G2, G3, G4, G5, G6, G7, G8, G9, G0 }\n" <<
+		"\n@DATA\n";
+
+	// goes through the data LeapData vector and gets the values for the arff file
+	for (int i = 0; i < data.size(); i++) {
+		file << getNumFingers(data[i]) << getFingersExtends(data[i]) << getRatio(data[i]) << getMax_X(data[i]) << getMax_Y(data[i]) << getFingersArea(data[i]) << getNewFingertipDistRefined(data[i]) << getGesture(data[i]) << "\n";
+	}
+
+	file.close();
+}
+
 std::string ARFFWriter::getNumFingers(LeapData leap) {
 	return std::to_string(leap.getNumFingers()) + ",";
 }
