@@ -16,13 +16,18 @@ KinectMotion::KinectMotion(std::string fleap, std::string fdepth, std::string fr
 	depth = cv::imread(fdepth, CV_LOAD_IMAGE_UNCHANGED);
 	rgb = cv::imread(frgb, CV_LOAD_IMAGE_UNCHANGED);
 
+	int index = fdepth.find_last_of("/");
+	char gestureNumber = fdepth.at(index - 1);
+	gesture = "G";
+	gesture.push_back(gestureNumber);
+
 	depth = updateImage(depth);
 	depth = rotateImage(depth);
 	getHand(depth, 0.95);
 	depth = scaleHand(depth);
 
 	sil = silhouette(depth);
-	contour_dist = distContour(depth);
+	contour_dist = distContour(binarize(depth));
 	hull = hullAreas(depth);
 	Occ occ_data = cellOccupancy(depth);
 	occ_avg = occ_data.avgD;
@@ -59,6 +64,9 @@ float * KinectMotion::getOccAvg()
 float * KinectMotion::getHull()
 {
 	return hull;
+}
+std::string KinectMotion::getGesture() {
+	return gesture;
 }
 /*
 @def - recognize difference between wrist, hand and arm
@@ -264,7 +272,7 @@ float * KinectMotion::distContour(cv::Mat image)
 	std::vector<cv::Point> edges = getContour(image);
 	cv::Point center = palmCenter(image, 23);
 	std::vector<cv::Point> sampleContour;
-	float * retVal = new float[SAMPLE_SIZE];
+	float * retVal = new float[SAMPLE_SIZE] {0};
 
 	for (int i = 0; i < SAMPLE_SIZE; i++)
 	{
@@ -376,7 +384,7 @@ float * KinectMotion::silhouette(cv::Mat image)
 		bins[bin].push_back(dist);
 	}
 
-	float * avgs = new float[32];
+	float * avgs = new float[32]{ 0 };
 	float sum;
 	for (int i = 0; i < 32; ++i)
 	{
@@ -385,7 +393,8 @@ float * KinectMotion::silhouette(cv::Mat image)
 		{
 			sum += bins[i][j];
 		}
-		avgs[i] = sum / bins[i].size();
+		if (bins[i].size() == 0) avgs[i] = 0;
+		else avgs[i] = sum / bins[i].size();
 	}
 
 	return avgs;
@@ -525,7 +534,7 @@ Occ KinectMotion::cellOccupancy(cv::Mat image)
 {
 	int i_size = image.rows / CELL_DIVS; int j_size = image.cols / CELL_DIVS;
 	int box_size = i_size * j_size;
-	float * avgs = new float[NUM_CELLS]; int * nonZs = new int[NUM_CELLS]; float * sums = new float[NUM_CELLS] { 0 };
+	float * avgs = new float[NUM_CELLS] {0}; int * nonZs = new int[NUM_CELLS] {0}; float * sums = new float[NUM_CELLS] { 0 };
 	for (int i = 0; i < image.rows; ++i)
 	{
 		for (int j = 0; j < image.cols; ++j)

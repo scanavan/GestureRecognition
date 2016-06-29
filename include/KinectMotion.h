@@ -30,6 +30,7 @@ public:
 	int * getOccNonz();
 	float * getOccAvg();
 	float * getHull();
+	std::string getGesture();
 private:
 	cv::Mat getRgb();
 	cv::Mat depth;
@@ -40,6 +41,7 @@ private:
 	int * occ_nonz;
 	float * occ_avg;
 	float * hull;
+	std::string gesture;
 
 	cv::Rect getRect(cv::Mat image);
 	float * silhouette(cv::Mat image);
