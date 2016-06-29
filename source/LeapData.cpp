@@ -20,12 +20,13 @@ LeapData::LeapData(std::string path) {
 			parse(counter, line);
 			counter++;
 		}
+		extendedTipPosition = fingertipPosition;
 		setNewScaleFactor();
 		setOldScaleFactor();
 		setNewFingertipDist();
 		projectionPoints = getProjection();
 		setFingertipAngles();
-		extendedTipPosition = fingertipPosition;
+		
 		setRatio();
 		setMaximums();
 		
