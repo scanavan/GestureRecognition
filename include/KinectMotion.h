@@ -19,7 +19,7 @@ struct Occ {
 
 class KinectMotion {
 public:
-	KinectMotion(std::string leap, std::string depth);
+	KinectMotion(std::string leap, std::string depth, std::string rgb);
 	cv::Mat getHand(cv::Mat image, double ratio);
 	cv::Mat getHand2(cv::Mat image);
 	cv::Mat makeContourImage(cv::Mat image);
@@ -31,18 +31,16 @@ public:
 	int * getOccNonz();
 	float * getOccAvg();
 	float * getHull();
-	std::string getGesture();
 private:
-	//cv::Mat getRgb();
+	cv::Mat getRgb();
 	cv::Mat depth;
-	//cv::Mat rgb;
+	cv::Mat rgb;
 	LeapData * leap;
 	float * sil;
 	float * contour_dist;
 	int * occ_nonz;
 	float * occ_avg;
 	float * hull;
-	std::string gesture;
 
 	cv::Rect getRect(cv::Mat image);
 	float * silhouette(cv::Mat image);
@@ -62,8 +60,8 @@ bool compareContourAreas(std::vector<cv::Point> contour1, std::vector<cv::Point>
 * FEATURES
 *
 * Silhouette			float[32]
-* Contour Distances		float[150]
-* Cell Occupancy		int[64], float[64]
+* Contour Distances	float[180]
+* Cell Occupancy		int[64/256], float[64/256] - size depends on scaled image size
 * Convex Hull			float[6]
 *
 */

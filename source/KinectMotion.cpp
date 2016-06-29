@@ -10,11 +10,11 @@
 #include <vector>
 #include <set>
 
-KinectMotion::KinectMotion(std::string fleap, std::string fdepth)
+KinectMotion::KinectMotion(std::string fleap, std::string fdepth, std::string frgb)
 {
 	leap = new LeapData(fleap);
 	depth = cv::imread(fdepth, CV_LOAD_IMAGE_UNCHANGED);
-	//rgb = cv::imread(frgb, CV_LOAD_IMAGE_UNCHANGED);
+	rgb = cv::imread(frgb, CV_LOAD_IMAGE_UNCHANGED);
 
 	depth = updateImage(depth);
 	depth = rotateImage(depth);
@@ -23,16 +23,12 @@ KinectMotion::KinectMotion(std::string fleap, std::string fdepth)
 	depth = scaleHand(depth);
 
 	sil = silhouette(depth);
-	contour_dist = distContour(binarize(depth));
+	contour_dist = distContour(depth);
 	hull = hullAreas(depth);
 	Occ occ_data = cellOccupancy(depth);
 	occ_avg = occ_data.avgD;
 	occ_nonz = occ_data.nonZ;
 
-	int index = fdepth.find_last_of("/");
-	char gestureNumber = fdepth.at(index - 1);
-	gesture = "G";
-	gesture.push_back(gestureNumber);
 }
 
 cv::Mat KinectMotion::getDepth()
@@ -40,10 +36,10 @@ cv::Mat KinectMotion::getDepth()
 	return depth;
 }
 
-//cv::Mat KinectMotion::getRgb()
-//{
-//	return rgb;
-//}
+cv::Mat KinectMotion::getRgb()
+{
+	return rgb;
+}
 
 float * KinectMotion::getSil()
 {
@@ -65,10 +61,6 @@ float * KinectMotion::getHull()
 {
 	return hull;
 }
-std::string KinectMotion::getGesture()
-{
-	return gesture;
-}
 /*
 @def - recognize difference between wrist, hand and arm
 cut's the image at the wrist
@@ -84,7 +76,7 @@ cv::Mat KinectMotion::getHand(cv::Mat image, double thresholdRatio)
 	bool atWrist = false;
 	int tmp = 0;
 
-	for (int i = 1; i < image.rows; i++)
+	for (int i = 0; i < image.rows; i++)
 	{
 		for (int j = 0; j < image.cols; j++)
 		{
@@ -273,7 +265,7 @@ float * KinectMotion::distContour(cv::Mat image)
 	std::vector<cv::Point> edges = getContour(image);
 	cv::Point center = palmCenter(image, 23);
 	std::vector<cv::Point> sampleContour;
-	float * retVal = new float[SAMPLE_SIZE] {0};
+	float * retVal = new float[SAMPLE_SIZE];
 
 	for (int i = 0; i < SAMPLE_SIZE; i++)
 	{
@@ -336,10 +328,10 @@ cv::Rect KinectMotion::getRect(cv::Mat image)
 		}
 	}
 
-	maxPoint.x = xMax;
-	maxPoint.y = yMax;
-	minPoint.x = xMin;
-	minPoint.y = yMin;
+	maxPoint.x = xMax + 10;
+	maxPoint.y = yMax + 10;
+	minPoint.x = xMin - 10;
+	minPoint.y = yMin - 10;
 
 	return cv::Rect(maxPoint, minPoint);
 }
@@ -385,7 +377,7 @@ float * KinectMotion::silhouette(cv::Mat image)
 		bins[bin].push_back(dist);
 	}
 
-	float * avgs = new float[32]{ 0 };
+	float * avgs = new float[32];
 	float sum;
 	for (int i = 0; i < 32; ++i)
 	{
@@ -394,8 +386,7 @@ float * KinectMotion::silhouette(cv::Mat image)
 		{
 			sum += bins[i][j];
 		}
-		if (bins[i].size() == 0) avgs[i] = 0;
-		else avgs[i] = sum / bins[i].size();
+		avgs[i] = sum / bins[i].size();
 	}
 
 	return avgs;
@@ -535,7 +526,7 @@ Occ KinectMotion::cellOccupancy(cv::Mat image)
 {
 	int i_size = image.rows / CELL_DIVS; int j_size = image.cols / CELL_DIVS;
 	int box_size = i_size * j_size;
-	float * avgs = new float[NUM_CELLS] {0}; int * nonZs = new int[NUM_CELLS] {0}; float * sums = new float[NUM_CELLS] { 0 };
+	float * avgs = new float[NUM_CELLS]; int * nonZs = new int[NUM_CELLS]; float * sums = new float[NUM_CELLS] { 0 };
 	for (int i = 0; i < image.rows; ++i)
 	{
 		for (int j = 0; j < image.cols; ++j)

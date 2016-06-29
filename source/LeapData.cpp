@@ -1,6 +1,6 @@
 #include "LeapData.h"
 #include <sstream>
-
+#include <math.h>
 
 LeapData::LeapData() {
 	//default constructor
@@ -25,7 +25,9 @@ LeapData::LeapData(std::string path) {
 		setNewFingertipDist();
 		projectionPoints = getProjection();
 		setFingertipAngles();
+		extendedTipPosition = fingertipPosition;
 		setRatio();
+		setMaximums();
 		
 
 
@@ -82,6 +84,7 @@ LeapData::LeapData(RealTimeLeapData leapData) {
 	extendedFingers = leapData.getExtendedFingers();
 	fingerDirections = leapData.getFingerDirections();
 	fingertipPosition = leapData.getTipPositions();
+	extendedTipPosition = leapData.getExtendedTipPositions();
 	handDirection = leapData.getHandDirection();
 	palmNormal = leapData.getPalmNormal();
 	palmPosition = leapData.getPalmPosition();
@@ -93,8 +96,46 @@ LeapData::LeapData(RealTimeLeapData leapData) {
 	gesture = leapData.getGesture();
 	setFingerAreas();
 	setRatio();
+	setMaximums();
 }
+void LeapData::setMaximums()
+{
+	float tmp_X=0;
+	float tmp_Y=0;
+	max_X = 0;
+	max_Y = 0;
+	for (int i = 0; i < extendedTipPosition.size(); i++)
+	{
+		if ((extendedTipPosition[i].getX() != 0) && (extendedTipPosition[i].getY() != 0) && (extendedTipPosition[i].getZ() != 0))
+		{
+			tmp_X = extendedTipPosition[i].getX() - palmPosition.getX();
+			tmp_Y= extendedTipPosition[i].getY() - palmPosition.getY();
+			
+			if (fabs(tmp_X) > max_X)
+			{
+				max_X = tmp_X;
+			}
+			if (fabs(tmp_Y) > max_Y)
+			{
+				max_Y = tmp_Y;
+			}
+		}
 
+		
+	}
+	max_X = max_X / newScaleFactor;
+	max_Y = max_Y / newScaleFactor;
+	//std::cout << "fingertipPosition:" << " ";
+	//for (int i = 0; i < extendedTipPosition.size(); i++) {
+	//	std::cout << "(" << extendedTipPosition[i].getX() - palmPosition.getX() << ',' << extendedTipPosition[i].getY() - palmPosition.getY() << ')'<<' ';
+	//}
+	//std::cout << std::endl;
+	//std::cout << "palm position ";
+	//palmPosition.printPoint();
+	//std::cout << "Max_X" << max_X << "\n";
+	//std::cout << "Max_Y" << max_Y << "\n";
+
+}
 // sets fingerArea to the average area between the extended fingers
 // s = (fingerDistance[i] + fingerDistance[i+1] + distanceBetweenFingers) / 2
 // area = sqrt(s*(s - fingerDistance[i])*(s - fingerDistance[i+1])*(s - distanceBetweenFingers)) / newScaleFactor
@@ -163,11 +204,11 @@ void LeapData::setRatio()
 	Point right;
 	Point left;
 	float tmp;
-	for (int i = 0; i < fingertipPosition.size(); i++)
+	for (int i = 0; i < extendedTipPosition.size(); i++)
 		{
-			if ((fingertipPosition[i].getX() != 0) && (fingertipPosition[i].getY() != 0) && (fingertipPosition[i].getZ() != 0))
+			if ((extendedTipPosition[i].getX() != 0) && (extendedTipPosition[i].getY() != 0) && (extendedTipPosition[i].getZ() != 0))
 			{
-				tmp = fingertipPosition[i].getMagnitude(palmPosition);
+				tmp = extendedTipPosition[i].getMagnitude(palmPosition);
 			}
 			if (tmp < 0)
 			{
@@ -180,21 +221,21 @@ void LeapData::setRatio()
 			}
 		}
 	
-	for (int i = 0; i < fingertipPosition.size(); i++)
+	for (int i = 0; i < extendedTipPosition.size(); i++)
 	{
-		if ((fingertipPosition[i].getX() != 0)&& (fingertipPosition[i].getY() != 0)&& (fingertipPosition[i].getZ() != 0))
+		if ((extendedTipPosition[i].getX() != 0)&& (extendedTipPosition[i].getY() != 0)&& (extendedTipPosition[i].getZ() != 0))
 		{
 			leftFingerAddr = i;
-			left = fingertipPosition[leftFingerAddr];
+			left = extendedTipPosition[leftFingerAddr];
 			break;
 		}
 	}
-	for (int i=fingertipPosition.size()-1; i >= 0; i--)
+	for (int i= extendedTipPosition.size()-1; i >= 0; i--)
 	{
-		if ((fingertipPosition[i].getX() != 0) && (fingertipPosition[i].getY() != 0) && (fingertipPosition[i].getZ() != 0))
+		if ((extendedTipPosition[i].getX() != 0) && (extendedTipPosition[i].getY() != 0) && (extendedTipPosition[i].getZ() != 0))
 		{
 			rightFingerAddr = i;
-			right = fingertipPosition[rightFingerAddr];
+			right = extendedTipPosition[rightFingerAddr];
 			break;
 		}
 	}
@@ -205,9 +246,9 @@ void LeapData::setRatio()
 	std::cout << "leftFingerAddr: " << leftFingerAddr << std::endl;
 	std::cout << "left finger: "; left.printPoint();
 
-	std::cout << "fingertipPosition:" << " ";
-	for (int i = 0; i < fingertipPosition.size(); i++) {
-		fingertipPosition[i].printPoint();
+	std::cout << "extendedTipPosition:" << " ";
+	for (int i = 0; i < extendedTipPosition.size(); i++) {
+		extendedTipPosition[i].printPoint();
 	}
 	std::cout << std::endl;
 	
@@ -246,7 +287,7 @@ void LeapData::setRatio()
 void LeapData::setFingertipAngles() {
 	float a, b, c;
 	for (int i = 0; i < 5; i++) {
-		if (i >= numFingers) {
+		if (i >= fingertipPosition.size()) {
 			fingertipAngles.push_back(0);
 			fingertipElevation.push_back(0);
 		}
@@ -264,7 +305,7 @@ void LeapData::setFingertipAngles() {
 // newFingertipDist = dist(fingertipPosition, palmPosition) / newScaleFactor
 void LeapData::setNewFingertipDist() {
 	for (int i = 0; i < 5; i++) {
-		if (i >= numFingers) {
+		if (i >= fingertipPosition.size()) {
 			newFingertipDistRefined.push_back(0.000000);
 		}
 		else {
@@ -284,9 +325,9 @@ void LeapData::setNewScaleFactor() {
 		float averageY = 0;
 		float averageZ = 0;
 		for (int i = 0; i < numFingers; i++) {
-			averageX = averageX + fingertipPosition[i].getX();
-			averageY = averageY + fingertipPosition[i].getY();
-			averageZ = averageZ + fingertipPosition[i].getZ();
+			averageX = averageX + extendedTipPosition[i].getX();
+			averageY = averageY + extendedTipPosition[i].getY();
+			averageZ = averageZ + extendedTipPosition[i].getZ();
 		}
 		Point p = Point(averageX / numFingers, averageY / numFingers, averageZ / numFingers);
 		newScaleFactor = p.getMagnitude(palmPosition);
@@ -321,7 +362,7 @@ std::vector<Point> LeapData::getProjection() {
 	//d = fingertipPosition - p
 	// returnVal = fingertipPosition - dot(handDirection, d) * handDirection
 	for (int i = 0; i < 5; i++) {
-		if (i >= numFingers) {
+		if (i >= fingertipPosition.size()) {
 			returnVal.push_back(Point(0,0,0));
 		}
 		else {
@@ -627,4 +668,12 @@ float LeapData::getFingerArea() {
 }
 float LeapData::getRatio() {
 	return ratio;
+}
+float LeapData::getMax_X()
+{
+	return max_X;
+}
+float LeapData::getMax_Y()
+{
+	return max_Y;
 }

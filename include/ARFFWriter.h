@@ -38,13 +38,15 @@ public:
 	std::string getFingersExtends(LeapData leap);
 	std::string getFingersArea(LeapData leap);
 	std::string getRatio(LeapData leap);
+	std::string getMax_X(LeapData leap);
+	std::string getMax_Y(LeapData leap);
 
 	std::string getSil(KinectMotion depth);
 	std::string getContourDist(KinectMotion depth);
 	std::string getHull(KinectMotion depth);
 	std::string getOccNonz(KinectMotion depth);
 	std::string getOccAvg(KinectMotion depth);
-	std::string getGesture(KinectMotion kinect);
+
 };
 #endif // !ARFFWRITER_H
 
