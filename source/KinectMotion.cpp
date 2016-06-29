@@ -10,18 +10,18 @@
 #include <vector>
 #include <set>
 
-KinectMotion::KinectMotion(std::string fleap, std::string fdepth, std::string frgb)
+KinectMotion::KinectMotion(std::string fleap, std::string fdepth)
 {
 	leap = new LeapData(fleap);
 	depth = cv::imread(fdepth, CV_LOAD_IMAGE_UNCHANGED);
-	rgb = cv::imread(frgb, CV_LOAD_IMAGE_UNCHANGED);
+	//rgb = cv::imread(frgb, CV_LOAD_IMAGE_UNCHANGED);
 
 	depth = updateImage(depth);
 	depth = rotateImage(depth);
-	getHand2(depth);
 	createWindow(depth, "Image");
+	getHand2(depth);
 	depth = scaleHand(depth);
-
+	createWindow(depth, "Image");
 	sil = silhouette(depth);
 	contour_dist = distContour(depth);
 	hull = hullAreas(depth);
@@ -36,10 +36,10 @@ cv::Mat KinectMotion::getDepth()
 	return depth;
 }
 
-cv::Mat KinectMotion::getRgb()
-{
-	return rgb;
-}
+//cv::Mat KinectMotion::getRgb()
+//{
+//	return rgb;
+//}
 
 float * KinectMotion::getSil()
 {
@@ -227,19 +227,19 @@ cv::Mat KinectMotion::scaleHand(cv::Mat image)
 		height = croppedImage.rows;
 	int max_dim = (width >= height) ? width : height;
 
-	float scale = ((float)SCALE) / max_dim;
+	float scale = ((float)440) / max_dim;
 	cv::Rect roi;
 	if (width >= height)
 	{
-		roi.width = SCALE;
-		roi.x = 0;
+		roi.width = 440;
+		roi.x = 20;
 		roi.height = height * scale;
 		roi.y = (SCALE - roi.height) / 2;
 	}
 	else
 	{
-		roi.y = 0;
-		roi.height = SCALE;
+		roi.y = 20;
+		roi.height = 440;
 		roi.width = width * scale;
 		roi.x = (SCALE - roi.width) / 2;
 	}
@@ -328,10 +328,10 @@ cv::Rect KinectMotion::getRect(cv::Mat image)
 		}
 	}
 
-	maxPoint.x = xMax + 10;
-	maxPoint.y = yMax + 10;
-	minPoint.x = xMin - 10;
-	minPoint.y = yMin - 10;
+	maxPoint.x = xMax;
+	maxPoint.y = yMax;
+	minPoint.x = xMin;
+	minPoint.y = yMin;
 
 	return cv::Rect(maxPoint, minPoint);
 }
@@ -504,7 +504,7 @@ cv::Mat KinectMotion::updateImage(cv::Mat image)
 		{
 			//if(j < 50 || i > image.rows-50 || j > image.cols-50) image.at<uchar>(i, j) = 0;
 			//else {
-			if (uimage.at<uchar>(i, j) < 16) uimage.at<uchar>(i, j) = 0;
+			if (uimage.at<uchar>(i, j) < 10) uimage.at<uchar>(i, j) = 0;
 			else if (uimage.at<uchar>(i, j) < min) min = uimage.at<uchar>(i, j);
 			//}
 		}

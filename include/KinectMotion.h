@@ -19,7 +19,7 @@ struct Occ {
 
 class KinectMotion {
 public:
-	KinectMotion(std::string leap, std::string depth, std::string rgb);
+	KinectMotion(std::string leap, std::string depth);
 	cv::Mat getHand(cv::Mat image, double ratio);
 	cv::Mat getHand2(cv::Mat image);
 	cv::Mat makeContourImage(cv::Mat image);
@@ -32,9 +32,9 @@ public:
 	float * getOccAvg();
 	float * getHull();
 private:
-	cv::Mat getRgb();
+	//cv::Mat getRgb();
 	cv::Mat depth;
-	cv::Mat rgb;
+	//cv::Mat rgb;
 	LeapData * leap;
 	float * sil;
 	float * contour_dist;
