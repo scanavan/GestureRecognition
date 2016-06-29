@@ -18,10 +18,8 @@ KinectMotion::KinectMotion(std::string fleap, std::string fdepth)
 
 	depth = updateImage(depth);
 	depth = rotateImage(depth);
-	createWindow(depth, "Image");
 	getHand2(depth);
 	depth = scaleHand(depth);
-	createWindow(depth, "Image");
 	sil = silhouette(depth);
 	contour_dist = distContour(depth);
 	hull = hullAreas(depth);
@@ -562,9 +560,9 @@ cv::Mat KinectMotion::getHand2(cv::Mat image)
 	double maxThresholdRatio = 0;
 	double previousNumPixels = 0;
 
-	for (int i = 1; i < image.rows; i++)
+	for (int i = 25; i < image.rows; i++)
 	{
-		for (int j = 0; j < image.cols; j++)
+		for (int j = 30; j < image.cols-30; j++)
 		{
 			if (image.at<uchar>(i, j) != 0)
 			{
@@ -576,11 +574,10 @@ cv::Mat KinectMotion::getHand2(cv::Mat image)
 				}
 			}
 		}
-		if (foundHand) {
+		if (foundHand && numPixels != 0) {
 			thresholdRatio = previousNumPixels / numPixels;
 			if (maxThresholdRatio < thresholdRatio) {
 				maxThresholdRatio = thresholdRatio;
-				std::cout << maxThresholdRatio << std::endl;
 			}
 		}
 		previousNumPixels = numPixels;
