@@ -10,7 +10,6 @@ LeapData::LeapData() {
 LeapData::LeapData(std::string path) {
 	std::ifstream ifs;
 	std::string line;
-
 	ifs.open(path, std::ifstream::in);
 
 	if (ifs.is_open()) {
@@ -20,12 +19,13 @@ LeapData::LeapData(std::string path) {
 			parse(counter, line);
 			counter++;
 		}
+		extendedTipPosition = fingertipPosition;
 		setNewScaleFactor();
 		setOldScaleFactor();
+		
 		setNewFingertipDist();
 		projectionPoints = getProjection();
 		setFingertipAngles();
-		extendedTipPosition = fingertipPosition;
 		setRatio();
 		setMaximums();
 		
@@ -304,12 +304,13 @@ void LeapData::setFingertipAngles() {
 // sets the newFingertipDistance based on newScaleFactor
 // newFingertipDist = dist(fingertipPosition, palmPosition) / newScaleFactor
 void LeapData::setNewFingertipDist() {
+	
 	for (int i = 0; i < 5; i++) {
 		if (i >= fingertipPosition.size()) {
 			newFingertipDistRefined.push_back(0.000000);
 		}
 		else {
-			newFingertipDistRefined.push_back(fingertipPosition[i].getMagnitude(palmPosition) / newScaleFactor);
+			newFingertipDistRefined.push_back(fingertipDist[i] / newScaleFactor);
 		}
 	}
 }
