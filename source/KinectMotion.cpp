@@ -172,7 +172,7 @@ std::vector<cv::Point> KinectMotion::getContour(cv::Mat image)
 	std::vector<cv::Point> rawContour;
 	std::vector<cv::Point> sortedContour;
 	cv::Mat image_clone = binarize(image);
-	cv::Point pc = palmCenter(image_clone, 23);
+	cv::Point pc = palmCenter(image_clone, 150);
 
 	std::vector<std::vector<cv::Point>> contours;
 	cv::findContours(image_clone, contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_NONE);
@@ -263,7 +263,7 @@ calculates the distance from the palm center to each sampled point
 float * KinectMotion::distContour(cv::Mat image)
 {
 	std::vector<cv::Point> edges = getContour(image);
-	cv::Point center = palmCenter(image, 23);
+	cv::Point center = palmCenter(image, 150);
 	std::vector<cv::Point> sampleContour;
 	float * retVal = new float[SAMPLE_SIZE];
 
@@ -419,7 +419,7 @@ float * KinectMotion::hullAreas(cv::Mat image)
 			if (uimage.at<uchar>(i, j) != 0) hull_image.at<uchar>(i, j) = 0;
 		}
 	}
-	cv::Point pc = palmCenter(uimage, 40);
+	cv::Point pc = palmCenter(uimage, 150);
 
 	cv::Mat image_clone = hull_image.clone();
 	cv::Mat new_image = cv::Mat::zeros(image.size(), CV_8UC3);
@@ -504,7 +504,7 @@ cv::Mat KinectMotion::updateImage(cv::Mat image)
 		{
 			//if(j < 50 || i > image.rows-50 || j > image.cols-50) image.at<uchar>(i, j) = 0;
 			//else {
-			if (uimage.at<uchar>(i, j) < 10) uimage.at<uchar>(i, j) = 0;
+			if (uimage.at<uchar>(i, j) < 15) uimage.at<uchar>(i, j) = 0;
 			else if (uimage.at<uchar>(i, j) < min) min = uimage.at<uchar>(i, j);
 			//}
 		}
