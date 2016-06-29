@@ -56,6 +56,9 @@ public:
 	std::vector<float> getFingertipElevation();
 	std::string getGesture();
 	std::vector<int> getExtendedFingers();
+	void setMaximums();
+	float getMax_X();
+	float getMax_Y();
 private:
 	int numFingers;
 	std::vector<float> fingertipDist;
@@ -90,6 +93,9 @@ private:
 	std::string gesture;
 	std::vector<int> extendedFingers;
 	std::vector<Point> fingerDirections;
+	std::vector<Point> extendedTipPosition;
+	float max_X;
+	float max_Y;
 };
 
 #endif 

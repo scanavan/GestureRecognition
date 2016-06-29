@@ -115,12 +115,14 @@ ARFFWriter::ARFFWriter(std::string path, std::vector<LeapData> data) {
 		"@ATTRIBUTE fingersAreas_f4   NUMERIC\n" <<*/
 		"@ATTRIBUTE fingersAreasAverage   NUMERIC\n" <<
 		"@ATTRIBUTE ratio   NUMERIC\n" <<
+		"@ATTRIBUTE Max_X   NUMERIC\n"<<
+		"@ATTRIBUTE Max_Y   NUMERIC\n"<<
 		"@ATTRIBUTE class { G1, G2, G3, G4, G5, G6, G7, G8, G9, G0 }\n" <<
 		"\n@DATA\n";
 
 	// goes through the data LeapData vector and gets the values for the arff file
 	for (int i = 0; i < data.size(); i++) {
-		file << getNumFingers(data[i]) << getNewFingertipDistRefined(data[i]) << getFingertipAngles(data[i]) << getFingertipElevation(data[i]) << getFingersExtends(data[i]) << getFingersArea(data[i]) << getRatio(data[i]) << getGesture(data[i]) << "\n";
+		file << getNumFingers(data[i]) << getNewFingertipDistRefined(data[i]) << getFingertipAngles(data[i]) << getFingertipElevation(data[i]) << getFingersExtends(data[i]) << getFingersArea(data[i]) << getRatio(data[i]) <<getMax_X(data[i])<<getMax_Y(data[i])<< getGesture(data[i]) << "\n";
 	}
 
 	file.close();
@@ -734,4 +736,12 @@ std::string ARFFWriter::getOccAvg(KinectMotion depth)
 std::string ARFFWriter::getRatio(LeapData leap)
 {
 	return std::to_string(leap.getRatio()) + ",";
+}
+std::string ARFFWriter::getMax_X(LeapData leap)
+{
+	return std::to_string(leap.getMax_X()) + ",";
+}
+std::string ARFFWriter::getMax_Y(LeapData leap)
+{
+	return std::to_string(leap.getMax_Y()) + ",";
 }

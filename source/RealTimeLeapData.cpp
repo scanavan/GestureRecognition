@@ -42,6 +42,13 @@ void RealTimeLeapData::getData() {
 		for (FingerList::const_iterator fl = extended.begin(); fl != extended.end(); ++fl) {
 			const Finger finger = *fl;
 			types.push_back(finger.type());
+			const Bone distal = finger.bone(Bone::TYPE_DISTAL);
+			const Vector tip = distal.nextJoint();
+			ExtendedTipPositions.push_back(Point(tip.x, tip.y, tip.z));
+		}
+		for (int i = ExtendedTipPositions.size(); i < 5; ++i)
+		{
+			ExtendedTipPositions.push_back(Point(0.000000,0.000000,0.000000));
 		}
 		numFingers = types.size();
 		for (int i = 0; i < types.size(); ++i)
@@ -66,6 +73,20 @@ void RealTimeLeapData::getData() {
 			const Vector tip = distal.nextJoint();
 			tipPositions.push_back(Point(tip.x, tip.y, tip.z));
 		}
+		for (int i = 0; i < tipPositions.size(); ++i)
+		{
+			tipPositions[i].printPoint();
+			std::cout << "\t";
+		}
+		std::cout << std::endl;
+
+		for (int i = 0; i < ExtendedTipPositions.size(); ++i)
+		{
+			ExtendedTipPositions[i].printPoint();
+			std::cout << "\t";
+		}
+		std::cout << std::endl;
+
 		std::cout << "Number of Fingers: " << numFingers << std::endl;
 		std::cout << "\nextendedFingers: ";
 		for (int i = 0; i < extendedFingers.size(); i++) {
@@ -123,6 +144,7 @@ void RealTimeLeapData::Clear()
 	extendedFingers.clear();
 	fingerDirections.clear();
 	tipPositions.clear();
+	ExtendedTipPositions.clear();
 }
 
 std::vector<int> RealTimeLeapData::getExtendedFingers() {
@@ -130,6 +152,9 @@ std::vector<int> RealTimeLeapData::getExtendedFingers() {
 }
 std::vector<Point> RealTimeLeapData::getFingerDirections() {
 	return fingerDirections;
+}
+std::vector<Point> RealTimeLeapData::getExtendedTipPositions() {
+	return ExtendedTipPositions;
 }
 std::vector<Point> RealTimeLeapData::getTipPositions() {
 	return tipPositions;

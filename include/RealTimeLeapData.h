@@ -16,6 +16,7 @@ public:
 	std::vector<int> getExtendedFingers();
 	std::vector<Point> getFingerDirections();
 	std::vector<Point> getTipPositions();
+	std::vector<Point> getExtendedTipPositions();
 	Point getHandDirection();
 	Point getPalmNormal();
 	Point getPalmPosition();
@@ -26,6 +27,7 @@ public:
 	std::vector<int>extendedFingers;
 	std::vector<Point>fingerDirections;
 	std::vector<Point>tipPositions;
+	std::vector<Point>ExtendedTipPositions;
 	Point handDirection;
 	Point palmNormal;
 	Point palmPosition;
