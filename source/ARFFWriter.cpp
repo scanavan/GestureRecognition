@@ -737,11 +737,3 @@ std::string ARFFWriter::getRatio(LeapData leap)
 {
 	return std::to_string(leap.getRatio()) + ",";
 }
-std::string ARFFWriter::getMax_X(LeapData leap)
-{
-	return std::to_string(leap.getMax_X()) + ",";
-}
-std::string ARFFWriter::getMax_Y(LeapData leap)
-{
-	return std::to_string(leap.getMax_Y()) + ",";
-}
