@@ -22,7 +22,7 @@ KinectMotion::KinectMotion(std::string fleap, std::string fdepth)
 	gesture.push_back(gestureNumber);
 
 	depth = updateImage(depth);
-	depth = rotateImage(depth);
+	//depth = rotateImage(depth);
 	getHand(depth);
 	initData();
 	sil = silhouette(scaled_depth);
@@ -315,6 +315,8 @@ cv::Mat KinectMotion::rotateImage(cv::Mat image)
 	cv::Mat rot_mat = getRotationMatrix2D(src_center, angle, 1.0);
 	cv::Mat dst;
 	cv::warpAffine(image, dst, rot_mat, image.size());
+	//createWindow(image, "Updated Image");
+	//createWindow(dst, "Rotated Image");
 	return dst;
 }
 
@@ -456,15 +458,11 @@ cv::Mat KinectMotion::updateImage(cv::Mat image)
 
 	// find closest pixel and remove noise
 	int min = 255;
-	for (int i = 0; i < image.rows; i++)
+	for (int i = 50; i < image.rows - 50; i++)
 	{
-		for (int j = 0; j < image.cols; j++)
+		for (int j = 50; j < image.cols - 50; j++)
 		{
-			//if(j < 50 || i > image.rows-50 || j > image.cols-50) image.at<uchar>(i, j) = 0;
-			//else {
-			if (uimage.at<uchar>(i, j) < 16) uimage.at<uchar>(i, j) = 0;
-			else if (uimage.at<uchar>(i, j) < min) min = uimage.at<uchar>(i, j);
-			//}
+			if (uimage.at<uchar>(i, j) < min && uimage.at<uchar>(i,j) != 0) min = uimage.at<uchar>(i, j);
 		}
 	}
 
@@ -473,10 +471,10 @@ cv::Mat KinectMotion::updateImage(cv::Mat image)
 	{
 		for (int j = 0; j < image.cols; j++)
 		{
-			if (uimage.at<uchar>(i, j) > min + 4) uimage.at<uchar>(i, j) = 0;
+			if (uimage.at<uchar>(i, j) > min + 4 || uimage.at<uchar>(i,j) < min) uimage.at<uchar>(i, j) = 0;
 		}
 	}
-
+	
 	return uimage;
 }
 
@@ -564,7 +562,7 @@ cv::Mat KinectMotion::getHand(cv::Mat image)
 			image.at<uchar>(i, j) = 0;
 		}
 	}
-
+	//createWindow(image, "Hand");
 	return image;
 }
 
