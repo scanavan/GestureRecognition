@@ -566,3 +566,15 @@ cv::Mat KinectMotion::getHand(cv::Mat image)
 	return image;
 }
 
+void KinectMotion::sortContourDist() {
+	std::vector<float> tmp;
+	for (int i = 0; i < SAMPLE_SIZE; i++) {
+		tmp.push_back(contour_dist[i]);
+	}
+
+	std::sort(tmp.begin(), tmp.end());
+
+	for (int i = 0; i < SAMPLE_SIZE; i++) {
+		contour_dist[i] = tmp[i];
+	}
+}

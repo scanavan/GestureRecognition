@@ -31,6 +31,7 @@ public:
 	float * getOccAvg();
 	float * getHull();
 	std::string getGesture();
+	void sortContourDist()
 private:
 	//cv::Mat getRgb();
 	cv::Mat depth;
