@@ -16,114 +16,33 @@ ARFFWriter::ARFFWriter(std::string path, std::vector<LeapData> data) {
 		"@RELATION gesture\n" <<
 		"\n" <<
 		"@ATTRIBUTE numFingers  NUMERIC\n" <<
-		/*"@ATTRIBUTE fingerTipDist_f1   NUMERIC\n" <<
-		"@ATTRIBUTE fingerTipDist_f2   NUMERIC\n" <<
-		"@ATTRIBUTE fingerTipDist_f3   NUMERIC\n" <<
-		"@ATTRIBUTE fingerTipDist_f4   NUMERIC\n" <<
-		"@ATTRIBUTE fingerTipDist_f5   NUMERIC\n" <<*/
+		"@ATTRIBUTE fingersExtended   NUMERIC\n" <<
+		"@ATTRIBUTE ratio   NUMERIC\n" <<
+		"@ATTRIBUTE Max_X   NUMERIC\n" <<
+		"@ATTRIBUTE Max_Y   NUMERIC\n" <<
+		"@ATTRIBUTE fingersAreas   NUMERIC\n" <<
 		"@ATTRIBUTE newFingerTipDistRefined_f1  NUMERIC\n" <<
 		"@ATTRIBUTE newFingerTipDistRefined_f2  NUMERIC\n" <<
 		"@ATTRIBUTE newFingerTipDistRefined_f3  NUMERIC\n" <<
 		"@ATTRIBUTE newFingerTipDistRefined_f4  NUMERIC\n" <<
 		"@ATTRIBUTE newFingerTipDistRefined_f5  NUMERIC\n" <<
-		/*"@ATTRIBUTE fingertipInterDist_d1   NUMERIC\n" <<
-		"@ATTRIBUTE fingertipInterDist_d2   NUMERIC\n" <<
-		"@ATTRIBUTE fingertipInterDist_d3   NUMERIC\n" <<
-		"@ATTRIBUTE fingertipInterDist_d4   NUMERIC\n" <<
-		"@ATTRIBUTE fingertipPosition_f1x  NUMERIC\n" <<
-		"@ATTRIBUTE fingertipPosition_f1y  NUMERIC\n" <<
-		"@ATTRIBUTE fingertipPosition_f1z  NUMERIC\n" <<
-		"@ATTRIBUTE fingertipPosition_f2x  NUMERIC\n" <<
-		"@ATTRIBUTE fingertipPosition_f2y  NUMERIC\n" <<
-		"@ATTRIBUTE fingertipPosition_f2z  NUMERIC\n" <<
-		"@ATTRIBUTE fingertipPosition_f3x  NUMERIC\n" <<
-		"@ATTRIBUTE fingertipPosition_f3y  NUMERIC\n" <<
-		"@ATTRIBUTE fingertipPosition_f3z  NUMERIC\n" <<
-		"@ATTRIBUTE fingertipPosition_f4x  NUMERIC\n" <<
-		"@ATTRIBUTE fingertipPosition_f4y  NUMERIC\n" <<
-		"@ATTRIBUTE fingertipPosition_f4z  NUMERIC\n" <<
-		"@ATTRIBUTE fingertipPosition_f5x  NUMERIC\n" <<
-		"@ATTRIBUTE fingertipPosition_f5y  NUMERIC\n" <<
-		"@ATTRIBUTE fingertipPosition_f5z  NUMERIC\n" <<
-		"@ATTRIBUTE handDirection_x   NUMERIC\n" <<
-		"@ATTRIBUTE handDirection_y   NUMERIC\n" <<
-		"@ATTRIBUTE handDirection_z   NUMERIC\n" <<
-		"@ATTRIBUTE handSphereCenter_x  NUMERIC\n" <<
-		"@ATTRIBUTE handSphereCenter_y  NUMERIC\n" <<
-		"@ATTRIBUTE handSphereCenter_z  NUMERIC\n" <<
-		"@ATTRIBUTE handSphereRadius   NUMERIC\n" <<
-		"@ATTRIBUTE palmNormal_x  NUMERIC\n" <<
-		"@ATTRIBUTE palmNormal_y  NUMERIC\n" <<
-		"@ATTRIBUTE palmNormal_z  NUMERIC\n" <<
-		"@ATTRIBUTE palmPosition_x   NUMERIC\n" <<
-		"@ATTRIBUTE palmPosition_y   NUMERIC\n" <<
-		"@ATTRIBUTE palmPosition_z   NUMERIC\n" <<
-		"@ATTRIBUTE palmPositionRefined_x  NUMERIC\n" <<
-		"@ATTRIBUTE palmPositionRefined_y  NUMERIC\n" <<
-		"@ATTRIBUTE palmPositionRefined_z  NUMERIC\n" <<
-		"@ATTRIBUTE palmVelocity_x   NUMERIC\n" <<
-		"@ATTRIBUTE palmVelocity_y   NUMERIC\n" <<
-		"@ATTRIBUTE palmVelocity_z   NUMERIC\n" <<
-		"@ATTRIBUTE rotationAngle  NUMERIC\n" <<
-		"@ATTRIBUTE rotationAxis_x   NUMERIC\n" <<
-		"@ATTRIBUTE rotationAxis_y   NUMERIC\n" <<
-		"@ATTRIBUTE rotationAxis_z   NUMERIC\n" <<
-		"@ATTRIBUTE rotationMatrix_1x  NUMERIC\n" <<
-		"@ATTRIBUTE rotationMatrix_1y  NUMERIC\n" <<
-		"@ATTRIBUTE rotationMatrix_1z  NUMERIC\n" <<
-		"@ATTRIBUTE rotationMatrix_2x  NUMERIC\n" <<
-		"@ATTRIBUTE rotationMatrix_2y  NUMERIC\n" <<
-		"@ATTRIBUTE rotationMatrix_2z  NUMERIC\n" <<
-		"@ATTRIBUTE rotationMatrix_3x  NUMERIC\n" <<
-		"@ATTRIBUTE rotationMatrix_3y  NUMERIC\n" <<
-		"@ATTRIBUTE rotationMatrix_3z  NUMERIC\n" <<
-		"@ATTRIBUTE rotationProbability   NUMERIC\n" <<
-		"@ATTRIBUTE newScaleFactor  NUMERIC\n" <<
-		"@ATTRIBUTE translation_x   NUMERIC\n" <<
-		"@ATTRIBUTE translation_y   NUMERIC\n" <<
-		"@ATTRIBUTE translation_z   NUMERIC\n" <<
-		"@ATTRIBUTE translationProbability  NUMERIC\n" <<*/
 		"@ATTRIBUTE fingertipAngles_f1   NUMERIC\n" <<
 		"@ATTRIBUTE fingertipAngles_f2   NUMERIC\n" <<
 		"@ATTRIBUTE fingertipAngles_f3   NUMERIC\n" <<
 		"@ATTRIBUTE fingertipAngles_f4   NUMERIC\n" <<
 		"@ATTRIBUTE fingertipAngles_f5   NUMERIC\n" <<
-		/*"@ATTRIBUTE projectionPoints_f1x   NUMERIC\n" <<
-		"@ATTRIBUTE projectionPoints_f1y   NUMERIC\n" <<
-		"@ATTRIBUTE projectionPoints_f1z   NUMERIC\n" <<
-		"@ATTRIBUTE projectionPoints_f2x   NUMERIC\n" <<
-		"@ATTRIBUTE projectionPoints_f2y   NUMERIC\n" <<
-		"@ATTRIBUTE projectionPoints_f2z   NUMERIC\n" <<
-		"@ATTRIBUTE projectionPoints_f3x   NUMERIC\n" <<
-		"@ATTRIBUTE projectionPoints_f3y   NUMERIC\n" <<
-		"@ATTRIBUTE projectionPoints_f3z   NUMERIC\n" <<
-		"@ATTRIBUTE projectionPoints_f4x   NUMERIC\n" <<
-		"@ATTRIBUTE projectionPoints_f4y   NUMERIC\n" <<
-		"@ATTRIBUTE projectionPoints_f4z   NUMERIC\n" <<
-		"@ATTRIBUTE projectionPoints_f5x   NUMERIC\n" <<
-		"@ATTRIBUTE projectionPoints_f5y   NUMERIC\n" <<
-		"@ATTRIBUTE projectionPoints_f5z   NUMERIC\n" <<*/
 		"@ATTRIBUTE fingertipElevation_f1   NUMERIC\n" <<
 		"@ATTRIBUTE fingertipElevation_f2   NUMERIC\n" <<
 		"@ATTRIBUTE fingertipElevation_f3   NUMERIC\n" <<
 		"@ATTRIBUTE fingertipElevation_f4   NUMERIC\n" <<
 		"@ATTRIBUTE fingertipElevation_f5   NUMERIC\n" <<
-		"@ATTRIBUTE fingersExtended   NUMERIC\n" <<
-		/*"@ATTRIBUTE fingersAreas_f1   NUMERIC\n" <<
-		"@ATTRIBUTE fingersAreas_f2   NUMERIC\n" <<
-		"@ATTRIBUTE fingersAreas_f3   NUMERIC\n" <<
-		"@ATTRIBUTE fingersAreas_f4   NUMERIC\n" <<*/
-		"@ATTRIBUTE fingersAreasAverage   NUMERIC\n" <<
-		"@ATTRIBUTE ratio   NUMERIC\n" <<
-		"@ATTRIBUTE Max_X   NUMERIC\n"<<
-		"@ATTRIBUTE Max_Y   NUMERIC\n"<<
 		"@ATTRIBUTE class { G1, G2, G3, G4, G5, G6, G7, G8, G9, G0 }\n" <<
 		"\n@DATA\n";
 
-	// goes through the data LeapData vector and gets the values for the arff file
-	for (int i = 0; i < data.size(); i++) {
-		file << getNumFingers(data[i]) << getNewFingertipDistRefined(data[i]) << getFingertipAngles(data[i]) << getFingertipElevation(data[i]) << getFingersExtends(data[i]) << getFingersArea(data[i]) << getRatio(data[i]) <<getMax_X(data[i])<<getMax_Y(data[i])<< getGesture(data[i]) << "\n";
-	}
+		// goes through the data LeapData vector and gets the values for the arff file
+		for (int i = 0; i < data.size(); i++) {
+			file << getNumFingers(data[i]) << getFingersExtends(data[i]) << getRatio(data[i]) << getMax_X(data[i]) << getMax_Y(data[i]) << getFingersArea(data[i]) << getNewFingertipDistRefined(data[i]) << getFingertipAngles(data[i]) << getFingertipElevation(data[i]) << getGesture(data[i]) << "\n";
+		}
 
 	file.close();
 }
@@ -468,6 +387,7 @@ ARFFWriter::ARFFWriter(std::string path, std::vector<KinectMotion> data)
 	file.close();
 }
 
+// constructor for just the new leap features
 ARFFWriter::ARFFWriter(std::string path, std::vector<LeapData> data, bool val) {
 	std::ofstream file;
 	file.open(path);
