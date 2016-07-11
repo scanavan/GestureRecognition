@@ -23,7 +23,7 @@ KinectMotion::KinectMotion(std::string fleap, std::string fdepth)
 
 	depth = updateImage(depth);
 	depth = rotateImage(depth);
-	getHand2(depth);
+	getHand(depth);
 	initData();
 	sil = silhouette(scaled_depth);
 	contour_dist = distContour(scaled_binary);
@@ -76,61 +76,6 @@ float * KinectMotion::getHull()
 }
 std::string KinectMotion::getGesture() {
 	return gesture;
-}
-/*
-@def - recognize difference between wrist, hand and arm
-cut's the image at the wrist
-@param - thresholdRatio pixel difference between arm and wrist (percentage)
-*/
-cv::Mat KinectMotion::getHand(cv::Mat image, double thresholdRatio)
-{
-	int top = 0;
-	bool foundHand = false;
-	int handToWrist = 0;
-	int numPixels = 0;
-	int max = 0;
-	bool atWrist = false;
-	int tmp = 0;
-
-	for (int i = 0; i < image.rows; i++)
-	{
-		for (int j = 0; j < image.cols; j++)
-		{
-			if (image.at<uchar>(i, j) != 0)
-			{
-				numPixels++;
-				if (!foundHand)
-				{
-					top = i;
-					foundHand = true;
-				}
-			}
-		}
-		if (numPixels > 0 && !atWrist)
-		{
-			handToWrist++;
-			if (numPixels > max)
-			{
-				max = numPixels;
-			}
-			if (i > top + 50 && tmp != 0 && numPixels <= tmp * thresholdRatio && tmp <= max*.75)
-			{
-				atWrist = true;
-			}
-			tmp = numPixels;
-			numPixels = 0;
-		}
-	}
-
-	for (int i = (top + handToWrist + 10); i < image.rows; i++)
-	{
-		for (int j = 0; j < image.cols; j++)
-		{
-			image.at<uchar>(i, j) = 0;
-		}
-	}
-
-	return image;
 }
 
 /*
@@ -562,7 +507,7 @@ Occ KinectMotion::cellOccupancy(cv::Mat image)
 
 	return ret_val;
 }
-cv::Mat KinectMotion::getHand2(cv::Mat image)
+cv::Mat KinectMotion::getHand(cv::Mat image)
 {
 	int top = 0;
 	bool foundHand = false;

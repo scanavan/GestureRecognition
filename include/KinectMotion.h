@@ -20,8 +20,7 @@ struct Occ {
 class KinectMotion {
 public:
 	KinectMotion(std::string leap, std::string depth);
-	cv::Mat getHand(cv::Mat image, double ratio);
-	cv::Mat getHand2(cv::Mat image);
+	cv::Mat getHand(cv::Mat image);
 	cv::Mat makeContourImage(cv::Mat image);
 	cv::Mat scaleHand(cv::Mat image);
 	cv::Mat rotateImage(cv::Mat image);
