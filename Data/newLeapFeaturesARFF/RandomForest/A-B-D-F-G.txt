@@ -5,18 +5,18 @@ Bagging with 100 iterations and base learner
 
 weka.classifiers.trees.RandomTree -K 0 -M 1.0 -V 0.001 -S 1 -do-not-check-capabilities
 
-Time taken to build model: 0.51 seconds
-Time taken to test model on training data: 0.25 seconds
+Time taken to build model: 0.44 seconds
+Time taken to test model on training data: 0.14 seconds
 
 === Error on training data ===
 
 Correctly Classified Instances        1400              100      %
 Incorrectly Classified Instances         0                0      %
 Kappa statistic                          1     
-Mean absolute error                      0.0023
-Root mean squared error                  0.0131
-Relative absolute error                  1.281  %
-Root relative squared error              4.3685 %
+Mean absolute error                      0.0007
+Root mean squared error                  0.0065
+Relative absolute error                  0.3619 %
+Root relative squared error              2.1745 %
 Total Number of Instances             1400     
 
 
@@ -54,43 +54,43 @@ Weighted Avg.    1.000    0.000    1.000      1.000    1.000      1.000    1.000
 
 === Stratified cross-validation ===
 
-Correctly Classified Instances        1394               99.5714 %
-Incorrectly Classified Instances         6                0.4286 %
-Kappa statistic                          0.9952
-Mean absolute error                      0.0072
-Root mean squared error                  0.0372
-Relative absolute error                  4.0079 %
-Root relative squared error             12.3886 %
+Correctly Classified Instances        1399               99.9286 %
+Incorrectly Classified Instances         1                0.0714 %
+Kappa statistic                          0.9992
+Mean absolute error                      0.0019
+Root mean squared error                  0.0164
+Relative absolute error                  1.0421 %
+Root relative squared error              5.4528 %
 Total Number of Instances             1400     
 
 
 === Detailed Accuracy By Class ===
 
                  TP Rate  FP Rate  Precision  Recall   F-Measure  MCC      ROC Area  PRC Area  Class
-                 0.986    0.000    1.000      0.986    0.993      0.992    1.000     1.000     G1
-                 0.993    0.000    1.000      0.993    0.996      0.996    1.000     1.000     G2
-                 1.000    0.002    0.986      1.000    0.993      0.992    1.000     1.000     G3
+                 1.000    0.000    1.000      1.000    1.000      1.000    1.000     1.000     G1
+                 1.000    0.000    1.000      1.000    1.000      1.000    1.000     1.000     G2
+                 1.000    0.000    1.000      1.000    1.000      1.000    1.000     1.000     G3
                  1.000    0.000    1.000      1.000    1.000      1.000    1.000     1.000     G4
-                 1.000    0.002    0.986      1.000    0.993      0.992    1.000     1.000     G5
-                 0.993    0.000    1.000      0.993    0.996      0.996    1.000     1.000     G6
+                 1.000    0.001    0.993      1.000    0.996      0.996    1.000     1.000     G5
+                 1.000    0.000    1.000      1.000    1.000      1.000    1.000     1.000     G6
                  1.000    0.000    1.000      1.000    1.000      1.000    1.000     1.000     G7
-                 1.000    0.001    0.993      1.000    0.996      0.996    1.000     1.000     G8
-                 0.993    0.000    1.000      0.993    0.996      0.996    1.000     1.000     G9
-                 0.993    0.001    0.993      0.993    0.993      0.992    1.000     1.000     G0
-Weighted Avg.    0.996    0.000    0.996      0.996    0.996      0.995    1.000     1.000     
+                 1.000    0.000    1.000      1.000    1.000      1.000    1.000     1.000     G8
+                 1.000    0.000    1.000      1.000    1.000      1.000    1.000     1.000     G9
+                 0.993    0.000    1.000      0.993    0.996      0.996    1.000     1.000     G0
+Weighted Avg.    0.999    0.000    0.999      0.999    0.999      0.999    1.000     1.000     
 
 
 === Confusion Matrix ===
 
    a   b   c   d   e   f   g   h   i   j   <-- classified as
- 138   0   2   0   0   0   0   0   0   0 |   a = G1
-   0 139   0   0   1   0   0   0   0   0 |   b = G2
+ 140   0   0   0   0   0   0   0   0   0 |   a = G1
+   0 140   0   0   0   0   0   0   0   0 |   b = G2
    0   0 140   0   0   0   0   0   0   0 |   c = G3
    0   0   0 140   0   0   0   0   0   0 |   d = G4
    0   0   0   0 140   0   0   0   0   0 |   e = G5
-   0   0   0   0   0 139   0   0   0   1 |   f = G6
+   0   0   0   0   0 140   0   0   0   0 |   f = G6
    0   0   0   0   0   0 140   0   0   0 |   g = G7
    0   0   0   0   0   0   0 140   0   0 |   h = G8
-   0   0   0   0   0   0   0   1 139   0 |   i = G9
+   0   0   0   0   0   0   0   0 140   0 |   i = G9
    0   0   0   0   1   0   0   0   0 139 |   j = G0
 

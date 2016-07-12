@@ -86,7 +86,7 @@ Max_X >= 0.14
 
 Size of the tree : 81
 
-Time taken to build model: 0.11 seconds
+Time taken to build model: 0.09 seconds
 Time taken to test model on training data: 0.02 seconds
 
 === Error on training data ===

@@ -103,7 +103,7 @@ ratio >= 0.01
 Size of the tree : 97
 
 Time taken to build model: 0.11 seconds
-Time taken to test model on training data: 0.02 seconds
+Time taken to test model on training data: 0.03 seconds
 
 === Error on training data ===
 
