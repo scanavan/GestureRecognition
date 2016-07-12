@@ -22,7 +22,6 @@ LeapData::LeapData(std::string path) {
 		extendedTipPosition = fingertipPosition;
 		setNewScaleFactor();
 		setOldScaleFactor();
-		
 		//gets the gesture based on the path
 		int index = path.find_last_of("/");
 		char gestureNumber = path.at(index - 1);

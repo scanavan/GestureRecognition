@@ -2,92 +2,92 @@ Zero Weights processed. Default weights will be used
 
 LibSVM wrapper, original code by Yasser EL-Manzalawy (= WLSVM)
 
-Time taken to build model: 0.35 seconds
-Time taken to test model on training data: 0.26 seconds
+Time taken to build model: 0.28 seconds
+Time taken to test model on training data: 0.18 seconds
 
 === Error on training data ===
 
-Correctly Classified Instances        1095               78.2143 %
-Incorrectly Classified Instances       305               21.7857 %
-Kappa statistic                          0.7579
-Mean absolute error                      0.0436
-Root mean squared error                  0.2087
-Relative absolute error                 24.2063 %
-Root relative squared error             69.5792 %
+Correctly Classified Instances        1233               88.0714 %
+Incorrectly Classified Instances       167               11.9286 %
+Kappa statistic                          0.8675
+Mean absolute error                      0.0239
+Root mean squared error                  0.1545
+Relative absolute error                 13.254  %
+Root relative squared error             51.4859 %
 Total Number of Instances             1400     
 
 
 === Detailed Accuracy By Class ===
 
                  TP Rate  FP Rate  Precision  Recall   F-Measure  MCC      ROC Area  PRC Area  Class
-                 0.807    0.049    0.646      0.807    0.717      0.688    0.879     0.540     G1
-                 0.507    0.029    0.664      0.507    0.575      0.540    0.739     0.386     G2
-                 0.686    0.057    0.571      0.686    0.623      0.580    0.814     0.423     G3
-                 0.864    0.023    0.807      0.864    0.834      0.816    0.921     0.711     G4
-                 0.807    0.018    0.831      0.807    0.819      0.799    0.894     0.690     G5
-                 0.779    0.015    0.852      0.779    0.813      0.795    0.882     0.685     G6
-                 0.771    0.010    0.900      0.771    0.831      0.816    0.881     0.717     G7
-                 0.907    0.013    0.888      0.907    0.898      0.886    0.947     0.815     G8
-                 0.950    0.002    0.985      0.950    0.967      0.964    0.974     0.941     G9
-                 0.743    0.027    0.754      0.743    0.748      0.720    0.858     0.586     G0
-Weighted Avg.    0.782    0.024    0.790      0.782    0.783      0.760    0.879     0.649     
+                 1.000    0.063    0.636      1.000    0.778      0.772    0.968     0.636     G1
+                 0.643    0.013    0.841      0.643    0.729      0.711    0.815     0.576     G2
+                 0.750    0.000    1.000      0.750    0.857      0.854    0.875     0.775     G3
+                 0.936    0.014    0.879      0.936    0.907      0.896    0.961     0.829     G4
+                 0.864    0.021    0.823      0.864    0.843      0.826    0.922     0.725     G5
+                 0.893    0.000    1.000      0.893    0.943      0.939    0.946     0.904     G6
+                 0.950    0.018    0.853      0.950    0.899      0.888    0.966     0.815     G7
+                 0.943    0.001    0.992      0.943    0.967      0.964    0.971     0.941     G8
+                 0.964    0.002    0.985      0.964    0.975      0.972    0.981     0.954     G9
+                 0.864    0.000    1.000      0.864    0.927      0.923    0.932     0.878     G0
+Weighted Avg.    0.881    0.013    0.901      0.881    0.882      0.875    0.934     0.803     
 
 
 === Confusion Matrix ===
 
    a   b   c   d   e   f   g   h   i   j   <-- classified as
- 113   5  22   0   0   0   0   0   0   0 |   a = G1
-  39  71  25   0   2   1   0   1   0   1 |   b = G2
-  14  19  96   5   4   2   0   0   0   0 |   c = G3
-   0   5   5 121   1   0   7   1   0   0 |   d = G4
-   7   5   6   1 113   2   2   0   0   4 |   e = G5
-   0   0   5   2   1 109   0   1   1  21 |   f = G6
-   2   1   5  12   1   4 108   2   0   5 |   g = G7
-   0   0   0   6   2   0   2 127   0   3 |   h = G8
-   0   1   2   0   0   0   1   3 133   0 |   i = G9
-   0   0   2   3  12  10   0   8   1 104 |   j = G0
+ 140   0   0   0   0   0   0   0   0   0 |   a = G1
+  40  90   0   9   0   0   0   1   0   0 |   b = G2
+  14   0 105   0   0   0  21   0   0   0 |   c = G3
+   9   0   0 131   0   0   0   0   0   0 |   d = G4
+   7  11   0   1 121   0   0   0   0   0 |   e = G5
+   0   4   0   0   7 125   2   0   2   0 |   f = G6
+   7   0   0   0   0   0 133   0   0   0 |   g = G7
+   0   0   0   8   0   0   0 132   0   0 |   h = G8
+   3   0   0   0   2   0   0   0 135   0 |   i = G9
+   0   2   0   0  17   0   0   0   0 121 |   j = G0
 
 
 
 === Stratified cross-validation ===
 
-Correctly Classified Instances        1035               73.9286 %
-Incorrectly Classified Instances       365               26.0714 %
-Kappa statistic                          0.7103
-Mean absolute error                      0.0521
-Root mean squared error                  0.2283
-Relative absolute error                 28.9683 %
-Root relative squared error             76.116  %
+Correctly Classified Instances        1218               87      %
+Incorrectly Classified Instances       182               13      %
+Kappa statistic                          0.8556
+Mean absolute error                      0.026 
+Root mean squared error                  0.1612
+Relative absolute error                 14.4444 %
+Root relative squared error             53.7484 %
 Total Number of Instances             1400     
 
 
 === Detailed Accuracy By Class ===
 
                  TP Rate  FP Rate  Precision  Recall   F-Measure  MCC      ROC Area  PRC Area  Class
-                 0.807    0.049    0.646      0.807    0.717      0.688    0.879     0.540     G1
-                 0.479    0.029    0.650      0.479    0.551      0.517    0.725     0.363     G2
-                 0.657    0.062    0.541      0.657    0.594      0.547    0.798     0.390     G3
-                 0.807    0.030    0.748      0.807    0.777      0.751    0.888     0.623     G4
-                 0.750    0.021    0.802      0.750    0.775      0.751    0.865     0.626     G5
-                 0.743    0.019    0.813      0.743    0.776      0.753    0.862     0.629     G6
-                 0.679    0.018    0.805      0.679    0.736      0.713    0.830     0.578     G7
-                 0.857    0.026    0.784      0.857    0.819      0.799    0.915     0.687     G8
-                 0.907    0.003    0.969      0.907    0.937      0.931    0.952     0.889     G9
-                 0.707    0.033    0.707      0.707    0.707      0.675    0.837     0.529     G0
-Weighted Avg.    0.739    0.029    0.747      0.739    0.739      0.713    0.855     0.586     
+                 0.993    0.063    0.635      0.993    0.774      0.768    0.965     0.631     G1
+                 0.636    0.013    0.840      0.636    0.724      0.706    0.811     0.570     G2
+                 0.729    0.000    1.000      0.729    0.843      0.841    0.864     0.756     G3
+                 0.936    0.014    0.879      0.936    0.907      0.896    0.961     0.829     G4
+                 0.857    0.021    0.816      0.857    0.836      0.818    0.918     0.714     G5
+                 0.864    0.002    0.976      0.864    0.917      0.910    0.931     0.857     G6
+                 0.943    0.023    0.820      0.943    0.877      0.865    0.960     0.779     G7
+                 0.936    0.001    0.992      0.936    0.963      0.960    0.967     0.935     G8
+                 0.950    0.006    0.950      0.950    0.950      0.944    0.972     0.908     G9
+                 0.857    0.000    1.000      0.857    0.923      0.919    0.929     0.871     G0
+Weighted Avg.    0.870    0.014    0.891      0.870    0.871      0.863    0.928     0.785     
 
 
 === Confusion Matrix ===
 
    a   b   c   d   e   f   g   h   i   j   <-- classified as
- 113   5  22   0   0   0   0   0   0   0 |   a = G1
-  39  67  27   0   4   1   1   1   0   0 |   b = G2
-  14  19  92   7   4   2   2   0   0   0 |   c = G3
-   0   5   7 113   1   0  11   3   0   0 |   d = G4
-   7   5   7   1 105   4   1   6   0   4 |   e = G5
-   0   0   6   2   1 104   1   2   1  23 |   f = G6
-   2   1   5  17   1   5  95   5   0   9 |   g = G7
-   0   0   0   7   2   0   5 120   2   4 |   h = G8
-   0   1   2   0   0   1   1   7 127   1 |   i = G9
-   0   0   2   4  13  11   1   9   1  99 |   j = G0
+ 139   0   0   0   0   0   1   0   0   0 |   a = G1
+  40  89   0   9   0   0   1   1   0   0 |   b = G2
+  14   0 102   0   0   0  24   0   0   0 |   c = G3
+   9   0   0 131   0   0   0   0   0   0 |   d = G4
+   7  11   0   1 120   1   0   0   0   0 |   e = G5
+   0   4   0   0   8 121   2   0   5   0 |   f = G6
+   7   0   0   0   0   0 132   0   1   0 |   g = G7
+   0   0   0   8   0   0   1 131   0   0 |   h = G8
+   3   0   0   0   2   2   0   0 133   0 |   i = G9
+   0   2   0   0  17   0   0   0   1 120 |   j = G0
 
