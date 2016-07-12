@@ -1,4 +1,4 @@
-@relation 'gesture-weka.filters.unsupervised.attribute.Remove-V-R3,6,12'
+@relation 'gesture-weka.filters.unsupervised.attribute.Remove-V-R3,6,22'
 
 @attribute ratio numeric
 @attribute fingersAreas numeric
