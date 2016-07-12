@@ -23,15 +23,6 @@ LeapData::LeapData(std::string path) {
 		setNewScaleFactor();
 		setOldScaleFactor();
 		
-		//setNewFingertipDist();
-		newFingertipDistRefined = fingertipDist;
-		projectionPoints = getProjection();
-		setFingertipAngles();
-		setRatio();
-		setMaximums();
-		
-
-
 		//gets the gesture based on the path
 		int index = path.find_last_of("/");
 		char gestureNumber = path.at(index - 1);
@@ -71,6 +62,13 @@ LeapData::LeapData(std::string path) {
 		else if (gesture == "G9") {
 			extendedFingers = { 1,1,1,1,1 };
 		}
+
+		setNewFingertipDist();
+		//newFingertipDistRefined = fingertipDist;
+		projectionPoints = getProjection();
+		setFingertipAngles();
+		setRatio();
+		setMaximums();
 
 		setFingerAreas();
 	}
@@ -145,22 +143,6 @@ void LeapData::setFingerAreas()
 {
 	float total;
 	float a, b, c, first, last;
-	//for (int i = 0; i < 4; i++) {
-	//	if((i+1)<numFingers)
-	//	{
-	//		a = fingertipPosition[i].getMagnitude(palmPosition);
-	//		b = fingertipPosition[i].getMagnitude(fingertipPosition[i + 1]);
-	//		c = fingertipPosition[i+1].getMagnitude(palmPosition);
-	//		float s = (a + b + c) / 2;
-	//		float area = sqrt(s*(s - a)*(s - b)*(s - c))/newScaleFactor;
-	//		//total = total + area;
-	//		if (area > total) {
-	//			total = area;
-	//		}
-
-	//	}
-	//	
-	//}
 
 	for (int i = 0; i < fingertipPosition.size(); i++)
 	{
@@ -286,18 +268,22 @@ void LeapData::setRatio()
 // fingertipElevation = ||fingertipPosition - projectedPoint|| / newScaleFactor
 // fingertipAngles are determined using law of cosines
 void LeapData::setFingertipAngles() {
-	float a, b, c;
+	float b, c;
+	int count = 0;
+	Point vect;
+	std::vector<float> temp;
 	for (int i = 0; i < 5; i++) {
-		if (i >= fingertipPosition.size()) {
+		if (extendedFingers[i] == 0) {
 			fingertipAngles.push_back(0);
 			fingertipElevation.push_back(0);
 		}
 		else {
-			a = palmPosition.getMagnitude(fingertipPosition[i]);;
-			b = projectionPoints[i].getMagnitude(palmPosition);
-			c = projectionPoints[i].getMagnitude(fingertipPosition[i]);
-			fingertipAngles.push_back(acos((-powf(c, 2) + powf(a, 2) + powf(b, 2)) / (2 * a * b)));
+			c = projectionPoints[i].getMagnitude(fingertipPosition[count]);
 			fingertipElevation.push_back(c / newScaleFactor);
+			vect = Point(projectionPoints[i].getX() - palmPosition.getX(), projectionPoints[i].getY() - palmPosition.getY(), projectionPoints[i].getZ() - palmPosition.getZ());
+			b = vect.getDotProduct(handDirection);
+			fingertipAngles.push_back((acos(b / (vect.getMagnitude(Point(0, 0, 0)) * handDirection.getMagnitude(Point(0, 0, 0))))) * 180 / PI);
+			count++;
 		}
 	}
 }
@@ -305,13 +291,14 @@ void LeapData::setFingertipAngles() {
 // sets the newFingertipDistance based on newScaleFactor
 // newFingertipDist = dist(fingertipPosition, palmPosition) / newScaleFactor
 void LeapData::setNewFingertipDist() {
-	
+	int count = 0;
 	for (int i = 0; i < 5; i++) {
-		if (i >= fingertipPosition.size()) {
+		if (extendedFingers[i] == 0) {
 			newFingertipDistRefined.push_back(0.000000);
 		}
 		else {
-			newFingertipDistRefined.push_back(fingertipDist[i] / newScaleFactor);
+			newFingertipDistRefined.push_back(fingertipDist[count] / newScaleFactor);
+			count++;
 		}
 	}
 }
@@ -361,17 +348,19 @@ std::vector<Point> LeapData::getProjection() {
 	// p = (palmNormal / |palmnormal|) * 1
 	float k = 1 / palmPosition.getMagnitude(palmNormal);
 	Point p = Point(palmNormal.getX() * k, palmNormal.getY() * k, palmNormal.getZ() * k);
+	int count = 0;
 	//d = fingertipPosition - p
 	// returnVal = fingertipPosition - dot(handDirection, d) * handDirection
 	for (int i = 0; i < 5; i++) {
-		if (i >= fingertipPosition.size()) {
+		if (extendedFingers[i] == 0) {
 			returnVal.push_back(Point(0,0,0));
 		}
 		else {
-			Point d = Point(fingertipPosition[i].getX() - p.getX(), fingertipPosition[i].getY() - p.getY(), fingertipPosition[i].getZ() - p.getZ());
-			returnVal.push_back(Point(fingertipPosition[i].getX() - handDirection.getDotProduct(d) * handDirection.getX(),
-				fingertipPosition[i].getY() - handDirection.getDotProduct(d) * handDirection.getY(),
-				fingertipPosition[i].getZ() - handDirection.getDotProduct(d) * handDirection.getZ()));
+			Point d = Point(fingertipPosition[count].getX() - p.getX(), fingertipPosition[count].getY() - p.getY(), fingertipPosition[count].getZ() - p.getZ());
+			returnVal.push_back(Point(fingertipPosition[count].getX() - handDirection.getDotProduct(d) * handDirection.getX(),
+				fingertipPosition[count].getY() - handDirection.getDotProduct(d) * handDirection.getY(),
+				fingertipPosition[count].getZ() - handDirection.getDotProduct(d) * handDirection.getZ()));
+			count++;
 		}
 	}
 	return returnVal;
