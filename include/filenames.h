@@ -19,6 +19,7 @@ class FileNames {
 		std::vector <std::string> rgb;
 		std::vector <std::string> leap;
 		std::vector <std::string> bin;
+		std::vector <std::string> txt;
 };
 
 #endif
