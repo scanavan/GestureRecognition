@@ -28,6 +28,9 @@ void FileNames::readDir(const char * path) {
 			if (strstr(file.name, "depth")) depth.push_back((std::string)path + "/" + (std::string)file.name);
 			else if (strstr(file.name, "rgb")) rgb.push_back((std::string)path + "/" + (std::string)file.name);
 		}
+		else if (!strcmp(file.extension, "txt")) {
+			txt.push_back((std::string)path + "/" + (std::string)file.name);
+		}
 		// goes into the subdirectories recursively
 		// the counter deals with an issue within the process of going into the subdirectories with hiddedn folders
 		else if (file.is_dir && counter > 2) {
