@@ -31,12 +31,14 @@ public:
 	float * getOccAvg();
 	float * getHull();
 	std::string getGesture();
-	void sortContourDist()
+	void sortContourDist();
+	int countFingers();
 private:
 	//cv::Mat getRgb();
 	cv::Mat depth;
 	cv::Mat scaled_depth;
 	cv::Mat scaled_binary;
+	std::vector<float> reg_dist_contour;
 	//cv::Mat rgb;
 	LeapData * leap;
 	float * sil;

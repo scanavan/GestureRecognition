@@ -32,6 +32,9 @@ KinectMotion::KinectMotion(std::string fleap, std::string fdepth)
 	occ_avg = occ_data.avgD;
 	occ_nonz = occ_data.nonZ;
 
+	createWindow(depth, "Window");
+	std::cout << countFingers() << std::endl;
+
 }
 
 
@@ -247,6 +250,14 @@ float * KinectMotion::distContour(cv::Mat image)
 			max = temp;
 		}
 	}
+
+	for (int i = 0; i < edges.size(); i++) {
+		if (palm_center.y - edges.at(i).y > 0) {
+			float temp = std::sqrt(std::pow(palm_center.x - edges.at(i).x, 2) + std::pow(palm_center.y - edges.at(i).y, 2));
+			reg_dist_contour.push_back(temp);
+		}
+	}
+
 	for (int j = 0; j < SAMPLE_SIZE; j++)
 	{
 		if (max != 0)
@@ -555,26 +566,61 @@ cv::Mat KinectMotion::getHand(cv::Mat image)
 		}
 	}
 
-	for (int i = (top + handToWrist + 10); i < image.rows; i++)
+	for (int i = (top + handToWrist + 15); i < image.rows; i++)
 	{
 		for (int j = 0; j < image.cols; j++)
 		{
 			image.at<uchar>(i, j) = 0;
 		}
 	}
-	//createWindow(image, "Hand");
 	return image;
 }
 
 void KinectMotion::sortContourDist() {
 	std::vector<float> tmp;
+	std::vector<float> tmp2;
 	for (int i = 0; i < SAMPLE_SIZE; i++) {
 		tmp.push_back(contour_dist[i]);
+		tmp2.push_back(reg_dist_contour[i]);
 	}
 
 	std::sort(tmp.begin(), tmp.end());
+	std::sort(tmp2.begin(), tmp2.end());
 
 	for (int i = 0; i < SAMPLE_SIZE; i++) {
 		contour_dist[i] = tmp[i];
+		reg_dist_contour[i] = tmp2[i];
 	}
 }
+
+int KinectMotion::countFingers() {
+	float last_contour_dist;
+	bool goingUp = true;
+	int fingers = 0;
+	int numberOfIncreasing = 0;
+	std::vector<float> localMaxima{ 0 };
+	last_contour_dist = reg_dist_contour[0];
+	for (int i = 0; i < reg_dist_contour.size(); i++) {
+		if (reg_dist_contour[i] < last_contour_dist && goingUp && numberOfIncreasing > 80) {
+			localMaxima.push_back(last_contour_dist);
+			numberOfIncreasing = 0;
+		}
+		if (reg_dist_contour[i] > last_contour_dist) {
+			goingUp = true;
+			numberOfIncreasing++;
+		}
+		else if (reg_dist_contour[i] < last_contour_dist) {
+			goingUp = false;
+		}
+		last_contour_dist = reg_dist_contour[i];
+	}
+
+	for (int i = 0; i < localMaxima.size(); i++) {
+		if (localMaxima[i] > 250) {
+			fingers++;
+		}
+	}
+
+	return fingers;
+}
+

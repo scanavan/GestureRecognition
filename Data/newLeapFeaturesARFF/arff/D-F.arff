@@ -1,4 +1,4 @@
-@relation 'gesture-weka.filters.unsupervised.attribute.Remove-V-R4,6,12'
+@relation 'gesture-weka.filters.unsupervised.attribute.Remove-V-R4,6,22'
 
 @attribute Max_X numeric
 @attribute fingersAreas numeric
