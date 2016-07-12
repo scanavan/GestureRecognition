@@ -102,8 +102,8 @@ fingersAreas >= 15.7
 
 Size of the tree : 97
 
-Time taken to build model: 0.09 seconds
-Time taken to test model on training data: 0.02 seconds
+Time taken to build model: 0.1 seconds
+Time taken to test model on training data: 0.04 seconds
 
 === Error on training data ===
 
