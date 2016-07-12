@@ -31,6 +31,7 @@ public:
 	float * getOccAvg();
 	float * getHull();
 	std::string getGesture();
+	void otherDistContour(cv::Mat image);
 	void sortContourDist();
 	int countFingers();
 private:
