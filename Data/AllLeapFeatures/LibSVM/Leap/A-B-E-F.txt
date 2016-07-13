@@ -2,8 +2,8 @@ Zero Weights processed. Default weights will be used
 
 LibSVM wrapper, original code by Yasser EL-Manzalawy (= WLSVM)
 
-Time taken to build model: 0.39 seconds
-Time taken to test model on training data: 0.3 seconds
+Time taken to build model: 0.35 seconds
+Time taken to test model on training data: 0.21 seconds
 
 === Error on training data ===
 
