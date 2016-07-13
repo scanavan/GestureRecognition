@@ -129,7 +129,7 @@ void LeapRFWriter()
 	std::ofstream file;
 	file.open("C:/Users/IASA-FRI/Desktop/SRI/GestureRecognition/Data/BatchFiles/RandomForest.bat");
 
-	for (int i = 1; i < (1 << 12); ++i)
+	for (int i = 1; i < (1 << 9); ++i)
 	{
 		file << "java weka.classifiers.trees.RandomForest -t ";
 
@@ -166,7 +166,7 @@ void LeapRTWriter() {
 	std::ofstream file;
 	file.open("C:/Users/IASA-FRI/Desktop/SRI/GestureRecognition/Data/BatchFiles/REPTree.bat");
 
-	for (int i = 1; i < (1 << 12); ++i)
+	for (int i = 1; i < (1 << 9); ++i)
 	{
 		file << "java weka.classifiers.trees.REPTree -t ";
 
@@ -202,7 +202,7 @@ void LeapLibSVMWriter() {
 	std::ofstream file;
 	file.open("C:/Users/IASA-FRI/Desktop/SRI/GestureRecognition/Data/BatchFiles/LibSVM.bat");
 
-	for (int i = 1; i < (1 << 12); ++i)
+	for (int i = 1; i < (1 << 9); ++i)
 	{
 		file << "java weka.classifiers.functions.LibSVM -t ";
 
