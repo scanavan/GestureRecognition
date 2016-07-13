@@ -5,13 +5,13 @@
 void arffBatchWriter()
 {
 	std::ofstream file;
-	file.open("C:/Users/IASA-FRI/Desktop/arff.bat");
+	file.open("S:/arff.bat");
 
 	for (int i = 1; i < (1 << 12); ++i)
 	{
 		file << "java weka.filters.unsupervised.attribute.Remove -V -R ";
 
-		if (i & (1 << 0)) file << "1,";
+		if (i & (1 << 0)) file << "1,"; 
 		if (i & (1 << 1)) file << "2,";
 		if (i & (1 << 2)) file << "3,";
 		if (i & (1 << 3)) file << "4,";
@@ -24,7 +24,7 @@ void arffBatchWriter()
 		if (i & (1 << 10)) file << "200-263,";
 		if (i & (1 << 11)) file << "264-327,";
 		
-		file << "328 -i C:/Users/IASA-FRI/Desktop/A-B-C-D-E-F-G-Z-Y-X-W-V.arff -o C:/Users/IASA-FRI/Desktop/";
+		file << "328 -i S:/A-B-C-D-E-F-G-Z-Y-X-W-V.arff -o S:/ARFF/";
 
 		if (i & (1 << 0)) file << "A";
 		if (i & (1 << 1)) file << "B";
@@ -48,13 +48,13 @@ void arffBatchWriter()
 void RFWriter()
 {
 	std::ofstream file;
-	file.open("C:/Users/IASA-FRI/Desktop/RF.bat");
+	file.open("S:/RF.bat");
 
 	for (int i = 1; i < (1 << 12); ++i)
 	{
 		file << "java weka.classifiers.trees.RandomForest -t ";
 
-		file << "C:/Users/IASA-FRI/Desktop/ARFF/";
+		file << "S:/ARFF/";
 
 		if (i & (1 << 0)) file << "A";
 		if (i & (1 << 1)) file << "B";
@@ -69,7 +69,7 @@ void RFWriter()
 		if (i & (1 << 10)) file << "W";
 		if (i & (1 << 11)) file << "V";
 
-		file << ".arff > C:/Users/IASA-FRI/Desktop/RF/";
+		file << ".arff > S:/RF/";
 
 		if (i & (1 << 0)) file << "A";
 		if (i & (1 << 1)) file << "B";
