@@ -127,7 +127,6 @@ java weka.classifiers.trees.REPTree -t C:\Users\IASA-FRI\Desktop\SRI\GestureReco
 java weka.classifiers.trees.REPTree -t C:\Users\IASA-FRI\Desktop\SRI\GestureRecognition\Data\AllLeapFeatures\arffFiles\Leap\A-C-D-E-F-G.arff > C:\Users\IASA-FRI\Desktop\SRI\GestureRecognition\Data\AllLeapFeatures\REPTree\Leap\A-C-D-E-F-G.txt
 java weka.classifiers.trees.REPTree -t C:\Users\IASA-FRI\Desktop\SRI\GestureRecognition\Data\AllLeapFeatures\arffFiles\Leap\B-C-D-E-F-G.arff > C:\Users\IASA-FRI\Desktop\SRI\GestureRecognition\Data\AllLeapFeatures\REPTree\Leap\B-C-D-E-F-G.txt
 java weka.classifiers.trees.REPTree -t C:\Users\IASA-FRI\Desktop\SRI\GestureRecognition\Data\AllLeapFeatures\arffFiles\Leap\A-B-C-D-E-F-G.arff > C:\Users\IASA-FRI\Desktop\SRI\GestureRecognition\Data\AllLeapFeatures\REPTree\Leap\A-B-C-D-E-F-G.txt
-                                          
 java weka.classifiers.trees.REPTree -t C:\Users\IASA-FRI\Desktop\SRI\GestureRecognition\Data\AllLeapFeatures\arffFiles\Leap\A-H.arff > C:\Users\IASA-FRI\Desktop\SRI\GestureRecognition\Data\AllLeapFeatures\REPTree\Leap\A-H.txt
 java weka.classifiers.trees.REPTree -t C:\Users\IASA-FRI\Desktop\SRI\GestureRecognition\Data\AllLeapFeatures\arffFiles\Leap\B-H.arff > C:\Users\IASA-FRI\Desktop\SRI\GestureRecognition\Data\AllLeapFeatures\REPTree\Leap\B-H.txt
 java weka.classifiers.trees.REPTree -t C:\Users\IASA-FRI\Desktop\SRI\GestureRecognition\Data\AllLeapFeatures\arffFiles\Leap\C-H.arff > C:\Users\IASA-FRI\Desktop\SRI\GestureRecognition\Data\AllLeapFeatures\REPTree\Leap\C-H.txt
