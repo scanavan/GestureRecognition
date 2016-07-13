@@ -1,4 +1,4 @@
-@relation gesture-weka.filters.unsupervised.attribute.Remove-V-R17-22
+@relation 'gesture-weka.filters.unsupervised.attribute.Remove-V-R17-21,22'
 
 @attribute fingertipElevation_f1 numeric
 @attribute fingertipElevation_f2 numeric
