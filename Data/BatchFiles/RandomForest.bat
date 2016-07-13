@@ -510,6 +510,7 @@ java weka.classifiers.trees.RandomForest -t C:\Users\IASA-FRI\Desktop\SRI\Gestur
 java weka.classifiers.trees.RandomForest -t C:\Users\IASA-FRI\Desktop\SRI\GestureRecognition\Data\AllLeapFeatures\arffFiles\Leap\A-C-D-E-F-G-H-I.arff > C:\Users\IASA-FRI\Desktop\SRI\GestureRecognition\Data\AllLeapFeatures\RandomForest\Leap\A-C-D-E-F-G-H-I.txt
 java weka.classifiers.trees.RandomForest -t C:\Users\IASA-FRI\Desktop\SRI\GestureRecognition\Data\AllLeapFeatures\arffFiles\Leap\B-C-D-E-F-G-H-I.arff > C:\Users\IASA-FRI\Desktop\SRI\GestureRecognition\Data\AllLeapFeatures\RandomForest\Leap\B-C-D-E-F-G-H-I.txt
 java weka.classifiers.trees.RandomForest -t C:\Users\IASA-FRI\Desktop\SRI\GestureRecognition\Data\AllLeapFeatures\arffFiles\Leap\A-B-C-D-E-F-G-H-I.arff > C:\Users\IASA-FRI\Desktop\SRI\GestureRecognition\Data\AllLeapFeatures\RandomForest\Leap\A-B-C-D-E-F-G-H-I.txt
+java weka.classifiers.trees.RandomForest -t C:\Users\IASA-FRI\Desktop\SRI\GestureRecognition\Data\AllLeapFeatures\arffFiles\Leap\H-I.arff > C:\Users\IASA-FRI\Desktop\SRI\GestureRecognition\Data\AllLeapFeatures\RandomForest\Leap\H-I.txt
 
 
 :: script for running RandomForest with the ARFF files

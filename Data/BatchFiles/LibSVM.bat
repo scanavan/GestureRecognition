@@ -510,6 +510,7 @@ java weka.classifiers.functions.LibSVM -t C:\Users\IASA-FRI\Desktop\SRI\GestureR
 java weka.classifiers.functions.LibSVM -t C:\Users\IASA-FRI\Desktop\SRI\GestureRecognition\Data\AllLeapFeatures\arffFiles\Leap\A-C-D-E-F-G-H-I.arff > C:\Users\IASA-FRI\Desktop\SRI\GestureRecognition\Data\AllLeapFeatures\LibSVM\Leap\A-C-D-E-F-G-H-I.txt
 java weka.classifiers.functions.LibSVM -t C:\Users\IASA-FRI\Desktop\SRI\GestureRecognition\Data\AllLeapFeatures\arffFiles\Leap\B-C-D-E-F-G-H-I.arff > C:\Users\IASA-FRI\Desktop\SRI\GestureRecognition\Data\AllLeapFeatures\LibSVM\Leap\B-C-D-E-F-G-H-I.txt
 java weka.classifiers.functions.LibSVM -t C:\Users\IASA-FRI\Desktop\SRI\GestureRecognition\Data\AllLeapFeatures\arffFiles\Leap\A-B-C-D-E-F-G-H-I.arff > C:\Users\IASA-FRI\Desktop\SRI\GestureRecognition\Data\AllLeapFeatures\LibSVM\Leap\A-B-C-D-E-F-G-H-I.txt
+java weka.classifiers.functions.LibSVM -t C:\Users\IASA-FRI\Desktop\SRI\GestureRecognition\Data\AllLeapFeatures\arffFiles\Leap\H-I.arff > C:\Users\IASA-FRI\Desktop\SRI\GestureRecognition\Data\AllLeapFeatures\LibSVM\Leap\H-I.txt
 
 
 :: script for running LibSVM with the ARFF files
