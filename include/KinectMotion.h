@@ -51,6 +51,7 @@ private:
 	cv::Point palm_center;
 	std::vector<cv::Point> scaled_contour;
 	void initData();
+	void fingers();
 
 	cv::Rect getRect(cv::Mat image);
 	float * silhouette(cv::Mat image);

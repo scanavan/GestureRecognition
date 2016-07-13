@@ -621,3 +621,17 @@ int KinectMotion::countFingers() {
 	return fingers;
 }
 
+void KinectMotion::fingers()
+{
+	// Sample scaled contour
+	std::vector<cv::Point> sampled_contour;
+	for (int i = 0; i < scaled_contour.size(); ++i)
+	{
+		for (int j = 0; j < scaled_contour.size() / 4; ++j) 
+		{
+			sampled_contour.push_back(scaled_contour[4 * i]);
+		}
+	}
+	
+	return;
+}
