@@ -25,7 +25,7 @@ KinectMotion::KinectMotion(std::string fleap, std::string fdepth)
 	//depth = rotateImage(depth);
 	getHand(depth);
 	initData();
-	otherDistContour(scaled_binary);
+	//otherDistContour(scaled_binary);
 	sil = silhouette(scaled_depth);
 	contour_dist = distContour(scaled_binary);
 	hull = hullAreas(scaled_depth);
@@ -656,7 +656,7 @@ void KinectMotion::fingers()
 		//sampled_contour.push_back(scaled_contour[4 * i]);
 		//finger_image.at<cv::Vec3b>(sampled_contour[4 * i].y, sampled_contour[4 * i].x) = cv::Vec3b(0, 0, 255);
 	}
-	std::cout << sampled_contour.size() << " " << scaled_contour.size() << std::endl;
+	//std::cout << sampled_contour.size() << " " << scaled_contour.size() << std::endl;
 
 	// Calculate distances
 	std::vector<float> contour_distances;
@@ -677,7 +677,8 @@ void KinectMotion::fingers()
 	}
 
 	std::vector<std::vector<int>> finger_clusters;
-	std::vector<int> cluster; cluster.push_back(finger_indicies[0]);
+	std::vector<int> cluster; 
+	if (finger_indicies.size() > 0) cluster.push_back(finger_indicies[0]);
 	for (int i = 1; i < finger_indicies.size(); ++i)
 	{
 		if (mod(finger_indicies[i] - finger_indicies[i - 1],sampled_contour.size()) > 200) {
@@ -732,12 +733,12 @@ void KinectMotion::fingers()
 		for (int j = 0; j < finger_clusters[i].size(); ++j)
 		{
 			//finger_image.at<cv::Vec3b>(sampled_contour[finger_clusters[i][j]].y, sampled_contour[finger_clusters[i][j]].x) = cv::Vec3b(0, (i * 255 / finger_clusters.size()), 255);
-			std::cout << i << ',';
+			//std::cout << i << ',';
 		}
 		//finger_image.at<cv::Vec3b>(sampled_contour[finger_tips[i]].y, sampled_contour[finger_tips[i]].x) = cv::Vec3b(0, 0, 255);
 	}
-	std::cout << finger_clusters.size() << std::endl;
-	createWindow(finger_image, "A");
+	//std::cout << finger_clusters.size() << std::endl;
+	//createWindow(finger_image, "A");
 	//
 
 	return;
