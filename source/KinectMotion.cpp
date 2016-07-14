@@ -640,20 +640,6 @@ int mod(int a, int b)
 }
 void KinectMotion::fingers()
 {
-	// Sample scaled contour
-	std::vector<cv::Point> sampled_contour = scaled_contour;
-	for (int i = 0; i < (scaled_contour.size() / 4); ++i) 
-	{
-		sampled_contour.push_back(scaled_contour[4 * i]);
-	}
-
-	// Calculate distances
-	std::vector<float> contour_distances;
-	for (int i = 0; i < sampled_contour.size(); ++i)
-	{
-		contour_distances.push_back(std::sqrt(std::pow(palm_center.x - sampled_contour[i].x, 2) + std::pow(palm_center.y - sampled_contour[i].y, 2)));
-	}
-
 	cv::Mat finger_image = cv::Mat::zeros(scaled_binary.size(),CV_8UC3); 
 	for (int i = 0; i < scaled_binary.rows; ++i)
 	{
@@ -661,6 +647,22 @@ void KinectMotion::fingers()
 		{
 			if (scaled_binary.at<uchar>(i, j) > 5) finger_image.at<cv::Vec3b>(i, j) = cv::Vec3b(100, 100, 0);
 		}
+	}
+
+	// Sample scaled contour
+	std::vector<cv::Point> sampled_contour = scaled_contour;
+	for (int i = 0; i < (scaled_contour.size() / 4); ++i) 
+	{
+		//sampled_contour.push_back(scaled_contour[4 * i]);
+		//finger_image.at<cv::Vec3b>(sampled_contour[4 * i].y, sampled_contour[4 * i].x) = cv::Vec3b(0, 0, 255);
+	}
+	std::cout << sampled_contour.size() << " " << scaled_contour.size() << std::endl;
+
+	// Calculate distances
+	std::vector<float> contour_distances;
+	for (int i = 0; i < sampled_contour.size(); ++i)
+	{
+		contour_distances.push_back(std::sqrt(std::pow(palm_center.x - sampled_contour[i].x, 2) + std::pow(palm_center.y - sampled_contour[i].y, 2)));
 	}
 
 	// Find Fingers
@@ -678,12 +680,13 @@ void KinectMotion::fingers()
 	std::vector<int> cluster; cluster.push_back(finger_indicies[0]);
 	for (int i = 1; i < finger_indicies.size(); ++i)
 	{
-		if (finger_indicies[i] - finger_indicies[i - 1] > 200) {
+		if (mod(finger_indicies[i] - finger_indicies[i - 1],sampled_contour.size()) > 200) {
 			finger_clusters.push_back(cluster);
 			cluster.clear();
 		}
 		cluster.push_back(finger_indicies[i]);
 	}
+	finger_clusters.push_back(cluster);
 
 	// Find Tips
 	//std::vector<int> finger_tips;
@@ -728,7 +731,7 @@ void KinectMotion::fingers()
 	{
 		for (int j = 0; j < finger_clusters[i].size(); ++j)
 		{
-			finger_image.at<cv::Vec3b>(sampled_contour[finger_clusters[i][j]].y, sampled_contour[finger_clusters[i][j]].x) = cv::Vec3b(0, (i * 255 / finger_clusters.size()), 255);
+			//finger_image.at<cv::Vec3b>(sampled_contour[finger_clusters[i][j]].y, sampled_contour[finger_clusters[i][j]].x) = cv::Vec3b(0, (i * 255 / finger_clusters.size()), 255);
 			std::cout << i << ',';
 		}
 		//finger_image.at<cv::Vec3b>(sampled_contour[finger_tips[i]].y, sampled_contour[finger_tips[i]].x) = cv::Vec3b(0, 0, 255);
