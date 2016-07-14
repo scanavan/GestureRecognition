@@ -1,0 +1,165 @@
+
+
+REPTree
+============
+
+numFingers < 2.5
+|   numFingers < 1.5
+|   |   Max_X < 0
+|   |   |   convexHull1 < 0.04
+|   |   |   |   convexHull2 < 0.07 : G1 (89/6) [44/1]
+|   |   |   |   convexHull2 >= 0.07 : G2 (15/5) [9/3]
+|   |   |   convexHull1 >= 0.04 : G2 (93/25) [55/19]
+|   |   Max_X >= 0 : G3 (82/19) [36/7]
+|   numFingers >= 1.5
+|   |   ratio < 0.01
+|   |   |   Max_X < 0.12 : G4 (59/2) [25/1]
+|   |   |   Max_X >= 0.12
+|   |   |   |   ratio < 0.01
+|   |   |   |   |   convexHull3 < 0.2 : G7 (48/0) [32/3]
+|   |   |   |   |   convexHull3 >= 0.2 : G8 (2/0) [1/0]
+|   |   |   |   ratio >= 0.01
+|   |   |   |   |   Max_X < 0.49 : G4 (7/3) [3/1]
+|   |   |   |   |   Max_X >= 0.49 : G7 (9/4) [3/1]
+|   |   ratio >= 0.01
+|   |   |   Max_X < 0.43
+|   |   |   |   convexHull2 < 0.05
+|   |   |   |   |   ratio < 0.02 : G2 (6/1) [3/1]
+|   |   |   |   |   ratio >= 0.02 : G3 (3/1) [1/0]
+|   |   |   |   convexHull2 >= 0.05
+|   |   |   |   |   convexHull3 < 0.02 : G3 (12/8) [2/1]
+|   |   |   |   |   convexHull3 >= 0.02 : G5 (75/7) [34/5]
+|   |   |   Max_X >= 0.43
+|   |   |   |   convexHull3 < 0.03 : G3 (14/3) [4/1]
+|   |   |   |   convexHull3 >= 0.03
+|   |   |   |   |   ratio < 0.02 : G0 (7/2) [4/2]
+|   |   |   |   |   ratio >= 0.02 : G5 (3/1) [2/1]
+numFingers >= 2.5
+|   numFingers < 4.5
+|   |   ratio < 0.01
+|   |   |   convexHull4 < 0.02
+|   |   |   |   convexHull2 < 0.11
+|   |   |   |   |   Max_X < 0.82 : G0 (10/3) [6/3]
+|   |   |   |   |   Max_X >= 0.82 : G7 (14/2) [6/2]
+|   |   |   |   convexHull2 >= 0.11
+|   |   |   |   |   convexHull3 < 0.03
+|   |   |   |   |   |   convexHull1 < 0.08 : G7 (12/0) [4/0]
+|   |   |   |   |   |   convexHull1 >= 0.08 : G8 (25/2) [10/2]
+|   |   |   |   |   convexHull3 >= 0.03
+|   |   |   |   |   |   convexHull3 < 0.12
+|   |   |   |   |   |   |   convexHull4 < 0.01
+|   |   |   |   |   |   |   |   convexHull1 < 0.17
+|   |   |   |   |   |   |   |   |   Max_X < 0.42 : G8 (2/0) [1/0]
+|   |   |   |   |   |   |   |   |   Max_X >= 0.42 : G0 (5/0) [4/0]
+|   |   |   |   |   |   |   |   convexHull1 >= 0.17 : G8 (10/1) [6/1]
+|   |   |   |   |   |   |   convexHull4 >= 0.01 : G0 (14/1) [8/2]
+|   |   |   |   |   |   convexHull3 >= 0.12 : G8 (32/0) [20/3]
+|   |   |   convexHull4 >= 0.02
+|   |   |   |   ratio < 0.01
+|   |   |   |   |   numFingers < 3.5 : G0 (43/12) [23/6]
+|   |   |   |   |   numFingers >= 3.5 : G9 (11/3) [4/1]
+|   |   |   |   ratio >= 0.01
+|   |   |   |   |   convexHull3 < 0.11 : G0 (27/8) [5/3]
+|   |   |   |   |   convexHull3 >= 0.11 : G6 (17/2) [8/1]
+|   |   ratio >= 0.01
+|   |   |   convexHull4 < 0.01 : G4 (33/14) [22/8]
+|   |   |   convexHull4 >= 0.01
+|   |   |   |   convexHull2 < 0.17 : G6 (67/6) [29/2]
+|   |   |   |   convexHull2 >= 0.17
+|   |   |   |   |   Max_X < 0.21 : G4 (3/0) [2/0]
+|   |   |   |   |   Max_X >= 0.21
+|   |   |   |   |   |   ratio < 0.01 : G8 (2/0) [2/1]
+|   |   |   |   |   |   ratio >= 0.01 : G5 (2/1) [4/2]
+|   numFingers >= 4.5 : G9 (80/0) [45/1]
+
+Size of the tree : 69
+
+Time taken to build model: 0.13 seconds
+Time taken to test model on training data: 0.03 seconds
+
+=== Error on training data ===
+
+Correctly Classified Instances        1173               83.7857 %
+Incorrectly Classified Instances       227               16.2143 %
+Kappa statistic                          0.8198
+Mean absolute error                      0.0527
+Root mean squared error                  0.1623
+Relative absolute error                 29.2709 %
+Root relative squared error             54.1026 %
+Total Number of Instances             1400     
+
+
+=== Detailed Accuracy By Class ===
+
+                 TP Rate  FP Rate  Precision  Recall   F-Measure  MCC      ROC Area  PRC Area  Class
+                 0.900    0.006    0.947      0.900    0.923      0.915    0.988     0.901     G1
+                 0.907    0.043    0.702      0.907    0.791      0.773    0.968     0.681     G2
+                 0.814    0.032    0.740      0.814    0.776      0.750    0.969     0.717     G3
+                 0.893    0.023    0.812      0.893    0.850      0.834    0.979     0.866     G4
+                 0.736    0.013    0.858      0.736    0.792      0.774    0.954     0.764     G5
+                 0.786    0.009    0.909      0.786    0.843      0.830    0.974     0.840     G6
+                 0.829    0.010    0.906      0.829    0.866      0.853    0.973     0.880     G7
+                 0.736    0.008    0.912      0.736    0.814      0.802    0.977     0.841     G8
+                 0.964    0.004    0.964      0.964    0.964      0.960    0.998     0.978     G9
+                 0.814    0.033    0.731      0.814    0.770      0.745    0.958     0.736     G0
+Weighted Avg.    0.838    0.018    0.848      0.838    0.839      0.823    0.974     0.820     
+
+
+=== Confusion Matrix ===
+
+   a   b   c   d   e   f   g   h   i   j   <-- classified as
+ 126   9   5   0   0   0   0   0   0   0 |   a = G1
+   2 127   8   0   2   0   0   0   0   1 |   b = G2
+   2  20 114   2   2   0   0   0   0   0 |   c = G3
+   0   7   3 125   1   0   3   0   0   1 |   d = G4
+   1   7  14   2 103   6   1   1   0   5 |   e = G5
+   0   2   5   8   3 110   0   1   2   9 |   f = G6
+   1   6   1   9   0   0 116   2   0   5 |   g = G7
+   0   0   3   7   2   1   4 103   1  19 |   h = G8
+   1   2   0   0   0   0   0   0 135   2 |   i = G9
+   0   1   1   1   7   4   4   6   2 114 |   j = G0
+
+
+
+=== Stratified cross-validation ===
+
+Correctly Classified Instances        1097               78.3571 %
+Incorrectly Classified Instances       303               21.6429 %
+Kappa statistic                          0.7595
+Mean absolute error                      0.061 
+Root mean squared error                  0.1892
+Relative absolute error                 33.8619 %
+Root relative squared error             63.0556 %
+Total Number of Instances             1400     
+
+
+=== Detailed Accuracy By Class ===
+
+                 TP Rate  FP Rate  Precision  Recall   F-Measure  MCC      ROC Area  PRC Area  Class
+                 0.879    0.010    0.904      0.879    0.891      0.880    0.970     0.895     G1
+                 0.814    0.044    0.675      0.814    0.738      0.710    0.943     0.676     G2
+                 0.800    0.032    0.737      0.800    0.767      0.741    0.955     0.709     G3
+                 0.807    0.016    0.850      0.807    0.828      0.810    0.944     0.827     G4
+                 0.707    0.027    0.744      0.707    0.725      0.696    0.898     0.683     G5
+                 0.793    0.029    0.755      0.793    0.774      0.748    0.886     0.699     G6
+                 0.786    0.021    0.809      0.786    0.797      0.775    0.934     0.775     G7
+                 0.664    0.019    0.795      0.664    0.724      0.699    0.921     0.734     G8
+                 0.950    0.002    0.978      0.950    0.964      0.960    0.975     0.959     G9
+                 0.636    0.041    0.631      0.636    0.633      0.593    0.886     0.566     G0
+Weighted Avg.    0.784    0.024    0.788      0.784    0.784      0.761    0.931     0.752     
+
+
+=== Confusion Matrix ===
+
+   a   b   c   d   e   f   g   h   i   j   <-- classified as
+ 123  11   5   0   0   0   0   0   0   1 |   a = G1
+   5 114  13   1   5   0   1   0   0   1 |   b = G2
+   3  20 112   0   2   1   1   0   0   1 |   c = G3
+   0   3   3 113   8   6   5   0   0   2 |   d = G4
+   1   9  11   2  99   8   2   1   0   7 |   e = G5
+   1   3   2   4   3 111   2   2   2  10 |   f = G6
+   2   5   1   8   0   1 110   7   0   6 |   g = G7
+   0   1   1   4   3   8   9  93   0  21 |   h = G8
+   1   2   0   0   0   0   1   0 133   3 |   i = G9
+   0   1   4   1  13  12   5  14   1  89 |   j = G0
+
