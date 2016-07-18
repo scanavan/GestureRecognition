@@ -516,7 +516,6 @@ cv::Mat KinectMotion::getHand(cv::Mat image)
 	int handToWrist = 0;
 	double numPixels = 0;
 	int max = 0;
-	bool atWrist = false;
 	int tmp = 0;
 	double thresholdRatio = 0;
 	double maxThresholdRatio = 0;
@@ -543,7 +542,7 @@ cv::Mat KinectMotion::getHand(cv::Mat image)
 			}
 		}
 		previousNumPixels = numPixels;
-		if (numPixels > 0 && !atWrist)
+		if (numPixels > 0)
 		{
 			handToWrist++;
 			if (numPixels > max)
@@ -552,14 +551,14 @@ cv::Mat KinectMotion::getHand(cv::Mat image)
 			}
 			if (i > top + 100 && tmp != 0 && numPixels <= tmp * thresholdRatio && tmp <= max * .78)
 			{
-				atWrist = true;
+				break;
 			}
 			tmp = numPixels;
 			numPixels = 0;
 		}
 	}
 
-	for (int i = (top + handToWrist + 10); i < image.rows; i++)
+	for (int i = (top + handToWrist + 12); i < image.rows; i++)
 	{
 		for (int j = 0; j < image.cols; j++)
 		{
