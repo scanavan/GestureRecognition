@@ -60,11 +60,11 @@ private:
 	Occ cellOccupancy(cv::Mat image);
 	float * hullAreas(cv::Mat image);
 	cv::Mat binarize(cv::Mat image, int threshold = 5);
-	cv::Point palmCenter(cv::Mat image, int thresh = 23);
+	cv::Point palmCenter(cv::Mat image, int thresh = 150);
 	std::vector<cv::Point> getContour(cv::Mat image);
 	std::vector<cv::Point> getSortedContour(cv::Mat image);
 	cv::Mat updateImage(cv::Mat image);
-	cv::Point palmCenter2(cv::Mat image, int thresh);
+	cv::Point palmCenter2(cv::Mat image, int thresh = 150);
 };
 
 void createWindow(cv::Mat image, std::string imageName);

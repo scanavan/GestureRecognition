@@ -42,7 +42,7 @@ void KinectMotion::initData()
 	scaled_depth = scaleHand(depth);
 	scaled_binary = binarize(scaled_depth);
 
-	palm_center = palmCenter(scaled_binary, 150);
+	palm_center = palmCenter2(scaled_binary, 150);
 	scaled_contour = getContour(scaled_binary);
 
 }
@@ -638,6 +638,7 @@ int mod(int a, int b)
 	}
 	return (a + b) % b;
 }
+
 void KinectMotion::fingers()
 {
 	cv::Mat finger_image = cv::Mat::zeros(scaled_binary.size(),CV_8UC3); 
@@ -774,7 +775,6 @@ cv::Point KinectMotion::palmCenter2(cv::Mat image, int thresh)
 	std::vector<cv::Point> possible_palm_centers;
 
 	int max = 0;
-	cv::Point center;
 	for (int i = 0; i < new_image.rows; ++i)
 	{
 		for (int j = 0; j < new_image.cols; ++j)
@@ -797,7 +797,7 @@ cv::Point KinectMotion::palmCenter2(cv::Mat image, int thresh)
 	for (int i = 0; i < possible_palm_centers.size(); ++i)
 	{
 		float current_min = 8000000;
-		for (int j = 0; j < scaled_contour.size(); j += 5)
+		for (int j = 0; j < scaled_contour.size(); j += 10)
 		{
 			float temp = std::sqrt(std::pow(possible_palm_centers[i].x - scaled_contour[j].x, 2) + std::pow(possible_palm_centers[i].y - scaled_contour[j].y, 2));
 			if (temp < current_min)
@@ -813,5 +813,5 @@ cv::Point KinectMotion::palmCenter2(cv::Mat image, int thresh)
 		}
 	}
 
-	return center;
+	return possible_palm_centers[center_index];
 }
