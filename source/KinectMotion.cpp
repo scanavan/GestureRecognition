@@ -40,7 +40,7 @@ void KinectMotion::initData()
 	scaled_binary = binarize(scaled_depth);
 
 	scaled_contour = getContour(scaled_binary);
-	palm_center = palmCenter(scaled_binary, 150);
+	palm_center = palmCenter2(scaled_binary, 185);
 
 }
 cv::Mat KinectMotion::getDepth()
@@ -766,7 +766,7 @@ cv::Point KinectMotion::palmCenter2(cv::Mat image, int thresh)
 	for (int i = 0; i < possible_palm_centers.size(); ++i)
 	{
 		double current_min = 8000000;
-		for (int j = 0; j < scaled_contour.size(); j += 10)
+		for (int j = 0; j < scaled_contour.size(); j += 16)
 		{
 			float temp = std::sqrt(std::pow(possible_palm_centers[i].x - scaled_contour[j].x, 2) + std::pow(possible_palm_centers[i].y - scaled_contour[j].y, 2));
 			if (temp < current_min)
