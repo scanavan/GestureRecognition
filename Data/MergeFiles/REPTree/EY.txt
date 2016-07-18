@@ -1,0 +1,221 @@
+
+
+REPTree
+============
+
+Max_Y < 0.54
+|   contourDistances71 < 0.41
+|   |   contourDistances119 < 0.53 : G2 (26/2) [21/2]
+|   |   contourDistances119 >= 0.53 : G7 (10/3) [15/9]
+|   contourDistances71 >= 0.41
+|   |   contourDistances4 < 0.56
+|   |   |   contourDistances123 < 0.52 : G1 (26/11) [6/5]
+|   |   |   contourDistances123 >= 0.52
+|   |   |   |   contourDistances33 < 0.66
+|   |   |   |   |   contourDistances65 < 0.87
+|   |   |   |   |   |   contourDistances87 < 0.85 : G3 (10/0) [7/2]
+|   |   |   |   |   |   contourDistances87 >= 0.85 : G1 (2/0) [1/0]
+|   |   |   |   |   contourDistances65 >= 0.87 : G4 (2/0) [1/0]
+|   |   |   |   contourDistances33 >= 0.66 : G7 (6/1) [5/4]
+|   |   contourDistances4 >= 0.56 : G1 (70/5) [38/4]
+Max_Y >= 0.54
+|   contourDistances144 < 0.57
+|   |   contourDistances22 < 0.76
+|   |   |   contourDistances105 < 0.38
+|   |   |   |   Max_Y < 1
+|   |   |   |   |   contourDistances19 < 0.45
+|   |   |   |   |   |   contourDistances11 < 0.28 : G2 (5/0) [1/0]
+|   |   |   |   |   |   contourDistances11 >= 0.28 : G5 (6/3) [2/1]
+|   |   |   |   |   contourDistances19 >= 0.45
+|   |   |   |   |   |   contourDistances54 < 0.9
+|   |   |   |   |   |   |   contourDistances136 < 0.3 : G2 (9/5) [4/2]
+|   |   |   |   |   |   |   contourDistances136 >= 0.3 : G6 (15/2) [5/2]
+|   |   |   |   |   |   contourDistances54 >= 0.9 : G3 (6/3) [2/1]
+|   |   |   |   Max_Y >= 1 : G4 (16/6) [7/6]
+|   |   |   contourDistances105 >= 0.38
+|   |   |   |   contourDistances123 < 0.7
+|   |   |   |   |   contourDistances74 < 0.83
+|   |   |   |   |   |   contourDistances15 < 0.59
+|   |   |   |   |   |   |   contourDistances88 < 0.67
+|   |   |   |   |   |   |   |   contourDistances5 < 0.48
+|   |   |   |   |   |   |   |   |   contourDistances1 < 0.24 : G8 (5/2) [1/0]
+|   |   |   |   |   |   |   |   |   contourDistances1 >= 0.24 : G7 (25/2) [12/5]
+|   |   |   |   |   |   |   |   contourDistances5 >= 0.48
+|   |   |   |   |   |   |   |   |   contourDistances54 < 0.68 : G8 (6/2) [1/1]
+|   |   |   |   |   |   |   |   |   contourDistances54 >= 0.68
+|   |   |   |   |   |   |   |   |   |   contourDistances1 < 0.62 : G0 (3/0) [0/0]
+|   |   |   |   |   |   |   |   |   |   contourDistances1 >= 0.62 : G9 (3/1) [1/0]
+|   |   |   |   |   |   |   contourDistances88 >= 0.67 : G3 (20/12) [6/3]
+|   |   |   |   |   |   contourDistances15 >= 0.59
+|   |   |   |   |   |   |   contourDistances77 < 0.52
+|   |   |   |   |   |   |   |   contourDistances146 < 0.25 : G8 (4/0) [2/2]
+|   |   |   |   |   |   |   |   contourDistances146 >= 0.25
+|   |   |   |   |   |   |   |   |   contourDistances120 < 0.45 : G6 (4/0) [4/2]
+|   |   |   |   |   |   |   |   |   contourDistances120 >= 0.45 : G0 (6/0) [2/1]
+|   |   |   |   |   |   |   contourDistances77 >= 0.52 : G9 (7/1) [3/2]
+|   |   |   |   |   contourDistances74 >= 0.83
+|   |   |   |   |   |   contourDistances48 < 0.61 : G4 (17/5) [5/1]
+|   |   |   |   |   |   contourDistances48 >= 0.61 : G6 (7/2) [6/3]
+|   |   |   |   contourDistances123 >= 0.7
+|   |   |   |   |   contourDistances38 < 0.66 : G3 (29/1) [12/3]
+|   |   |   |   |   contourDistances38 >= 0.66
+|   |   |   |   |   |   contourDistances20 < 0.59 : G7 (36/0) [19/3]
+|   |   |   |   |   |   contourDistances20 >= 0.59
+|   |   |   |   |   |   |   contourDistances22 < 0.62 : G0 (3/0) [2/1]
+|   |   |   |   |   |   |   contourDistances22 >= 0.62
+|   |   |   |   |   |   |   |   Max_Y < 0.97 : G3 (5/1) [1/0]
+|   |   |   |   |   |   |   |   Max_Y >= 0.97 : G7 (4/0) [2/1]
+|   |   contourDistances22 >= 0.76
+|   |   |   contourDistances76 < 0.53
+|   |   |   |   contourDistances55 < 0.58 : G2 (53/12) [22/5]
+|   |   |   |   contourDistances55 >= 0.58
+|   |   |   |   |   contourDistances48 < 0.6 : G8 (16/0) [13/2]
+|   |   |   |   |   contourDistances48 >= 0.6
+|   |   |   |   |   |   contourDistances132 < 0.32 : G5 (18/5) [7/2]
+|   |   |   |   |   |   contourDistances132 >= 0.32 : G0 (41/11) [26/8]
+|   |   |   contourDistances76 >= 0.53
+|   |   |   |   contourDistances77 < 0.7
+|   |   |   |   |   contourDistances130 < 0.4 : G4 (9/5) [6/3]
+|   |   |   |   |   contourDistances130 >= 0.4 : G8 (56/4) [18/1]
+|   |   |   |   contourDistances77 >= 0.7 : G4 (39/1) [32/6]
+|   contourDistances144 >= 0.57
+|   |   contourDistances63 < 0.45
+|   |   |   contourDistances109 < 0.41
+|   |   |   |   contourDistances28 < 0.66
+|   |   |   |   |   contourDistances24 < 0.35 : G2 (4/0) [1/1]
+|   |   |   |   |   contourDistances24 >= 0.35
+|   |   |   |   |   |   contourDistances77 < 0.39 : G5 (4/0) [7/4]
+|   |   |   |   |   |   contourDistances77 >= 0.39
+|   |   |   |   |   |   |   contourDistances37 < 0.66 : G4 (4/0) [1/1]
+|   |   |   |   |   |   |   contourDistances37 >= 0.66 : G6 (3/0) [1/0]
+|   |   |   |   contourDistances28 >= 0.66
+|   |   |   |   |   contourDistances87 < 0.5 : G5 (51/3) [22/3]
+|   |   |   |   |   contourDistances87 >= 0.5
+|   |   |   |   |   |   contourDistances74 < 0.51 : G0 (3/0) [0/0]
+|   |   |   |   |   |   contourDistances74 >= 0.51 : G6 (2/0) [2/1]
+|   |   |   contourDistances109 >= 0.41
+|   |   |   |   contourDistances32 < 0.67
+|   |   |   |   |   contourDistances16 < 0.69
+|   |   |   |   |   |   contourDistances33 < 0.56
+|   |   |   |   |   |   |   contourDistances16 < 0.41 : G5 (3/1) [2/1]
+|   |   |   |   |   |   |   contourDistances16 >= 0.41 : G4 (3/1) [3/2]
+|   |   |   |   |   |   contourDistances33 >= 0.56 : G3 (7/1) [8/4]
+|   |   |   |   |   contourDistances16 >= 0.69 : G6 (10/2) [6/3]
+|   |   |   |   contourDistances32 >= 0.67
+|   |   |   |   |   contourDistances118 < 0.68 : G0 (22/4) [11/5]
+|   |   |   |   |   contourDistances118 >= 0.68 : G6 (12/1) [5/2]
+|   |   contourDistances63 >= 0.45
+|   |   |   Max_Y < 1.05
+|   |   |   |   contourDistances96 < 0.39
+|   |   |   |   |   contourDistances13 < 0.8
+|   |   |   |   |   |   contourDistances117 < 0.47 : G5 (3/2) [2/0]
+|   |   |   |   |   |   contourDistances117 >= 0.47 : G6 (17/0) [5/2]
+|   |   |   |   |   contourDistances13 >= 0.8 : G5 (4/2) [1/1]
+|   |   |   |   contourDistances96 >= 0.39
+|   |   |   |   |   Max_Y < 0.89
+|   |   |   |   |   |   contourDistances22 < 0.47 : G4 (8/4) [3/3]
+|   |   |   |   |   |   contourDistances22 >= 0.47
+|   |   |   |   |   |   |   contourDistances25 < 0.91
+|   |   |   |   |   |   |   |   contourDistances116 < 0.47 : G9 (9/5) [3/2]
+|   |   |   |   |   |   |   |   contourDistances116 >= 0.47 : G3 (19/1) [11/4]
+|   |   |   |   |   |   |   contourDistances25 >= 0.91 : G1 (11/5) [0/0]
+|   |   |   |   |   Max_Y >= 0.89
+|   |   |   |   |   |   contourDistances132 < 0.68
+|   |   |   |   |   |   |   contourDistances118 < 0.46 : G0 (5/3) [2/1]
+|   |   |   |   |   |   |   contourDistances118 >= 0.46 : G9 (18/2) [11/8]
+|   |   |   |   |   |   contourDistances132 >= 0.68
+|   |   |   |   |   |   |   contourDistances118 < 0.57 : G6 (7/0) [2/0]
+|   |   |   |   |   |   |   contourDistances118 >= 0.57 : G7 (3/1) [5/2]
+|   |   |   Max_Y >= 1.05 : G9 (76/20) [35/7]
+
+Size of the tree : 125
+
+Time taken to build model: 0.51 seconds
+Time taken to test model on training data: 0.09 seconds
+
+=== Error on training data ===
+
+Correctly Classified Instances        1084               77.4286 %
+Incorrectly Classified Instances       316               22.5714 %
+Kappa statistic                          0.7492
+Mean absolute error                      0.0695
+Root mean squared error                  0.1865
+Relative absolute error                 38.6329 %
+Root relative squared error             62.1554 %
+Total Number of Instances             1400     
+
+
+=== Detailed Accuracy By Class ===
+
+                 TP Rate  FP Rate  Precision  Recall   F-Measure  MCC      ROC Area  PRC Area  Class
+                 0.886    0.024    0.805      0.886    0.844      0.826    0.986     0.869     G1
+                 0.836    0.023    0.801      0.836    0.818      0.798    0.974     0.813     G2
+                 0.764    0.029    0.748      0.764    0.756      0.729    0.965     0.780     G3
+                 0.800    0.035    0.718      0.800    0.757      0.729    0.971     0.794     G4
+                 0.743    0.022    0.788      0.743    0.765      0.740    0.968     0.800     G5
+                 0.650    0.017    0.805      0.650    0.719      0.697    0.950     0.744     G6
+                 0.793    0.025    0.782      0.793    0.787      0.763    0.971     0.816     G7
+                 0.771    0.011    0.885      0.771    0.824      0.809    0.962     0.821     G8
+                 0.843    0.038    0.711      0.843    0.771      0.747    0.968     0.708     G9
+                 0.657    0.027    0.730      0.657    0.692      0.661    0.936     0.661     G0
+Weighted Avg.    0.774    0.025    0.777      0.774    0.773      0.750    0.965     0.781     
+
+
+=== Confusion Matrix ===
+
+   a   b   c   d   e   f   g   h   i   j   <-- classified as
+ 124   1   2   1   1   0   7   0   2   2 |   a = G1
+   7 117   2   2   1   1   7   2   0   1 |   b = G2
+   4   0 107   3   0   3   9   4   9   1 |   c = G3
+   7   6   4 112   3   1   1   2   3   1 |   d = G4
+   4  11   0  12 104   3   2   2   0   2 |   e = G5
+   1   4   6   6  10  91   0   0   6  16 |   f = G6
+   1   1  10   2   2   1 111   0  11   1 |   g = G7
+   1   1   4   5   3   0   5 108   5   8 |   h = G8
+   3   0   5   6   1   4   0   1 118   2 |   i = G9
+   2   5   3   7   7   9   0   3  12  92 |   j = G0
+
+
+
+=== Stratified cross-validation ===
+
+Correctly Classified Instances         863               61.6429 %
+Incorrectly Classified Instances       537               38.3571 %
+Kappa statistic                          0.5738
+Mean absolute error                      0.0965
+Root mean squared error                  0.2401
+Relative absolute error                 53.5877 %
+Root relative squared error             80.0354 %
+Total Number of Instances             1400     
+
+
+=== Detailed Accuracy By Class ===
+
+                 TP Rate  FP Rate  Precision  Recall   F-Measure  MCC      ROC Area  PRC Area  Class
+                 0.836    0.026    0.780      0.836    0.807      0.785    0.944     0.740     G1
+                 0.614    0.049    0.581      0.614    0.597      0.551    0.858     0.608     G2
+                 0.657    0.037    0.662      0.657    0.659      0.622    0.902     0.659     G3
+                 0.636    0.035    0.669      0.636    0.652      0.615    0.862     0.684     G4
+                 0.629    0.044    0.615      0.629    0.622      0.579    0.870     0.625     G5
+                 0.521    0.063    0.480      0.521    0.500      0.442    0.840     0.439     G6
+                 0.621    0.044    0.613      0.621    0.617      0.574    0.861     0.598     G7
+                 0.593    0.037    0.643      0.593    0.617      0.577    0.825     0.567     G8
+                 0.679    0.052    0.590      0.679    0.631      0.589    0.877     0.578     G9
+                 0.379    0.040    0.515      0.379    0.436      0.389    0.787     0.403     G0
+Weighted Avg.    0.616    0.043    0.615      0.616    0.614      0.572    0.862     0.590     
+
+
+=== Confusion Matrix ===
+
+   a   b   c   d   e   f   g   h   i   j   <-- classified as
+ 117  11   3   2   1   2   3   0   1   0 |   a = G1
+   8  86   8   6  12   4   4   6   3   3 |   b = G2
+   8   9  92   4   4   3  12   1   6   1 |   c = G3
+   3   8   3  89   3   7   3  14   4   6 |   d = G4
+   3   9   4   7  88  15   1   4   3   6 |   e = G5
+   4   3   4  10  10  73   4   2  16  14 |   f = G6
+   4   8  10   1   1   6  87   5  17   1 |   g = G7
+   0   5   5   7   4   9   7  83   5  15 |   h = G8
+   2   2   7   5   3  11   9   2  95   4 |   i = G9
+   1   7   3   2  17  22  12  12  11  53 |   j = G0
+

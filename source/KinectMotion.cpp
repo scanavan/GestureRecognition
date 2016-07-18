@@ -10,9 +10,8 @@
 #include <vector>
 #include <set>
 
-KinectMotion::KinectMotion(std::string fleap, std::string fdepth)
+KinectMotion::KinectMotion(std::string fdepth)
 {
-	//leap = new LeapData(fleap);
 	depth = cv::imread(fdepth, CV_LOAD_IMAGE_UNCHANGED);
 	//rgb = cv::imread(frgb, CV_LOAD_IMAGE_UNCHANGED);
 
@@ -25,25 +24,23 @@ KinectMotion::KinectMotion(std::string fleap, std::string fdepth)
 	//depth = rotateImage(depth);
 	getHand(depth);
 	initData();
-	otherDistContour(scaled_binary);
 	sil = silhouette(scaled_depth);
 	contour_dist = distContour(scaled_binary);
 	hull = hullAreas(scaled_depth);
 	Occ occ_data = cellOccupancy(scaled_depth);
 	occ_avg = occ_data.avgD;
 	occ_nonz = occ_data.nonZ;
-
+	fingers();
 }
 
 
 void KinectMotion::initData()
 {
-	unscaled_contour = getContour(binarize(depth));
 	scaled_depth = scaleHand(depth);
 	scaled_binary = binarize(scaled_depth);
 
-	palm_center = palmCenter(scaled_binary, 150);
 	scaled_contour = getContour(scaled_binary);
+	palm_center = palmCenter2(scaled_binary, 180);
 
 }
 cv::Mat KinectMotion::getDepth()
@@ -512,10 +509,10 @@ cv::Mat KinectMotion::getHand(cv::Mat image)
 {
 	int top = 0;
 	bool foundHand = false;
+	bool foundWrist = false;
 	int handToWrist = 0;
 	double numPixels = 0;
 	int max = 0;
-	bool atWrist = false;
 	int tmp = 0;
 	double thresholdRatio = 0;
 	double maxThresholdRatio = 0;
@@ -542,19 +539,23 @@ cv::Mat KinectMotion::getHand(cv::Mat image)
 			}
 		}
 		previousNumPixels = numPixels;
-		if (numPixels > 0 && !atWrist)
+		if (numPixels > 0)
 		{
 			handToWrist++;
 			if (numPixels > max)
 			{
 				max = numPixels;
 			}
-			if (i > top + 50 && tmp != 0 && numPixels <= tmp * thresholdRatio && tmp <= max*.75)
+			if (i > top + 90 && tmp != 0 && numPixels <= tmp * thresholdRatio && tmp <= max * .85)
 			{
-				atWrist = true;
+				foundWrist = true;
+				break;
 			}
 			tmp = numPixels;
 			numPixels = 0;
+		}
+		if (foundWrist) {
+			break;
 		}
 	}
 
@@ -581,66 +582,193 @@ void KinectMotion::sortContourDist() {
 	}
 }
 
-void KinectMotion::otherDistContour(cv::Mat image) {
-	std::vector<cv::Point> sampleContour;
-
-	for (int i = 0; i < unscaled_contour.size() - (int)(unscaled_contour.size() / 4); i++)
+int mod(int a, int b)
+{
+	if (a >= 0)
 	{
-		sampleContour.push_back(unscaled_contour[(int)(i * (float)(unscaled_contour.size()) / (unscaled_contour.size() - (int)(unscaled_contour.size() / 4)))]);
+		return a % b;
 	}
-
-	for (int i = 0; i < sampleContour.size(); i++) {
-		if (palm_center.y - sampleContour.at(i).y > 0) {
-			float temp = std::sqrt(std::pow(palm_center.x - sampleContour.at(i).x, 2) + std::pow(palm_center.y - sampleContour.at(i).y, 2));
-			reg_dist_contour.push_back(temp);
-		}
-	}
-}
-
-int KinectMotion::countFingers() {
-	float last_contour_dist;
-	bool goingUp = true;
-	int fingers = 0;
-	int numberOfIncreasing = 0;
-	std::vector<float> localMaxima{ 0 };
-	if (reg_dist_contour.size() > 0) {
-		last_contour_dist = reg_dist_contour[0];
-		for (int i = 0; i < reg_dist_contour.size(); i++) {
-			if (reg_dist_contour[i] < last_contour_dist && goingUp && numberOfIncreasing > 12) {
-				localMaxima.push_back(last_contour_dist);
-				numberOfIncreasing = 0;
-			}
-			if (reg_dist_contour[i] > last_contour_dist) {
-				goingUp = true;
-				numberOfIncreasing++;
-			}
-			else if (reg_dist_contour[i] < last_contour_dist) {
-				goingUp = false;
-				numberOfIncreasing = 0;
-			}
-			last_contour_dist = reg_dist_contour[i];
-		}
-		for (int i = 0; i < localMaxima.size(); i++) {
-			if (localMaxima[i] > 125 && fingers < 5) {
-				fingers++;
-			}
-		}
-	}
-
-	return fingers;
+	return (a + b) % b;
 }
 
 void KinectMotion::fingers()
 {
-	// Sample scaled contour
-	std::vector<cv::Point> sampled_contour;
-	for (int i = 0; i < scaled_contour.size(); ++i)
+	cv::Mat finger_image = cv::Mat::zeros(scaled_binary.size(),CV_8UC3); 
+	for (int i = 0; i < scaled_binary.rows; ++i)
 	{
-		for (int j = 0; j < scaled_contour.size() / 4; ++j) 
+		for (int j = 0; j < scaled_binary.cols; ++j)
 		{
-			sampled_contour.push_back(scaled_contour[4 * i]);
+			if (scaled_binary.at<uchar>(i, j) > 5) finger_image.at<cv::Vec3b>(i, j) = cv::Vec3b(100, 100, 0);
 		}
 	}
+
+	// Sample scaled contour
+	std::vector<cv::Point> sampled_contour = scaled_contour;
+	int contour_start = 0;
+	for (int i = 0; i < scaled_contour.size(); ++i) 
+	{
+		if (scaled_contour[i].x == palm_center.x && scaled_contour[i].y > palm_center.y)
+		{
+			sampled_contour.clear();
+			for (int j = 0; j < scaled_contour.size(); ++j)
+			{
+				sampled_contour.push_back(scaled_contour[(i + j) % scaled_contour.size()]);
+			}
+			break;
+		}
+	}
+
+	//std::cout << scaled_contour.size() << " " << sampled_contour.size() << std::endl;
+
+	// Calculate distances
+	std::vector<float> contour_distances;
+	for (int i = 0; i < sampled_contour.size(); ++i)
+	{
+		contour_distances.push_back(std::sqrt(std::pow(palm_center.x - sampled_contour[i].x, 2) + std::pow(palm_center.y - sampled_contour[i].y, 2)));
+	}
+
+	// Find Fingers
+	std::vector<int> finger_indicies;
+	for (int i = 0; i < contour_distances.size(); ++i)
+	{
+		if ((contour_distances[i] - contour_distances[mod(i + 120, contour_distances.size())] > 50) && (contour_distances[i] - contour_distances[mod(i - 120, contour_distances.size())] > 50))
+		{
+			//finger_image.at<cv::Vec3b>(sampled_contour[i].y, sampled_contour[i].x) = cv::Vec3b(0, 0, 255);
+			finger_indicies.push_back(i);
+		}
+	}
+
+	std::vector<std::vector<int>> finger_clusters;
+	std::vector<int> cluster; 
+	if (finger_indicies.size() > 0) cluster.push_back(finger_indicies[0]);
+	for (int i = 1; i < finger_indicies.size(); ++i)
+	{
+		if (mod(finger_indicies[i] - finger_indicies[i - 1],sampled_contour.size()) > 100) {
+			finger_clusters.push_back(cluster);
+			cluster.clear();
+		}
+		cluster.push_back(finger_indicies[i]);
+	}
+	finger_clusters.push_back(cluster);
+
+	// Find Tips
+	//std::vector<int> finger_tips;
+	//bool consec = false;
+	//int num_consec = 0;
+	//for (int i = 0; i < finger_indicies.size() - 1; ++i)
+	//{
+	//	if (finger_indicies[i + 1] - finger_indicies[i] > 1)
+	//	{
+	//		consec = false;
+	//	}
+	//	else
+	//	{
+	//		consec = true;
+	//		num_consec++;
+	//	}
+
+	//	if (num_consec > 20 && !(consec))
+	//	{
+	//		float max_dist = 0;
+	//		int max_dist_index;
+	//		for (int j = finger_indicies[i]; j > (finger_indicies[i] - num_consec); --j)
+	//		{
+	//			if (contour_distances[j] > max_dist)
+	//			{
+	//				max_dist = contour_distances[j];
+	//				max_dist_index = j;
+	//			}
+	//		}
+	//		finger_tips.push_back(max_dist_index);
+	//		//finger_image.at<cv::Vec3b>(sampled_contour[max_dist_index].y, sampled_contour[max_dist_index].x) = cv::Vec3b(0, 0, 255);
+	//	}
+	//	if (!consec) num_consec = 0;
+	//}
+	//for (int i = 0; i < finger_tips.size() - 1; ++i)
+	//{
+	//	if (mod(finger_tips[i + 1] - finger_tips[i] < 200,sampled_contour.size())) finger_tips.erase(finger_tips.begin()+i);
+	//}
+
+	// Display
+	std::vector<int> finger_tips;
+	for (int i = 0; i < finger_clusters.size(); ++i)
+	{
+		float max_dist_for_cluster = 0; int max_dist_index;
+		for (int j = 0; j < finger_clusters[i].size(); ++j)
+		{
+			if (contour_distances[finger_clusters[i][j]] > max_dist_for_cluster)
+			{
+				max_dist_for_cluster = contour_distances[finger_clusters[i][j]];
+				max_dist_index = finger_clusters[i][j];
+			}
+			//finger_image.at<cv::Vec3b>(sampled_contour[finger_clusters[i][j]].y, sampled_contour[finger_clusters[i][j]].x) = cv::Vec3b(0, (i * 255 / finger_clusters.size()), 255);
+		}
+		finger_tips.push_back(max_dist_index);
+	}
+
+	for (int i = 0; i < finger_tips.size(); ++i)
+	{
+		//finger_image.at<cv::Vec3b>(sampled_contour[finger_tips[i]].y, sampled_contour[finger_tips[i]].x) = cv::Vec3b(0, (i * 255 / finger_clusters.size()), 255);
+		//std::cout << finger_tips[i] << " ";
+	}
+
+	//for (int i = 0; i < possible_palm_centers.size(); ++i)
+	//{
+	//	finger_image.at<cv::Vec3b>(possible_palm_centers[i].y, possible_palm_centers[i].x) = cv::Vec3b(0, 255, 255);
+	//}
+	//finger_image.at<cv::Vec3b>(palm_center.y, palm_center.x) = cv::Vec3b(0, 0, 255);
+
+	//createWindow(finger_image, "A");
 	
+
 	return;
+}
+
+cv::Point KinectMotion::palmCenter2(cv::Mat image, int thresh) 
+{
+
+	cv::Mat new_image = image.clone();
+	cv::GaussianBlur(image, new_image, cv::Size(0, 0), thresh, thresh);
+	
+
+	int max = 0;
+	for (int i = 0; i < new_image.rows; ++i)
+	{
+		for (int j = 0; j < new_image.cols; ++j)
+		{
+			if (static_cast<int>(new_image.at<uchar>(i, j)) > max)
+			{
+				max = static_cast<int>(new_image.at<uchar>(i, j));
+				possible_palm_centers.clear();
+				possible_palm_centers.push_back(cv::Point(j, i));
+			}
+			else if (static_cast<int>(new_image.at<uchar>(i, j)) == max)
+			{
+				possible_palm_centers.push_back(cv::Point(j, i));
+			}
+		}
+	}
+
+	double max_min = 0;
+	int center_index;
+	for (int i = 0; i < possible_palm_centers.size(); ++i)
+	{
+		double current_min = 8000000;
+		for (int j = 0; j < scaled_contour.size(); j += 10)
+		{
+			float temp = std::sqrt(std::pow(possible_palm_centers[i].x - scaled_contour[j].x, 2) + std::pow(possible_palm_centers[i].y - scaled_contour[j].y, 2));
+			if (temp < current_min)
+			{
+				current_min = temp;
+				if (current_min < max_min) break;
+			}
+		}
+		if (current_min > max_min)
+		{
+			max_min = current_min;
+			center_index = i;
+		}
+	}
+
+	return possible_palm_centers[center_index];
 }

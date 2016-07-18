@@ -1,0 +1,125 @@
+
+
+REPTree
+============
+
+newFingerTipDistRefined_f1 < 0.42
+|   newFingerTipDistRefined_f3 < 0.25
+|   |   newFingerTipDistRefined_f5 < 0.26
+|   |   |   newFingerTipDistRefined_f2 < 0.49 : G1 (130/36) [72/26]
+|   |   |   newFingerTipDistRefined_f2 >= 0.49
+|   |   |   |   newFingerTipDistRefined_f2 < 1 : G2 (26/5) [13/1]
+|   |   |   |   newFingerTipDistRefined_f2 >= 1
+|   |   |   |   |   Max_Y < 0.96 : G2 (41/3) [24/4]
+|   |   |   |   |   Max_Y >= 0.96
+|   |   |   |   |   |   ratio < 0.52 : G2 (7/0) [2/0]
+|   |   |   |   |   |   ratio >= 0.52 : G5 (4/1) [1/0]
+|   |   newFingerTipDistRefined_f5 >= 0.26 : G3 (87/0) [39/0]
+|   newFingerTipDistRefined_f3 >= 0.25
+|   |   newFingerTipDistRefined_f4 < 0.48
+|   |   |   newFingerTipDistRefined_f5 < 0.3 : G5 (98/14) [46/8]
+|   |   |   newFingerTipDistRefined_f5 >= 0.3 : G0 (82/0) [39/0]
+|   |   newFingerTipDistRefined_f4 >= 0.48 : G6 (87/0) [44/0]
+newFingerTipDistRefined_f1 >= 0.42
+|   newFingerTipDistRefined_f3 < 0.56
+|   |   newFingerTipDistRefined_f2 < 0.45 : G7 (102/10) [48/2]
+|   |   newFingerTipDistRefined_f2 >= 0.45
+|   |   |   newFingerTipDistRefined_f5 < 0.35
+|   |   |   |   newFingerTipDistRefined_f2 < 1.27
+|   |   |   |   |   newFingerTipDistRefined_f1 < 1.28 : G8 (8/1) [2/0]
+|   |   |   |   |   newFingerTipDistRefined_f1 >= 1.28 : G4 (2/0) [1/0]
+|   |   |   |   newFingerTipDistRefined_f2 >= 1.27 : G4 (85/2) [46/2]
+|   |   |   newFingerTipDistRefined_f5 >= 0.35 : G8 (84/0) [43/0]
+|   newFingerTipDistRefined_f3 >= 0.56 : G9 (90/0) [47/0]
+
+Size of the tree : 29
+
+Time taken to build model: 0.1 seconds
+Time taken to test model on training data: 0.02 seconds
+
+=== Error on training data ===
+
+Correctly Classified Instances        1285               91.7857 %
+Incorrectly Classified Instances       115                8.2143 %
+Kappa statistic                          0.9087
+Mean absolute error                      0.0274
+Root mean squared error                  0.1171
+Relative absolute error                 15.2247 %
+Root relative squared error             39.0188 %
+Total Number of Instances             1400     
+
+
+=== Detailed Accuracy By Class ===
+
+                 TP Rate  FP Rate  Precision  Recall   F-Measure  MCC      ROC Area  PRC Area  Class
+                 1.000    0.049    0.693      1.000    0.819      0.812    0.975     0.693     G1
+                 0.714    0.010    0.885      0.714    0.791      0.775    0.975     0.776     G2
+                 0.900    0.000    1.000      0.900    0.947      0.943    0.993     0.943     G3
+                 0.929    0.003    0.970      0.929    0.949      0.944    0.994     0.939     G4
+                 0.900    0.018    0.846      0.900    0.872      0.858    0.981     0.807     G5
+                 0.936    0.000    1.000      0.936    0.967      0.964    0.994     0.968     G6
+                 0.986    0.010    0.920      0.986    0.952      0.947    0.994     0.913     G7
+                 0.971    0.001    0.993      0.971    0.982      0.980    0.999     0.986     G8
+                 0.979    0.000    1.000      0.979    0.989      0.988    0.999     0.989     G9
+                 0.864    0.000    1.000      0.864    0.927      0.923    0.992     0.934     G0
+Weighted Avg.    0.918    0.009    0.931      0.918    0.919      0.913    0.990     0.895     
+
+
+=== Confusion Matrix ===
+
+   a   b   c   d   e   f   g   h   i   j   <-- classified as
+ 140   0   0   0   0   0   0   0   0   0 |   a = G1
+  39 100   0   0   1   0   0   0   0   0 |   b = G2
+  14   0 126   0   0   0   0   0   0   0 |   c = G3
+   0   0   0 130   0   0   9   1   0   0 |   d = G4
+   7   7   0   0 126   0   0   0   0   0 |   e = G5
+   0   4   0   0   5 131   0   0   0   0 |   f = G6
+   2   0   0   0   0   0 138   0   0   0 |   g = G7
+   0   0   0   4   0   0   0 136   0   0 |   h = G8
+   0   0   0   0   0   0   3   0 137   0 |   i = G9
+   0   2   0   0  17   0   0   0   0 121 |   j = G0
+
+
+
+=== Stratified cross-validation ===
+
+Correctly Classified Instances        1282               91.5714 %
+Incorrectly Classified Instances       118                8.4286 %
+Kappa statistic                          0.9063
+Mean absolute error                      0.0257
+Root mean squared error                  0.1165
+Relative absolute error                 14.2717 %
+Root relative squared error             38.8422 %
+Total Number of Instances             1400     
+
+
+=== Detailed Accuracy By Class ===
+
+                 TP Rate  FP Rate  Precision  Recall   F-Measure  MCC      ROC Area  PRC Area  Class
+                 1.000    0.049    0.693      1.000    0.819      0.812    0.971     0.649     G1
+                 0.721    0.013    0.856      0.721    0.783      0.764    0.969     0.724     G2
+                 0.900    0.000    1.000      0.900    0.947      0.943    0.990     0.951     G3
+                 0.979    0.013    0.895      0.979    0.935      0.929    0.996     0.954     G4
+                 0.829    0.009    0.913      0.829    0.869      0.856    0.979     0.855     G5
+                 0.936    0.000    1.000      0.936    0.967      0.964    0.990     0.969     G6
+                 0.950    0.002    0.985      0.950    0.967      0.964    0.998     0.989     G7
+                 0.929    0.002    0.977      0.929    0.952      0.948    0.997     0.979     G8
+                 0.979    0.000    1.000      0.979    0.989      0.988    1.000     0.999     G9
+                 0.936    0.006    0.949      0.936    0.942      0.936    0.994     0.973     G0
+Weighted Avg.    0.916    0.009    0.927      0.916    0.917      0.910    0.988     0.904     
+
+
+=== Confusion Matrix ===
+
+   a   b   c   d   e   f   g   h   i   j   <-- classified as
+ 140   0   0   0   0   0   0   0   0   0 |   a = G1
+  39 101   0   0   0   0   0   0   0   0 |   b = G2
+  14   0 126   0   0   0   0   0   0   0 |   c = G3
+   0   0   0 137   0   0   0   3   0   0 |   d = G4
+   7  11   0   0 116   0   0   0   0   6 |   e = G5
+   0   4   0   0   4 131   0   0   0   1 |   f = G6
+   2   0   0   5   0   0 133   0   0   0 |   g = G7
+   0   0   0  10   0   0   0 130   0   0 |   h = G8
+   0   0   0   1   0   0   2   0 137   0 |   i = G9
+   0   2   0   0   7   0   0   0   0 131 |   j = G0
+

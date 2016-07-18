@@ -1,0 +1,195 @@
+
+
+REPTree
+============
+
+fingersAreas < 15.7
+|   cellOccupancyAvg12 < 7.05
+|   |   fingersAreas < 2.72
+|   |   |   cellOccupancyNonZ43 < 914.5
+|   |   |   |   cellOccupancyNonZ31 < 1342 : G1 (7/4) [2/2]
+|   |   |   |   cellOccupancyNonZ31 >= 1342
+|   |   |   |   |   cellOccupancyNonZ54 < 2956
+|   |   |   |   |   |   cellOccupancyAvg33 < 1.28 : G2 (61/1) [38/3]
+|   |   |   |   |   |   cellOccupancyAvg33 >= 1.28
+|   |   |   |   |   |   |   cellOccupancyNonZ18 < 814.5 : G2 (14/0) [5/0]
+|   |   |   |   |   |   |   cellOccupancyNonZ18 >= 814.5 : G5 (5/0) [3/0]
+|   |   |   |   |   cellOccupancyNonZ54 >= 2956 : G4 (5/0) [2/1]
+|   |   |   cellOccupancyNonZ43 >= 914.5
+|   |   |   |   cellOccupancyNonZ20 < 2519.5
+|   |   |   |   |   Max_Y < 0.62 : G2 (7/4) [3/3]
+|   |   |   |   |   Max_Y >= 0.62 : G5 (4/1) [1/0]
+|   |   |   |   cellOccupancyNonZ20 >= 2519.5 : G3 (21/3) [10/2]
+|   |   fingersAreas >= 2.72
+|   |   |   cellOccupancyAvg14 < 3.75
+|   |   |   |   Max_Y < 0.97 : G6 (8/0) [5/1]
+|   |   |   |   Max_Y >= 0.97
+|   |   |   |   |   cellOccupancyNonZ30 < 3172
+|   |   |   |   |   |   cellOccupancyNonZ14 < 50 : G6 (3/1) [3/1]
+|   |   |   |   |   |   cellOccupancyNonZ14 >= 50 : G9 (3/1) [1/0]
+|   |   |   |   |   cellOccupancyNonZ30 >= 3172 : G5 (6/2) [8/4]
+|   |   |   cellOccupancyAvg14 >= 3.75 : G9 (83/3) [41/1]
+|   cellOccupancyAvg12 >= 7.05
+|   |   cellOccupancyNonZ27 < 3128.5
+|   |   |   cellOccupancyNonZ9 < 353.5
+|   |   |   |   cellOccupancyNonZ20 < 2659.5
+|   |   |   |   |   cellOccupancyNonZ20 < 1618 : G7 (4/0) [4/1]
+|   |   |   |   |   cellOccupancyNonZ20 >= 1618 : G5 (2/1) [1/0]
+|   |   |   |   cellOccupancyNonZ20 >= 2659.5 : G3 (51/2) [30/1]
+|   |   |   cellOccupancyNonZ9 >= 353.5 : G2 (6/1) [3/1]
+|   |   cellOccupancyNonZ27 >= 3128.5
+|   |   |   cellOccupancyNonZ49 < 190.5 : G1 (96/7) [45/2]
+|   |   |   cellOccupancyNonZ49 >= 190.5 : G3 (6/0) [3/0]
+fingersAreas >= 15.7
+|   fingersAreas < 38.44
+|   |   cellOccupancyNonZ5 < 4.5
+|   |   |   fingersAreas < 24.74
+|   |   |   |   cellOccupancyAvg52 < 1.21
+|   |   |   |   |   fingersAreas < 19.03
+|   |   |   |   |   |   cellOccupancyNonZ18 < 58
+|   |   |   |   |   |   |   Max_Y < 1.08 : G2 (2/0) [1/1]
+|   |   |   |   |   |   |   Max_Y >= 1.08 : G4 (4/2) [3/0]
+|   |   |   |   |   |   cellOccupancyNonZ18 >= 58 : G6 (48/3) [15/3]
+|   |   |   |   |   fingersAreas >= 19.03
+|   |   |   |   |   |   cellOccupancyAvg32 < 10.63
+|   |   |   |   |   |   |   Max_Y < 1.08
+|   |   |   |   |   |   |   |   cellOccupancyNonZ42 < 823.5 : G0 (23/7) [10/4]
+|   |   |   |   |   |   |   |   cellOccupancyNonZ42 >= 823.5 : G6 (4/0) [4/0]
+|   |   |   |   |   |   |   Max_Y >= 1.08 : G4 (3/0) [2/2]
+|   |   |   |   |   |   cellOccupancyAvg32 >= 10.63
+|   |   |   |   |   |   |   cellOccupancyNonZ43 < 458.5 : G5 (13/0) [1/0]
+|   |   |   |   |   |   |   cellOccupancyNonZ43 >= 458.5 : G6 (10/1) [4/2]
+|   |   |   |   cellOccupancyAvg52 >= 1.21
+|   |   |   |   |   cellOccupancyNonZ35 < 1690.5 : G0 (37/1) [13/2]
+|   |   |   |   |   cellOccupancyNonZ35 >= 1690.5
+|   |   |   |   |   |   cellOccupancyNonZ51 < 1119.5 : G0 (11/2) [9/2]
+|   |   |   |   |   |   cellOccupancyNonZ51 >= 1119.5 : G6 (12/2) [11/1]
+|   |   |   fingersAreas >= 24.74
+|   |   |   |   cellOccupancyNonZ40 < 539
+|   |   |   |   |   cellOccupancyNonZ3 < 709.5
+|   |   |   |   |   |   cellOccupancyNonZ25 < 39 : G8 (5/0) [2/1]
+|   |   |   |   |   |   cellOccupancyNonZ25 >= 39 : G5 (2/1) [1/0]
+|   |   |   |   |   cellOccupancyNonZ3 >= 709.5 : G7 (9/0) [3/1]
+|   |   |   |   cellOccupancyNonZ40 >= 539
+|   |   |   |   |   Max_Y < 0.9
+|   |   |   |   |   |   cellOccupancyNonZ15 < 726 : G5 (43/1) [26/1]
+|   |   |   |   |   |   cellOccupancyNonZ15 >= 726
+|   |   |   |   |   |   |   cellOccupancyNonZ18 < 389 : G4 (2/0) [0/0]
+|   |   |   |   |   |   |   cellOccupancyNonZ18 >= 389 : G3 (2/1) [2/0]
+|   |   |   |   |   Max_Y >= 0.9
+|   |   |   |   |   |   cellOccupancyNonZ54 < 329.5
+|   |   |   |   |   |   |   cellOccupancyNonZ44 < 296.5 : G5 (18/2) [6/3]
+|   |   |   |   |   |   |   cellOccupancyNonZ44 >= 296.5 : G0 (8/4) [5/2]
+|   |   |   |   |   |   cellOccupancyNonZ54 >= 329.5 : G0 (11/2) [9/2]
+|   |   cellOccupancyNonZ5 >= 4.5
+|   |   |   cellOccupancyNonZ12 < 3184
+|   |   |   |   fingersAreas < 20.68
+|   |   |   |   |   cellOccupancyNonZ51 < 123
+|   |   |   |   |   |   cellOccupancyNonZ4 < 906.5 : G4 (12/0) [8/1]
+|   |   |   |   |   |   cellOccupancyNonZ4 >= 906.5 : G6 (2/1) [2/1]
+|   |   |   |   |   cellOccupancyNonZ51 >= 123
+|   |   |   |   |   |   cellOccupancyNonZ5 < 1834.5 : G8 (10/0) [5/0]
+|   |   |   |   |   |   cellOccupancyNonZ5 >= 1834.5 : G9 (2/0) [3/2]
+|   |   |   |   fingersAreas >= 20.68 : G8 (77/9) [35/3]
+|   |   |   cellOccupancyNonZ12 >= 3184
+|   |   |   |   cellOccupancyNonZ26 < 1182.5 : G7 (9/4) [4/1]
+|   |   |   |   cellOccupancyNonZ26 >= 1182.5 : G0 (13/3) [2/1]
+|   fingersAreas >= 38.44
+|   |   cellOccupancyNonZ12 < 32 : G4 (62/9) [33/6]
+|   |   cellOccupancyNonZ12 >= 32
+|   |   |   cellOccupancyNonZ60 < 10.5
+|   |   |   |   cellOccupancyNonZ29 < 3599.5 : G4 (14/4) [3/2]
+|   |   |   |   cellOccupancyNonZ29 >= 3599.5 : G7 (15/7) [7/2]
+|   |   |   cellOccupancyNonZ60 >= 10.5 : G7 (58/2) [30/2]
+
+Size of the tree : 99
+
+Time taken to build model: 0.38 seconds
+Time taken to test model on training data: 0.08 seconds
+
+=== Error on training data ===
+
+Correctly Classified Instances        1230               87.8571 %
+Incorrectly Classified Instances       170               12.1429 %
+Kappa statistic                          0.8651
+Mean absolute error                      0.0392
+Root mean squared error                  0.1401
+Relative absolute error                 21.7968 %
+Root relative squared error             46.687  %
+Total Number of Instances             1400     
+
+
+=== Detailed Accuracy By Class ===
+
+                 TP Rate  FP Rate  Precision  Recall   F-Measure  MCC      ROC Area  PRC Area  Class
+                 0.964    0.012    0.900      0.964    0.931      0.924    0.995     0.927     G1
+                 0.900    0.011    0.900      0.900    0.900      0.889    0.991     0.936     G2
+                 0.829    0.007    0.928      0.829    0.875      0.864    0.983     0.902     G3
+                 0.900    0.021    0.824      0.900    0.860      0.845    0.981     0.843     G4
+                 0.886    0.013    0.886      0.886    0.886      0.873    0.991     0.931     G5
+                 0.814    0.013    0.870      0.814    0.841      0.825    0.986     0.871     G6
+                 0.879    0.016    0.860      0.879    0.869      0.855    0.984     0.882     G7
+                 0.864    0.010    0.903      0.864    0.883      0.871    0.984     0.869     G8
+                 0.900    0.006    0.947      0.900    0.923      0.915    0.994     0.945     G9
+                 0.850    0.025    0.788      0.850    0.818      0.797    0.977     0.830     G0
+Weighted Avg.    0.879    0.013    0.881      0.879    0.879      0.866    0.987     0.893     
+
+
+=== Confusion Matrix ===
+
+   a   b   c   d   e   f   g   h   i   j   <-- classified as
+ 135   1   3   0   0   0   0   0   0   1 |   a = G1
+   3 126   1   2   1   3   0   0   0   4 |   b = G2
+   6   1 116   2   2   0   8   0   4   1 |   c = G3
+   0   3   0 126   0   1   5   1   3   1 |   d = G4
+   0   2   3   4 124   3   0   1   0   3 |   e = G5
+   2   2   0   1   3 114   2   0   0  16 |   f = G6
+   2   0   1   7   0   0 123   7   0   0 |   g = G7
+   0   0   0   9   0   1   3 121   0   6 |   h = G8
+   1   4   0   0   3   5   0   1 126   0 |   i = G9
+   1   1   1   2   7   4   2   3   0 119 |   j = G0
+
+
+
+=== Stratified cross-validation ===
+
+Correctly Classified Instances        1065               76.0714 %
+Incorrectly Classified Instances       335               23.9286 %
+Kappa statistic                          0.7341
+Mean absolute error                      0.0632
+Root mean squared error                  0.1972
+Relative absolute error                 35.1207 %
+Root relative squared error             65.7171 %
+Total Number of Instances             1400     
+
+
+=== Detailed Accuracy By Class ===
+
+                 TP Rate  FP Rate  Precision  Recall   F-Measure  MCC      ROC Area  PRC Area  Class
+                 0.907    0.010    0.914      0.907    0.910      0.900    0.969     0.869     G1
+                 0.814    0.019    0.826      0.814    0.820      0.800    0.937     0.800     G2
+                 0.729    0.033    0.708      0.729    0.718      0.687    0.917     0.686     G3
+                 0.743    0.027    0.754      0.743    0.748      0.720    0.891     0.673     G4
+                 0.657    0.029    0.713      0.657    0.684      0.651    0.906     0.696     G5
+                 0.643    0.037    0.657      0.643    0.650      0.611    0.896     0.620     G6
+                 0.793    0.025    0.776      0.793    0.784      0.760    0.941     0.764     G7
+                 0.814    0.021    0.814      0.814    0.814      0.794    0.941     0.765     G8
+                 0.886    0.011    0.899      0.886    0.892      0.880    0.966     0.865     G9
+                 0.621    0.053    0.565      0.621    0.592      0.545    0.892     0.528     G0
+Weighted Avg.    0.761    0.027    0.763      0.761    0.761      0.735    0.926     0.727     
+
+
+=== Confusion Matrix ===
+
+   a   b   c   d   e   f   g   h   i   j   <-- classified as
+ 127   2   6   0   0   2   1   1   1   0 |   a = G1
+   2 114  10   1   4   4   1   0   2   2 |   b = G2
+   9   6 102   2   2   1   8   1   4   5 |   c = G3
+   0   4   4 104   4   1  11   5   3   4 |   d = G4
+   0   6   6   4  92  13   1   0   2  16 |   e = G5
+   0   5   3   6   6  90   1   1   2  26 |   f = G6
+   1   1   7   3   0   1 111   8   0   8 |   g = G7
+   0   0   1  11   3   1   4 114   0   6 |   h = G8
+   0   0   3   4   1   3   1   4 124   0 |   i = G9
+   0   0   2   3  17  21   4   6   0  87 |   j = G0
+

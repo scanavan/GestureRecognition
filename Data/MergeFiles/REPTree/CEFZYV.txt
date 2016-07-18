@@ -1,0 +1,181 @@
+
+
+REPTree
+============
+
+fingersAreas < 15.7
+|   silhouette15 < 116.74
+|   |   silhouette32 < 140.05
+|   |   |   fingersAreas < 2.72
+|   |   |   |   cellOccupancyAvg21 < 5.37 : G2 (16/7) [7/6]
+|   |   |   |   cellOccupancyAvg21 >= 5.37
+|   |   |   |   |   cellOccupancyAvg34 < 0.28 : G2 (38/0) [27/0]
+|   |   |   |   |   cellOccupancyAvg34 >= 0.28
+|   |   |   |   |   |   silhouette13 < 97.69 : G2 (11/0) [7/1]
+|   |   |   |   |   |   silhouette13 >= 97.69 : G5 (10/1) [6/1]
+|   |   |   fingersAreas >= 2.72
+|   |   |   |   silhouette20 < 137 : G6 (12/4) [10/6]
+|   |   |   |   silhouette20 >= 137 : G9 (7/3) [7/1]
+|   |   silhouette32 >= 140.05
+|   |   |   Max_Y < 0.51
+|   |   |   |   silhouette10 < 127.61 : G4 (3/1) [1/0]
+|   |   |   |   silhouette10 >= 127.61 : G2 (3/1) [0/0]
+|   |   |   Max_Y >= 0.51 : G9 (74/0) [32/0]
+|   silhouette15 >= 116.74
+|   |   cellOccupancyAvg26 < 0.39
+|   |   |   contourDistances120 < 0.61
+|   |   |   |   contourDistances62 < 0.75 : G2 (22/1) [12/4]
+|   |   |   |   contourDistances62 >= 0.75 : G3 (5/2) [1/0]
+|   |   |   contourDistances120 >= 0.61 : G3 (60/5) [33/6]
+|   |   cellOccupancyAvg26 >= 0.39
+|   |   |   Max_Y < 0.07 : G1 (77/1) [42/2]
+|   |   |   Max_Y >= 0.07
+|   |   |   |   silhouette13 < 212
+|   |   |   |   |   ratio < 0.51 : G9 (11/4) [10/3]
+|   |   |   |   |   ratio >= 0.51 : G3 (23/3) [7/1]
+|   |   |   |   silhouette13 >= 212
+|   |   |   |   |   silhouette1 < 99.15 : G2 (3/2) [1/0]
+|   |   |   |   |   silhouette1 >= 99.15 : G1 (17/0) [5/0]
+fingersAreas >= 15.7
+|   ratio < 0.01
+|   |   fingersAreas < 32.11
+|   |   |   cellOccupancyAvg5 < 0.02
+|   |   |   |   Max_Y < 1.12
+|   |   |   |   |   cellOccupancyAvg27 < 10.21
+|   |   |   |   |   |   silhouette9 < 81.72
+|   |   |   |   |   |   |   fingersAreas < 28.12 : G0 (10/0) [4/1]
+|   |   |   |   |   |   |   fingersAreas >= 28.12 : G7 (2/0) [1/0]
+|   |   |   |   |   |   silhouette9 >= 81.72
+|   |   |   |   |   |   |   Max_Y < 1 : G6 (17/1) [6/0]
+|   |   |   |   |   |   |   Max_Y >= 1 : G0 (7/1) [8/2]
+|   |   |   |   |   cellOccupancyAvg27 >= 10.21 : G0 (47/4) [24/3]
+|   |   |   |   Max_Y >= 1.12
+|   |   |   |   |   silhouette30 < 138.08
+|   |   |   |   |   |   silhouette29 < 175.42 : G0 (8/0) [4/1]
+|   |   |   |   |   |   silhouette29 >= 175.42 : G5 (2/1) [2/0]
+|   |   |   |   |   silhouette30 >= 138.08
+|   |   |   |   |   |   silhouette6 < 84 : G8 (8/0) [0/0]
+|   |   |   |   |   |   silhouette6 >= 84 : G9 (3/1) [1/0]
+|   |   |   cellOccupancyAvg5 >= 0.02
+|   |   |   |   cellOccupancyAvg55 < 1.96
+|   |   |   |   |   silhouette14 < 102.44 : G8 (8/3) [5/1]
+|   |   |   |   |   silhouette14 >= 102.44
+|   |   |   |   |   |   silhouette9 < 97.54 : G7 (2/0) [1/0]
+|   |   |   |   |   |   silhouette9 >= 97.54 : G0 (10/0) [1/0]
+|   |   |   |   cellOccupancyAvg55 >= 1.96 : G8 (64/1) [35/4]
+|   |   fingersAreas >= 32.11
+|   |   |   cellOccupancyAvg21 < 4.18
+|   |   |   |   cellOccupancyAvg51 < 1.99 : G4 (53/2) [25/2]
+|   |   |   |   cellOccupancyAvg51 >= 1.99
+|   |   |   |   |   silhouette16 < 126.11 : G8 (5/0) [2/0]
+|   |   |   |   |   silhouette16 >= 126.11 : G7 (2/0) [1/0]
+|   |   |   cellOccupancyAvg21 >= 4.18
+|   |   |   |   silhouette1 < 83.31 : G4 (8/1) [3/1]
+|   |   |   |   silhouette1 >= 83.31 : G7 (75/3) [40/4]
+|   ratio >= 0.01
+|   |   fingersAreas < 20.03
+|   |   |   Max_Y < 1.08
+|   |   |   |   ratio < 0.02 : G6 (60/4) [27/2]
+|   |   |   |   ratio >= 0.02
+|   |   |   |   |   ratio < 0.02 : G2 (3/0) [0/0]
+|   |   |   |   |   ratio >= 0.02 : G3 (4/2) [3/1]
+|   |   |   Max_Y >= 1.08 : G4 (21/6) [12/1]
+|   |   fingersAreas >= 20.03
+|   |   |   silhouette17 < 132.05
+|   |   |   |   silhouette13 < 81.74 : G4 (7/2) [5/3]
+|   |   |   |   silhouette13 >= 81.74
+|   |   |   |   |   silhouette3 < 106.7 : G5 (83/8) [33/5]
+|   |   |   |   |   silhouette3 >= 106.7 : G0 (8/5) [7/3]
+|   |   |   silhouette17 >= 132.05 : G3 (24/16) [9/7]
+
+Size of the tree : 85
+
+Time taken to build model: 0.53 seconds
+Time taken to test model on training data: 0.14 seconds
+
+=== Error on training data ===
+
+Correctly Classified Instances        1232               88      %
+Incorrectly Classified Instances       168               12      %
+Kappa statistic                          0.8667
+Mean absolute error                      0.0376
+Root mean squared error                  0.1371
+Relative absolute error                 20.8914 %
+Root relative squared error             45.7071 %
+Total Number of Instances             1400     
+
+
+=== Detailed Accuracy By Class ===
+
+                 TP Rate  FP Rate  Precision  Recall   F-Measure  MCC      ROC Area  PRC Area  Class
+                 0.986    0.002    0.979      0.986    0.982      0.980    0.999     0.979     G1
+                 0.914    0.017    0.853      0.914    0.883      0.870    0.990     0.935     G2
+                 0.900    0.034    0.746      0.900    0.816      0.797    0.986     0.841     G3
+                 0.850    0.015    0.862      0.850    0.856      0.840    0.988     0.885     G4
+                 0.857    0.013    0.882      0.857    0.870      0.855    0.987     0.854     G5
+                 0.821    0.013    0.871      0.821    0.846      0.829    0.984     0.873     G6
+                 0.836    0.006    0.944      0.836    0.886      0.877    0.982     0.878     G7
+                 0.843    0.007    0.929      0.843    0.884      0.873    0.984     0.901     G8
+                 0.950    0.010    0.917      0.950    0.933      0.926    0.998     0.980     G9
+                 0.843    0.016    0.855      0.843    0.849      0.832    0.974     0.853     G0
+Weighted Avg.    0.880    0.013    0.884      0.880    0.880      0.868    0.987     0.898     
+
+
+=== Confusion Matrix ===
+
+   a   b   c   d   e   f   g   h   i   j   <-- classified as
+ 138   1   1   0   0   0   0   0   0   0 |   a = G1
+   0 128   3   1   6   0   0   0   2   0 |   b = G2
+   3   6 126   1   0   0   0   0   0   4 |   c = G3
+   0   5   9 119   0   2   3   0   2   0 |   d = G4
+   0   2   4   4 120   6   0   0   2   2 |   e = G5
+   0   5   1   3   2 115   0   0   5   9 |   f = G6
+   0   1  14   4   0   0 117   3   1   0 |   g = G7
+   0   0   8   5   0   3   2 118   0   4 |   h = G8
+   0   1   0   0   1   0   0   4 133   1 |   i = G9
+   0   1   3   1   7   6   2   2   0 118 |   j = G0
+
+
+
+=== Stratified cross-validation ===
+
+Correctly Classified Instances        1067               76.2143 %
+Incorrectly Classified Instances       333               23.7857 %
+Kappa statistic                          0.7357
+Mean absolute error                      0.0616
+Root mean squared error                  0.1964
+Relative absolute error                 34.2096 %
+Root relative squared error             65.4652 %
+Total Number of Instances             1400     
+
+
+=== Detailed Accuracy By Class ===
+
+                 TP Rate  FP Rate  Precision  Recall   F-Measure  MCC      ROC Area  PRC Area  Class
+                 0.900    0.011    0.900      0.900    0.900      0.889    0.971     0.884     G1
+                 0.786    0.030    0.743      0.786    0.764      0.737    0.932     0.735     G2
+                 0.736    0.029    0.741      0.736    0.738      0.709    0.909     0.673     G3
+                 0.721    0.031    0.721      0.721    0.721      0.690    0.914     0.698     G4
+                 0.771    0.039    0.688      0.771    0.727      0.696    0.916     0.720     G5
+                 0.693    0.037    0.674      0.693    0.683      0.647    0.897     0.625     G6
+                 0.757    0.024    0.779      0.757    0.768      0.743    0.932     0.776     G7
+                 0.771    0.025    0.777      0.771    0.774      0.749    0.959     0.766     G8
+                 0.886    0.008    0.925      0.886    0.905      0.895    0.969     0.897     G9
+                 0.600    0.031    0.683      0.600    0.639      0.603    0.886     0.597     G0
+Weighted Avg.    0.762    0.026    0.763      0.762    0.762      0.736    0.929     0.737     
+
+
+=== Confusion Matrix ===
+
+   a   b   c   d   e   f   g   h   i   j   <-- classified as
+ 126   0   9   0   4   0   0   0   1   0 |   a = G1
+   3 110  10   2   6   4   1   0   3   1 |   b = G2
+   9   8 103   4   4   4   3   2   0   3 |   c = G3
+   0   5   3 101   6   9  10   4   1   1 |   d = G4
+   0  14   3   3 108   4   2   0   3   3 |   e = G5
+   1   4   1   5  12  97   1   1   2  16 |   f = G6
+   1   2   7  11   1   1 106   9   0   2 |   g = G7
+   0   0   1   9   1   5   6 108   0  10 |   h = G8
+   0   2   0   2   2   0   1   6 124   3 |   i = G9
+   0   3   2   3  13  20   6   9   0  84 |   j = G0
+
