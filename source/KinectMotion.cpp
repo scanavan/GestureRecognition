@@ -12,7 +12,6 @@
 
 KinectMotion::KinectMotion(std::string fdepth)
 {
-	//leap = new LeapData(fleap);
 	depth = cv::imread(fdepth, CV_LOAD_IMAGE_UNCHANGED);
 	//rgb = cv::imread(frgb, CV_LOAD_IMAGE_UNCHANGED);
 
@@ -24,9 +23,7 @@ KinectMotion::KinectMotion(std::string fdepth)
 	depth = updateImage(depth);
 	//depth = rotateImage(depth);
 	getHand(depth);
-	//createWindow(depth, "lol");
 	initData();
-	//otherDistContour(scaled_binary);
 	sil = silhouette(scaled_depth);
 	contour_dist = distContour(scaled_binary);
 	hull = hullAreas(scaled_depth);
@@ -39,7 +36,6 @@ KinectMotion::KinectMotion(std::string fdepth)
 
 void KinectMotion::initData()
 {
-	unscaled_contour = getContour(binarize(depth));
 	scaled_depth = scaleHand(depth);
 	scaled_binary = binarize(scaled_depth);
 
@@ -513,6 +509,7 @@ cv::Mat KinectMotion::getHand(cv::Mat image)
 {
 	int top = 0;
 	bool foundHand = false;
+	bool foundWrist = false;
 	int handToWrist = 0;
 	double numPixels = 0;
 	int max = 0;
@@ -551,10 +548,14 @@ cv::Mat KinectMotion::getHand(cv::Mat image)
 			}
 			if (i > top + 90 && tmp != 0 && numPixels <= tmp * thresholdRatio && tmp <= max * .78)
 			{
+				foundWrist = true;
 				break;
 			}
 			tmp = numPixels;
 			numPixels = 0;
+		}
+		if (foundWrist) {
+			break;
 		}
 	}
 
@@ -579,55 +580,6 @@ void KinectMotion::sortContourDist() {
 	for (int i = 0; i < SAMPLE_SIZE; i++) {
 		contour_dist[i] = tmp[i];
 	}
-}
-
-void KinectMotion::otherDistContour(cv::Mat image) {
-	std::vector<cv::Point> sampleContour;
-
-	for (int i = 0; i < unscaled_contour.size() - (int)(unscaled_contour.size() / 4); i++)
-	{
-		sampleContour.push_back(unscaled_contour[(int)(i * (float)(unscaled_contour.size()) / (unscaled_contour.size() - (int)(unscaled_contour.size() / 4)))]);
-	}
-
-	for (int i = 0; i < sampleContour.size(); i++) {
-		if (palm_center.y - sampleContour.at(i).y > 0) {
-			float temp = std::sqrt(std::pow(palm_center.x - sampleContour.at(i).x, 2) + std::pow(palm_center.y - sampleContour.at(i).y, 2));
-			reg_dist_contour.push_back(temp);
-		}
-	}
-}
-
-int KinectMotion::countFingers() {
-	float last_contour_dist;
-	bool goingUp = true;
-	int fingers = 0;
-	int numberOfIncreasing = 0;
-	std::vector<float> localMaxima{ 0 };
-	if (reg_dist_contour.size() > 0) {
-		last_contour_dist = reg_dist_contour[0];
-		for (int i = 0; i < reg_dist_contour.size(); i++) {
-			if (reg_dist_contour[i] < last_contour_dist && goingUp && numberOfIncreasing > 12) {
-				localMaxima.push_back(last_contour_dist);
-				numberOfIncreasing = 0;
-			}
-			if (reg_dist_contour[i] > last_contour_dist) {
-				goingUp = true;
-				numberOfIncreasing++;
-			}
-			else if (reg_dist_contour[i] < last_contour_dist) {
-				goingUp = false;
-				numberOfIncreasing = 0;
-			}
-			last_contour_dist = reg_dist_contour[i];
-		}
-		for (int i = 0; i < localMaxima.size(); i++) {
-			if (localMaxima[i] > 125 && fingers < 5) {
-				fingers++;
-			}
-		}
-	}
-
-	return fingers;
 }
 
 int mod(int a, int b)
