@@ -5,6 +5,7 @@
 #include "Point.h"
 #include "SampleListener.h"
 
+
 using namespace Leap;
 
 class RealTimeLeapData

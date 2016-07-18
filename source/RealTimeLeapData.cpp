@@ -1,4 +1,7 @@
 #include "RealTimeLeapData.h"
+#include <iostream>
+#include <Windows.h>
+#include <kinect.h>
 
 RealTimeLeapData::RealTimeLeapData() {
 	//empty constructor
