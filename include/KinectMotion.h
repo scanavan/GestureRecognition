@@ -30,6 +30,8 @@ public:
 	int * getOccNonz();
 	float * getOccAvg();
 	float * getHull();
+	float * getFingerAngle();
+	float * getFingerDist();
 	std::string getGesture();
 	void sortContourDist();
 private:
@@ -45,6 +47,8 @@ private:
 	int * occ_nonz;
 	float * occ_avg;
 	float * hull;
+	float * finger_angles;
+	float * finger_distances;
 	std::string gesture;
 	cv::Point palm_center;
 	std::vector<cv::Point> scaled_contour;
