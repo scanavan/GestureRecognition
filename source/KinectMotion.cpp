@@ -10,7 +10,7 @@
 #include <vector>
 #include <set>
 
-KinectMotion::KinectMotion(std::string fleap, std::string fdepth)
+KinectMotion::KinectMotion(std::string fdepth)
 {
 	//leap = new LeapData(fleap);
 	depth = cv::imread(fdepth, CV_LOAD_IMAGE_UNCHANGED);
