@@ -764,3 +764,54 @@ void KinectMotion::fingers()
 
 	return;
 }
+
+cv::Point KinectMotion::palmCenter2(cv::Mat image, int thresh) 
+{
+
+	cv::Mat new_image = image.clone();
+	cv::GaussianBlur(image, new_image, cv::Size(0, 0), thresh, thresh);
+	
+	std::vector<cv::Point> possible_palm_centers;
+
+	int max = 0;
+	cv::Point center;
+	for (int i = 0; i < new_image.rows; ++i)
+	{
+		for (int j = 0; j < new_image.cols; ++j)
+		{
+			if (static_cast<int>(new_image.at<uchar>(i, j)) > max)
+			{
+				max = static_cast<int>(new_image.at<uchar>(i, j));
+				possible_palm_centers.clear();
+				possible_palm_centers.push_back(cv::Point(j, i));
+			}
+			else if (static_cast<int>(new_image.at<uchar>(i, j)) == max)
+			{
+				possible_palm_centers.push_back(cv::Point(j, i));
+			}
+		}
+	}
+
+	float max_min = 0;
+	int center_index;
+	for (int i = 0; i < possible_palm_centers.size(); ++i)
+	{
+		float current_min = 8000000;
+		for (int j = 0; j < scaled_contour.size(); j += 5)
+		{
+			float temp = std::sqrt(std::pow(possible_palm_centers[i].x - scaled_contour[j].x, 2) + std::pow(possible_palm_centers[i].y - scaled_contour[j].y, 2));
+			if (temp < current_min)
+			{
+				current_min = temp;
+				if (current_min < max_min) continue;
+			}
+		}
+		if (current_min > max_min)
+		{
+			max_min = current_min;
+			center_index = i;
+		}
+	}
+
+	return center;
+}

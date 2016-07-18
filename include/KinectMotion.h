@@ -64,6 +64,7 @@ private:
 	std::vector<cv::Point> getContour(cv::Mat image);
 	std::vector<cv::Point> getSortedContour(cv::Mat image);
 	cv::Mat updateImage(cv::Mat image);
+	cv::Point palmCenter2(cv::Mat image, int thresh);
 };
 
 void createWindow(cv::Mat image, std::string imageName);
