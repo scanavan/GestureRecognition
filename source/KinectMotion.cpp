@@ -24,6 +24,7 @@ KinectMotion::KinectMotion(std::string fdepth)
 	depth = updateImage(depth);
 	//depth = rotateImage(depth);
 	getHand(depth);
+	//createWindow(depth, "lol");
 	initData();
 	//otherDistContour(scaled_binary);
 	sil = silhouette(scaled_depth);
@@ -549,7 +550,7 @@ cv::Mat KinectMotion::getHand(cv::Mat image)
 			{
 				max = numPixels;
 			}
-			if (i > top + 50 && tmp != 0 && numPixels <= tmp * thresholdRatio && tmp <= max*.75)
+			if (i > top + 100 && tmp != 0 && numPixels <= tmp * thresholdRatio && tmp <= max * .78)
 			{
 				atWrist = true;
 			}
