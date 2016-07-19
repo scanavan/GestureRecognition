@@ -47,6 +47,8 @@ public:
 	std::string getHull(KinectMotion depth);
 	std::string getOccNonz(KinectMotion depth);
 	std::string getOccAvg(KinectMotion depth);
+	std::string getFingerAngle(KinectMotion depth);
+	std::string getFingerDist(KinectMotion depth);
 	std::string getGesture(KinectMotion kinect);
 
 };

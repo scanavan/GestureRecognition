@@ -376,12 +376,22 @@ ARFFWriter::ARFFWriter(std::string path, std::vector<KinectMotion> data)
 		"@ATTRIBUTE cellOccupancyAvg62  NUMERIC\n" <<
 		"@ATTRIBUTE cellOccupancyAvg63  NUMERIC\n" <<
 		"@ATTRIBUTE cellOccupancyAvg64  NUMERIC\n" <<
+		"@ATTRIBUTE fingerAngle1  NUMERIC\n" <<
+		"@ATTRIBUTE fingerAngle2  NUMERIC\n" <<
+		"@ATTRIBUTE fingerAngle3  NUMERIC\n" <<
+		"@ATTRIBUTE fingerAngle4  NUMERIC\n" <<
+		"@ATTRIBUTE fingerAngle5  NUMERIC\n" <<
+		"@ATTRIBUTE fingerDist1  NUMERIC\n" <<
+		"@ATTRIBUTE fingerDist2  NUMERIC\n" <<
+		"@ATTRIBUTE fingerDist3  NUMERIC\n" <<
+		"@ATTRIBUTE fingerDist4  NUMERIC\n" <<
+		"@ATTRIBUTE fingerDist5  NUMERIC\n" <<
 		"@ATTRIBUTE class { G1, G2, G3, G4, G5, G6, G7, G8, G9, G0 }\n" <<
 		"\n@DATA\n";
 
 	// goes through the data LeapData vector and gets the values for the arff file
 	for (int i = 0; i < data.size(); i++) {
-		file << getSil(data[i]) << getContourDist(data[i]) << getHull(data[i]) << getOccNonz(data[i]) << getOccAvg(data[i]) << getGesture(data[i]) << "\n";
+		file << getSil(data[i]) << getContourDist(data[i]) << getHull(data[i]) << getOccNonz(data[i]) << getOccAvg(data[i]) << getFingerAngle(data[i]) << getFingerDist(data[i]) << getGesture(data[i]) << "\n";
 	}
 
 	file.close();
@@ -613,6 +623,28 @@ std::string ARFFWriter::getOccAvg(KinectMotion depth)
 	std::string returnVal = "";
 	for (int i = 0; i < 64; i++) {
 		returnVal += std::to_string(avgVals[i]);
+		returnVal += ", ";
+	}
+	return returnVal;
+}
+
+std::string ARFFWriter::getFingerAngle(KinectMotion depth)
+{
+	float * angVals = depth.getFingerAngle();
+	std::string returnVal = "";
+	for (int i = 0; i < 5; i++) {
+		returnVal += std::to_string(angVals[i]);
+		returnVal += ", ";
+	}
+	return returnVal;
+}
+
+std::string ARFFWriter::getFingerDist(KinectMotion depth)
+{
+	float * distVals = depth.getFingerDist();
+	std::string returnVal = "";
+	for (int i = 0; i < 5; i++) {
+		returnVal += std::to_string(distVals[i]);
 		returnVal += ", ";
 	}
 	return returnVal;
