@@ -23,7 +23,7 @@ LeapData::LeapData(std::string path) {
 		setNewScaleFactor();
 		setOldScaleFactor();
 		//gets the gesture based on the path
-		int index = path.find_last_of("/");
+		auto index = path.find_last_of("/");
 		char gestureNumber = path.at(index - 1);
 		gesture = "G";
 		gesture.push_back(gestureNumber);
@@ -141,9 +141,10 @@ void LeapData::setMaximums()
 void LeapData::setFingerAreas()
 {
 	float total;
-	float a, b, c, first, last;
+	float a, b, c;
+	size_t first, last;
 
-	for (int i = 0; i < fingertipPosition.size(); i++)
+	for (auto i = 0; i < fingertipPosition.size(); i++)
 	{
 		if ((fingertipPosition[i].getX() != 0) && (fingertipPosition[i].getY() != 0) && (fingertipPosition[i].getZ() != 0))
 		{
@@ -151,7 +152,7 @@ void LeapData::setFingerAreas()
 			break;
 		}
 	}
-	for (int i = fingertipPosition.size() - 1; i >= 0; i--)
+	for (auto i = fingertipPosition.size() - 1; i >= 0; i--)
 	{
 		if ((fingertipPosition[i].getX() != 0) && (fingertipPosition[i].getY() != 0) && (fingertipPosition[i].getZ() != 0))
 		{
@@ -181,12 +182,10 @@ void LeapData::setRatio()
 	//fingertipDistRefined
 	float maxX = 0;
 	float maxY = 0;
-	int leftFingerAddr;
-	int rightFingerAddr;
 	Point right;
 	Point left;
 	float tmp;
-	for (int i = 0; i < extendedTipPosition.size(); i++)
+	for (auto i = 0; i < extendedTipPosition.size(); i++)
 		{
 			if ((extendedTipPosition[i].getX() != 0) && (extendedTipPosition[i].getY() != 0) && (extendedTipPosition[i].getZ() != 0))
 			{
@@ -203,21 +202,19 @@ void LeapData::setRatio()
 			}
 		}
 	
-	for (int i = 0; i < extendedTipPosition.size(); i++)
+	for (auto i = 0; i < extendedTipPosition.size(); i++)
 	{
 		if ((extendedTipPosition[i].getX() != 0)&& (extendedTipPosition[i].getY() != 0)&& (extendedTipPosition[i].getZ() != 0))
 		{
-			leftFingerAddr = i;
-			left = extendedTipPosition[leftFingerAddr];
+			left = extendedTipPosition[i];
 			break;
 		}
 	}
-	for (int i= extendedTipPosition.size()-1; i >= 0; i--)
+	for (auto i= extendedTipPosition.size()-1; i >= 0; i--)
 	{
 		if ((extendedTipPosition[i].getX() != 0) && (extendedTipPosition[i].getY() != 0) && (extendedTipPosition[i].getZ() != 0))
 		{
-			rightFingerAddr = i;
-			right = extendedTipPosition[rightFingerAddr];
+			right = extendedTipPosition[i];
 			break;
 		}
 	}
@@ -371,7 +368,7 @@ void LeapData::parse(int lineNum, std::string line) {
 	std::vector<Point> pointVect;
 	switch (lineNum) {
 	case 0:
-		numFingers = vect[0];
+		numFingers = static_cast<int>(vect[0]);
 		break;
 	case 1:
 		fingertipDist = vect;
