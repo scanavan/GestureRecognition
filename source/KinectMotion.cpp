@@ -238,7 +238,6 @@ float * KinectMotion::distContour(cv::Mat image)
 	std::vector<cv::Point> edges = getSortedContour(image);
 	std::vector<cv::Point> sampleContour;
 	float * retVal = new float[SAMPLE_SIZE] {0};
-	float * new_ret_val = new float[SAMPLE_SIZE]; int max_index;
 
 	for (int i = 0; i < SAMPLE_SIZE; i++)
 	{
@@ -253,7 +252,6 @@ float * KinectMotion::distContour(cv::Mat image)
 		if (temp > max)
 		{
 			max = temp;
-			max_index = i;
 		}
 	}
 
@@ -265,13 +263,7 @@ float * KinectMotion::distContour(cv::Mat image)
 		}
 	}
 
-	for (int j = 0; j < SAMPLE_SIZE; j++)
-	{
-		new_ret_val[j] = retVal[j + max_index % SAMPLE_SIZE];
-	}
-
-
-	return new_ret_val;
+	return retVal;
 }
 
 cv::Rect KinectMotion::getRect(cv::Mat image)
