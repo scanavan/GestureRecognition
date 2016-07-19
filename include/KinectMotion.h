@@ -55,6 +55,7 @@ private:
 	void initData();
 	void fingers();
 	std::vector<cv::Point> possible_palm_centers;
+	void test();
 
 	cv::Rect getRect(cv::Mat image);
 	float * silhouette(cv::Mat image);

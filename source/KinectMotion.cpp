@@ -31,8 +31,81 @@ KinectMotion::KinectMotion(std::string fdepth)
 	occ_avg = occ_data.avgD;
 	occ_nonz = occ_data.nonZ;
 	fingers();
+	test();
 }
 
+void KinectMotion::test()
+{
+	cv::Mat test_image = cv::Mat::zeros(scaled_binary.size(),CV_8UC3);
+	for (int i = 0; i < scaled_binary.rows; ++i)
+	{
+		for (int j = 0; j < scaled_binary.cols; ++j)
+		{
+			if (scaled_binary.at<uchar>(i,j) != 0) test_image.at<cv::Vec3b>(i, j) = cv::Vec3b(255, 255, 255);
+		}
+	}
+	test_image.at<cv::Vec3b>(palm_center.y, palm_center.x) = cv::Vec3b(0, 0, 255);
+
+	int R;  int num_circle_points = 0; int num_non_hand_points = 0;
+	cv::Mat circle = cv::Mat::zeros(scaled_binary.size(), CV_8U);
+	for (R = 1; R < 10000; R++)
+	{
+		int R2 = R * R;
+		int dx; int dy; int dist;
+		for (int i = palm_center.y - R; i < palm_center.y + R && i < scaled_binary.rows; ++i)
+		{
+			for (int j = palm_center.x - R; j < palm_center.x + R && j < scaled_binary.cols; ++j)
+			{
+				if (circle.at<uchar>(i, j) != 0) continue;
+				dx = abs(j - palm_center.x); dy = abs(i - palm_center.y);
+				if (dx > R) continue;
+				if (dy > R) continue;
+				if (dx + dy <= R)
+				{
+					num_circle_points++;
+					if (scaled_binary.at<uchar>(i, j) == 0) num_non_hand_points++;
+					circle.at<uchar>(i, j) = 255;
+					continue;
+				}
+				dist = (dx * dx) + (dy * dy);
+				if (dist <= R2) 
+				{
+					num_circle_points++;
+					if (scaled_binary.at<uchar>(i, j) == 0) num_non_hand_points++;
+					circle.at<uchar>(i, j) = 255;
+					continue;
+				}
+			}
+		}
+		if ((float)(num_non_hand_points) / (float)num_circle_points > 0.05) break;
+	}
+
+	R = R - 1;
+	int R2 = R * R;
+	int dx; int dy; int dist;
+	for (int i = palm_center.y - R; i < palm_center.y + R && i < scaled_binary.rows; ++i)
+	{
+		for (int j = palm_center.x - R; j < palm_center.x + R && j < scaled_binary.cols; ++j)
+		{
+			dx = abs(j - palm_center.x); dy = abs(i - palm_center.y);
+			if (dx > R) continue;
+			if (dy > R) continue;
+			if (dx + dy <= R)
+			{
+				test_image.at<cv::Vec3b>(i, j) = cv::Vec3b(0, 0, 255);
+				continue;
+			}
+			dist = (dx * dx) + (dy * dy);
+			if (dist <= R2) 
+			{
+				test_image.at<cv::Vec3b>(i, j) = cv::Vec3b(0, 0, 255);
+				continue;
+			}
+		}
+	}
+
+	//createWindow(test_image, "Test Image");
+}
 
 void KinectMotion::initData()
 {
