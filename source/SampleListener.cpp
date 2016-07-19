@@ -57,7 +57,7 @@ void SampleListener::onFrame(const Controller& controller) {
 			const Finger finger = *fl;
 			types.push_back(finger.type());
 		}
-		numFingers = types.size();
+		numFingers = static_cast<int>(types.size());
 		for (int i = 0; i < types.size(); ++i)
 		{
 			if (types[i] == Finger::TYPE_THUMB)

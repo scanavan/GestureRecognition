@@ -2,7 +2,7 @@
 
 
 
-int RealTime::depth(std::string path, int imageNum)
+int RealTime::depth()
 {
 	cv::setUseOptimized(true);
 
@@ -79,7 +79,12 @@ int RealTime::depth(std::string path, int imageNum)
 		cv::imshow("Depth", inverted);
 		cv::waitKey(30);
 		if (keyPressedDepth) {
-			cv::imwrite(path + std::to_string(imageNum) + "_depth.png", inverted);
+			if (gestureNum < 10) {
+				cv::imwrite(path + '0' + std::to_string(gestureNum) + '/' + std::to_string(imageNum) + "_depth.png", inverted);
+			}
+			else {
+				cv::imwrite(path + std::to_string(gestureNum) + '/' + std::to_string(imageNum) + "_depth.png", inverted);
+			}
 			imageNum++;
 			keyPressedDepth = false;
 		}
@@ -98,7 +103,7 @@ int RealTime::depth(std::string path, int imageNum)
 	return 0;
 }
 
-int RealTime::color(std::string path, int imageNum)
+int RealTime::color()
 {
 
 	
@@ -180,8 +185,12 @@ int RealTime::color(std::string path, int imageNum)
 		cv::imshow("Color", colorMat);
 		cv::waitKey(30);
 		if (keyPressedColor) {
-			cv::imwrite(path + std::to_string(imageNum) + "_color.png", colorMat);
-			imageNum++;
+			if (gestureNum < 10) {
+				cv::imwrite(path + '0' + std::to_string(gestureNum) + '/' + std::to_string(imageNum) + "_color.png", colorMat);
+			}
+			else {
+				cv::imwrite(path + std::to_string(gestureNum) + '/' + std::to_string(imageNum) + "_color.png", colorMat);
+			}
 			keyPressedColor = false;
 		}
 	}
@@ -201,7 +210,7 @@ int RealTime::color(std::string path, int imageNum)
 
 }
 
-int RealTime::leapInfo(std::string path, int imageNum) {
+int RealTime::leapInfo() {
 	//SampleListener listener;
 	Controller controller;
 	//controller.addListener(listener);
@@ -279,6 +288,12 @@ int RealTime::leapInfo(std::string path, int imageNum) {
 		if (keyPressedLeap) {
 			//write the file
 			std::ofstream file;
+			if (gestureNum < 10) {
+				file.open(path + '0' + std::to_string(gestureNum) + '/' + std::to_string(imageNum) + "_leap_motion.csv");
+			}
+			else {
+				file.open(path + std::to_string(gestureNum) + '/' + std::to_string(imageNum) + "_leap_motion.csv");
+			}
 			file.open(path + std::to_string(imageNum) + "_leap_motion.csv");
 			file << "extendedFingers";
 			for (int i = 0; i < extendedFingers.size(); i++) {
@@ -302,7 +317,6 @@ int RealTime::leapInfo(std::string path, int imageNum) {
 			file << "\nnumFingers," + std::to_string(numFingers);
 			file.close();
 			keyPressedLeap = false;
-			imageNum++;
 		}
 		fingerDirections.clear();
 		tipPositions.clear();
@@ -320,4 +334,14 @@ void RealTime::setKeyPressed(bool val) {
 
 void RealTime::endProgram() {
 	counter = false;
+}
+
+void RealTime::setPath(std::string setVal) {
+	path = setVal;
+}
+
+void RealTime::changeGesture() {
+	gestureNum++;
+	imageNum = 1;
+	
 }
