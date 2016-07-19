@@ -14,16 +14,21 @@
 
 class RealTime {
 public:
-	int color(std::string path, int imageNum);
-	int depth(std::string path, int imageNum);
-	int leapInfo(std::string path, int imageNum);
+	int color();
+	int depth();
+	int leapInfo();
 	void setKeyPressed(bool val);
 	void endProgram();
+	void setPath(std::string path);
+	void changeGesture();
 private:
 	std::atomic<bool> keyPressedDepth = false;
 	std::atomic<bool> keyPressedColor = false;
 	std::atomic<bool> keyPressedLeap = false;
 	std::atomic<bool> counter = true;
+	std::string path;
+	std::atomic<int> gestureNum = 1;
+	std::atomic<int> imageNum = 1;
 	/*IKinectSensor* pSensor;
 	IDepthFrameSource* pDepthSource;
 	IColorFrameSource* pColorSource;
