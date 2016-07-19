@@ -562,7 +562,7 @@ cv::Mat KinectMotion::getHand(cv::Mat image)
 			{
 				max = numPixels;
 			}
-			if (i > top + 90 && tmp != 0 && numPixels <= tmp * thresholdRatio && tmp <= max * .85)
+			if (i > top + 115 && tmp != 0 && numPixels <= tmp * thresholdRatio && tmp <= max * .95)
 			{
 				foundWrist = true;
 				break;
