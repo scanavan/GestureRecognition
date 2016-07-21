@@ -231,62 +231,62 @@ int RealTime::leapInfo() {
 	while (counter) {
 		const Frame frame = controller.frame();
 		HandList hands = frame.hands();
-		for (HandList::const_iterator hl = hands.begin(); hl != hands.end(); ++hl) {
-			// Get the first hand
-			const Hand hand = *hl;
-			// Get the hand's normal vector and direction
-			const Vector normal = hand.palmNormal();
-			const Vector direction = hand.direction();
-			const Vector position = hand.palmPosition();
-
-			palmNormal = Point(normal.x, normal.y, normal.z);
-			handDirection = Point(direction.x, direction.y, direction.z);
-			palmPosition = Point(position.x, position.y, position.z);
-
-			// Get fingers
-			const FingerList fingers = hand.fingers();
-			const FingerList extended = fingers.extended();
-
-			std::vector<Finger::Type> types;
-			for (FingerList::const_iterator fl = extended.begin(); fl != extended.end(); ++fl) {
-				const Finger finger = *fl;
-				types.push_back(finger.type());
-				const Bone distal = finger.bone(Bone::TYPE_DISTAL);
-				const Vector tip = distal.nextJoint();
-				ExtendedTipPositions.push_back(Point(tip.x, tip.y, tip.z));
-			}
-			for (int i = ExtendedTipPositions.size(); i < 5; ++i)
-			{
-				ExtendedTipPositions.push_back(Point(0.000000, 0.000000, 0.000000));
-			}
-			numFingers = types.size();
-			for (int i = 0; i < types.size(); ++i)
-			{
-				if (types[i] == Finger::TYPE_THUMB)
-					extendedFingers[0] = 1;
-				if (types[i] == Finger::TYPE_INDEX)
-					extendedFingers[1] = 1;
-				if (types[i] == Finger::TYPE_MIDDLE)
-					extendedFingers[2] = 1;
-				if (types[i] == Finger::TYPE_RING)
-					extendedFingers[3] = 1;
-				if (types[i] == Finger::TYPE_PINKY)
-					extendedFingers[4] = 1;
-			}
-
-			for (FingerList::const_iterator fl = fingers.begin(); fl != fingers.end(); ++fl) {
-				const Finger finger = *fl;
-				const Vector direction = finger.direction();
-				fingerDirections.push_back(Point(direction.x, direction.y, direction.z));
-				const Bone distal = finger.bone(Bone::TYPE_DISTAL);
-				const Vector tip = distal.nextJoint();
-				tipPositions.push_back(Point(tip.x, tip.y, tip.z));
-			}
-		}
-
 		cv::waitKey(30);
 		if (keyPressedLeap) {
+			for (HandList::const_iterator hl = hands.begin(); hl != hands.end(); ++hl) {
+				// Get the first hand
+				const Hand hand = *hl;
+				// Get the hand's normal vector and direction
+				const Vector normal = hand.palmNormal();
+				const Vector direction = hand.direction();
+				const Vector position = hand.palmPosition();
+
+				palmNormal = Point(normal.x, normal.y, normal.z);
+				handDirection = Point(direction.x, direction.y, direction.z);
+				palmPosition = Point(position.x, position.y, position.z);
+
+				// Get fingers
+				const FingerList fingers = hand.fingers();
+				const FingerList extended = fingers.extended();
+
+				std::vector<Finger::Type> types;
+				for (FingerList::const_iterator fl = extended.begin(); fl != extended.end(); ++fl) {
+					const Finger finger = *fl;
+					types.push_back(finger.type());
+					const Bone distal = finger.bone(Bone::TYPE_DISTAL);
+					const Vector tip = distal.nextJoint();
+					ExtendedTipPositions.push_back(Point(tip.x, tip.y, tip.z));
+				}
+				for (int i = ExtendedTipPositions.size(); i < 5; ++i)
+				{
+					ExtendedTipPositions.push_back(Point(0.000000, 0.000000, 0.000000));
+				}
+				numFingers = types.size();
+				for (int i = 0; i < types.size(); ++i)
+				{
+					if (types[i] == Finger::TYPE_THUMB)
+						extendedFingers[0] = 1;
+					if (types[i] == Finger::TYPE_INDEX)
+						extendedFingers[1] = 1;
+					if (types[i] == Finger::TYPE_MIDDLE)
+						extendedFingers[2] = 1;
+					if (types[i] == Finger::TYPE_RING)
+						extendedFingers[3] = 1;
+					if (types[i] == Finger::TYPE_PINKY)
+						extendedFingers[4] = 1;
+				}
+
+				for (FingerList::const_iterator fl = fingers.begin(); fl != fingers.end(); ++fl) {
+					const Finger finger = *fl;
+					const Vector direction = finger.direction();
+					fingerDirections.push_back(Point(direction.x, direction.y, direction.z));
+					const Bone distal = finger.bone(Bone::TYPE_DISTAL);
+					const Vector tip = distal.nextJoint();
+					tipPositions.push_back(Point(tip.x, tip.y, tip.z));
+				}
+			}
 			//write the file
+
 			std::ofstream file;
 			if (gestureNum < 10) {
 				file.open(path + '0' + std::to_string(gestureNum) + '/' + std::to_string(imageNum) + "_leap_motion.csv");
@@ -317,10 +317,11 @@ int RealTime::leapInfo() {
 			file << "\nnumFingers," + std::to_string(numFingers);
 			file.close();
 			keyPressedLeap = false;
+			fingerDirections.clear();
+			tipPositions.clear();
+			ExtendedTipPositions.clear();
 		}
-		fingerDirections.clear();
-		tipPositions.clear();
-		ExtendedTipPositions.clear();
+		
 	}
 	
 
