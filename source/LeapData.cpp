@@ -96,6 +96,56 @@ LeapData::LeapData(RealTimeLeapData leapData) {
 	setRatio();
 	setMaximums();
 }
+
+void LeapData::RealTimeLeap(std::string path) {
+	std::ifstream ifs;
+	std::string line;
+	ifs.open(path, std::ifstream::in);
+
+	if (ifs.is_open()) {
+		int counter = 0;
+		extendedFingers = { 0,0,0,0,0 };
+		while (!ifs.eof()) {
+			std::getline(ifs, line);
+			parseRealTime(counter, line);
+			counter++;
+		}
+		std::cout << numFingers;
+		setFingertipDistance();
+		setNewScaleFactor();
+		
+		//gets the gesture based on the path
+		int index = path.find_last_of("/");
+		gesture = path.substr(index - 3, 3);
+		
+		setNewFingertipDist();
+		
+		//newFingertipDistRefined = fingertipDist;
+		projectionPoints = getProjection();
+		setFingertipAngles();
+		setRatio();
+		setMaximums();
+
+		setFingerAreas();
+	}
+	else {
+		std::cout << "bad file" << std::endl;
+	}
+	ifs.close();
+}
+
+void LeapData::setFingertipDistance() {
+	for (int i = 0; i < 5; i++) {
+		if (i < numFingers) {
+			fingertipDist.push_back(palmPosition.getMagnitude(fingertipPosition[i]));
+		}
+		else {
+			fingertipDist.push_back(0.f);
+		}
+		
+	}
+}
+
 void LeapData::setMaximums()
 {
 	float tmp_X=0;
@@ -366,6 +416,54 @@ std::vector<Point> LeapData::getProjection() {
 }
 
 // parse all the attributes from CSV file
+void LeapData::parseRealTime(int lineNum, std::string line) {
+	std::vector<float> vect = splitString(line);
+	std::vector<Point> pointVect;
+	switch (lineNum) {
+	case 0:
+		extendedFingers[0] = vect[0];
+		extendedFingers[1] = vect[1];
+		extendedFingers[2] = vect[2];
+		extendedFingers[3] = vect[3];
+		extendedFingers[4] = vect[4];
+	case 1:
+		for (int i = 0; i < 15; i = i +3) {
+			pointVect.push_back(Point(vect[i], vect[i + 1], vect[i + 2]));
+		}
+		fingerDirection = pointVect;
+		break;
+	case 2:
+		for (int i = 0; i < 15; i = i + 3) {
+			pointVect.push_back(Point(vect[i], vect[i + 1], vect[i + 2]));
+		}
+		fingertipPosition = pointVect;
+		break;
+	case 3:
+		for (int i = 0; i < 15; i = i + 3) {
+			pointVect.push_back(Point(vect[i], vect[i + 1], vect[i + 2]));
+		}
+		extendedTipPosition = pointVect;
+		break;
+	case 4:
+		handDirection = Point(vect[0], vect[1], vect[2]);
+		break;
+	case 5:
+		palmNormal = Point(vect[0], vect[1], vect[2]);
+		break;
+	case 6:
+		palmPosition = Point(vect[0], vect[1], vect[2]);
+		break;
+	case 7:
+		numFingers = vect[0];
+		break;
+	default:
+		break;
+	}
+
+}
+
+
+// parse all the attributes from CSV file
 void LeapData::parse(int lineNum, std::string line) {
 	std::vector<float> vect = splitString(line);
 	std::vector<Point> pointVect;
@@ -620,7 +718,6 @@ float LeapData::getRotationProbability() {
 float LeapData::getScaleFactor() {
 	return scaleFactor;
 }
-
 float LeapData::getScaleProbability() {
 	return scaleProbability;
 }
@@ -645,11 +742,9 @@ std::vector<Point> LeapData::getProjectionPoints() {
 std::vector<float> LeapData::getFingertipElevation() {
 	return fingertipElevation;
 }
-
 std::string LeapData::getGesture() {
 	return gesture;
 }
-
 std::vector<int> LeapData::getExtendedFingers() {
 	return extendedFingers;
 }
@@ -666,4 +761,23 @@ float LeapData::getMax_X()
 float LeapData::getMax_Y()
 {
 	return max_Y;
+}
+
+void LeapData::clearAll() {
+	fingertipDist.clear();
+	fingertipDistRefined.clear();
+	fingertipInterDist.clear();
+	fingertipPosition.clear();
+	palmVelocity.clear();
+	rotationAxis.clear();
+	rotationMatrix.clear();
+	translation.clear();
+	newFingertipDistRefined.clear();
+	fingertipAngles.clear();
+	projectionPoints.clear();
+	fingertipElevation.clear();
+	extendedFingers.clear();
+	fingerDirections.clear();
+	extendedTipPosition.clear();
+	fingerDirection.clear();
 }
