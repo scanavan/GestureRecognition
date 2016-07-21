@@ -1,5 +1,6 @@
 #include <iostream>
 #include "KinectMotion.h"
+#include "persistence1d.h"
 #include <opencv\cv.h>
 #include "LeapData.h"
 #include <opencv2/core/core.hpp>
@@ -9,6 +10,8 @@
 #include "filenames.h" 
 #include <vector>
 #include <set>
+
+using namespace p1d;
 
 KinectMotion::KinectMotion(std::string fdepth)
 {
@@ -31,10 +34,13 @@ KinectMotion::KinectMotion(std::string fdepth)
 	occ_avg = occ_data.avgD;
 	occ_nonz = occ_data.nonZ;
 	fingers();
-	test();
+	//palmCircle();
+	//persistenceFingers();
+
+	//createWindow(scaled_binary, "Scaled Binary");
 }
 
-void KinectMotion::test()
+void KinectMotion::palmCircle()
 {
 	cv::Mat test_image = cv::Mat::zeros(scaled_binary.size(),CV_8UC3);
 	for (int i = 0; i < scaled_binary.rows; ++i)
@@ -105,6 +111,53 @@ void KinectMotion::test()
 	}
 
 	//createWindow(test_image, "Test Image");
+}
+
+void KinectMotion::persistenceFingers() 
+{
+
+	cv::Mat new_image(scaled_binary.size(), CV_8U);
+	cv::GaussianBlur(scaled_binary, new_image, cv::Size(0, 0), 3, 3);
+	cv::Mat binary_image = binarize(new_image);
+	cv::cvtColor(binary_image, new_image, CV_GRAY2RGB);
+
+	std::vector<float> distances;
+	for (int i = 0; i < scaled_contour.size(); ++i)
+	{
+		distances.push_back(std::pow(palm_center.x - scaled_contour[i].x, 2) + std::pow(palm_center.y - scaled_contour[i].y, 2));
+	}
+
+	Persistence1D p;
+	p.RunPersistence(distances);
+	std::vector< TPairedExtrema > Extrema;
+	p.GetPairedExtrema(Extrema, 1500);
+
+	//std::vector<int> local_extrema;
+	//bool going_up = false;
+	//if (distances[0] - distances[distances.size()] > 0) going_up = true;
+	//for (int i = 1; i < distances.size(); ++i)
+	//{
+	//	if (distances[i] - distances[i - 1] > 0 && !going_up)
+	//	{
+	//		local_extrema.push_back(i - 1);
+	//		going_up = true;
+	//	}
+	//	else if (distances[i] - distances[i - 1] < 0 && going_up)
+	//	{
+	//		local_extrema.push_back(i - 1);
+	//		going_up = false;
+	//	}
+	//}
+
+	int * finger_tips = new int[5];
+	for (int i = 0; i < Extrema.size(); ++i)
+	{
+		new_image.at<cv::Vec3b>(scaled_contour[Extrema[i].MinIndex]) = cv::Vec3b(0, 0, 255);
+		new_image.at<cv::Vec3b>(scaled_contour[Extrema[i].MaxIndex]) = cv::Vec3b(255, 0, 0);
+	}
+
+	createWindow(new_image, "fingers");
+
 }
 
 void KinectMotion::initData()
@@ -435,6 +488,27 @@ float * KinectMotion::silhouette(cv::Mat image)
 		else avgs[i] = sum / bins[i].size();
 	}
 
+	//cv::Mat new_image = cv::Mat::zeros(scaled_binary.size(),CV_8UC3); 
+	//cv::cvtColor(scaled_binary, new_image, CV_GRAY2RGB);
+	//cv::line(new_image, cv::Point(0, 0), cv::Point(image.rows, image.cols), cv::Scalar(255, 255, 0),2);
+	//cv::line(new_image, cv::Point(image.rows, 0), cv::Point(0, image.cols), cv::Scalar(255, 255, 0),2);
+	//cv::line(new_image, cv::Point(image.rows / 2, 0), cv::Point(image.rows / 2, image.cols), cv::Scalar(255, 255, 0),2);
+	//cv::line(new_image, cv::Point(0, image.cols / 2), cv::Point(image.rows, image.cols / 2), cv::Scalar(255, 255, 0),2);
+	//cv::line(new_image, cv::Point(339,0), cv::Point(141,480), cv::Scalar(255, 255, 0),2);
+	//cv::line(new_image, cv::Point(141,0), cv::Point(339,480), cv::Scalar(255, 255, 0),2);
+	//cv::line(new_image, cv::Point(0,339), cv::Point(480,141), cv::Scalar(255, 255, 0),2);
+	//cv::line(new_image, cv::Point(0, 141), cv::Point(480,339), cv::Scalar(255, 255, 0),2);
+	//cv::line(new_image, cv::Point(288,0), cv::Point(192,480), cv::Scalar(255, 255, 0),2);
+	//cv::line(new_image, cv::Point(192,0), cv::Point(288,480), cv::Scalar(255, 255, 0),2);
+	//cv::line(new_image, cv::Point(0,288), cv::Point(480,192), cv::Scalar(255, 255, 0),2);
+	//cv::line(new_image, cv::Point(0, 192), cv::Point(480,288), cv::Scalar(255, 255, 0),2);
+	//cv::line(new_image, cv::Point(80, 0), cv::Point(400,480), cv::Scalar(255, 255, 0),2);
+	//cv::line(new_image, cv::Point(0, 80), cv::Point(480,400), cv::Scalar(255, 255, 0),2);
+	//cv::line(new_image, cv::Point(80, 480), cv::Point(400,0), cv::Scalar(255, 255, 0),2);
+	//cv::line(new_image, cv::Point(480, 80), cv::Point(0,400), cv::Scalar(255, 255, 0),2);
+	//cv::imwrite("C:/SRI 2016/silhouette.jpg", new_image);
+	//createWindow(new_image, "b");
+
 	return avgs;
 }
 
@@ -486,7 +560,9 @@ float * KinectMotion::hullAreas(cv::Mat image)
 	std::vector<float> angles;
 	for (int i = 0; i < thresholded_hull_contours.size(); ++i)
 	{
-		//cv::drawContours(new_image, thresholded_hull_contours, i, cv::Scalar(i * 255 / thresholded_hull_contours.size(), 0, 255));
+		//cv::drawContours(new_image, thresholded_hull_contours, i, cv::Scalar(i * 255 / thresholded_hull_contours.size(), i * 255 / thresholded_hull_contours.size(), 255),CV_FILLED);
+		//cv::Point seed = cv::Point(thresholded_hull_contours[i][3].x, thresholded_hull_contours[i][0].y + 1);
+		//floodFill(new_image, seed, cv::Scalar(i * 255 / thresholded_hull_contours.size(),0,255));
 		cv::Moments m = moments(thresholded_hull_contours[i]);
 		cv::Point centroid = cv::Point((int)(m.m10 / m.m00), (int)(m.m01 / m.m00));
 		angles.push_back(static_cast<float>(atan2(palm_center.y - centroid.y, centroid.x - palm_center.x)));
@@ -499,14 +575,24 @@ float * KinectMotion::hullAreas(cv::Mat image)
 		for (int j = 1; j < angles.size(); ++j)
 		{
 			float temp_angle, temp_area;
+			std::vector<cv::Point> temp_contour;
 			if (angles[j - 1] > angles[j])
 			{
 				temp_angle = angles[j - 1]; angles[j - 1] = angles[j]; angles[j] = temp_angle;
 				temp_area = ret_array[j - 1]; ret_array[j - 1] = ret_array[j]; ret_array[j] = temp_area;
+				temp_contour = thresholded_hull_contours[j - 1]; thresholded_hull_contours[j - 1] = thresholded_hull_contours[j]; thresholded_hull_contours[j] = temp_contour;
 			}
 		}
 	}
 
+	//for (int i = 0; i < thresholded_hull_contours.size(); ++i)
+	//{
+	//	cv::drawContours(new_image, thresholded_hull_contours, i, cv::Scalar(i * 255 / thresholded_hull_contours.size(), 0, 255),CV_FILLED);
+	//}
+
+	//cv::imwrite("C:/SRI 2016/convex_hull.jpg", new_image);
+
+	//createWindow(new_image, "A");
 	return ret_array;
 }
 
