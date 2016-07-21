@@ -49,11 +49,11 @@ void RealTimeLeapData::getData() {
 			const Vector tip = distal.nextJoint();
 			ExtendedTipPositions.push_back(Point(tip.x, tip.y, tip.z));
 		}
-		for (int i = ExtendedTipPositions.size(); i < 5; ++i)
+		for (auto i = ExtendedTipPositions.size(); i < 5; ++i)
 		{
 			ExtendedTipPositions.push_back(Point(0.000000,0.000000,0.000000));
 		}
-		numFingers = types.size();
+		numFingers = static_cast<int>(types.size());
 		for (int i = 0; i < types.size(); ++i)
 		{
 			if (types[i] == Finger::TYPE_THUMB)

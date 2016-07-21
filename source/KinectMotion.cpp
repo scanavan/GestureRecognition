@@ -15,7 +15,7 @@ KinectMotion::KinectMotion(std::string fdepth)
 	depth = cv::imread(fdepth, CV_LOAD_IMAGE_UNCHANGED);
 	//rgb = cv::imread(frgb, CV_LOAD_IMAGE_UNCHANGED);
 
-	int index = fdepth.find_last_of("/");
+	auto index = fdepth.find_last_of("/");
 	char gestureNumber = fdepth.at(index - 1);
 	gesture = "G";
 	gesture.push_back(gestureNumber);
@@ -31,8 +31,81 @@ KinectMotion::KinectMotion(std::string fdepth)
 	occ_avg = occ_data.avgD;
 	occ_nonz = occ_data.nonZ;
 	fingers();
+	test();
 }
 
+void KinectMotion::test()
+{
+	cv::Mat test_image = cv::Mat::zeros(scaled_binary.size(),CV_8UC3);
+	for (int i = 0; i < scaled_binary.rows; ++i)
+	{
+		for (int j = 0; j < scaled_binary.cols; ++j)
+		{
+			if (scaled_binary.at<uchar>(i,j) != 0) test_image.at<cv::Vec3b>(i, j) = cv::Vec3b(255, 255, 255);
+		}
+	}
+	test_image.at<cv::Vec3b>(palm_center.y, palm_center.x) = cv::Vec3b(0, 0, 255);
+
+	int R;  int num_circle_points = 0; int num_non_hand_points = 0;
+	cv::Mat circle = cv::Mat::zeros(scaled_binary.size(), CV_8U);
+	for (R = 1; R < 10000; R++)
+	{
+		int R2 = R * R;
+		int dx; int dy; int dist;
+		for (int i = palm_center.y - R; i < palm_center.y + R && i < scaled_binary.rows; ++i)
+		{
+			for (int j = palm_center.x - R; j < palm_center.x + R && j < scaled_binary.cols; ++j)
+			{
+				if (circle.at<uchar>(i, j) != 0) continue;
+				dx = abs(j - palm_center.x); dy = abs(i - palm_center.y);
+				if (dx > R) continue;
+				if (dy > R) continue;
+				if (dx + dy <= R)
+				{
+					num_circle_points++;
+					if (scaled_binary.at<uchar>(i, j) == 0) num_non_hand_points++;
+					circle.at<uchar>(i, j) = 255;
+					continue;
+				}
+				dist = (dx * dx) + (dy * dy);
+				if (dist <= R2) 
+				{
+					num_circle_points++;
+					if (scaled_binary.at<uchar>(i, j) == 0) num_non_hand_points++;
+					circle.at<uchar>(i, j) = 255;
+					continue;
+				}
+			}
+		}
+		if ((float)(num_non_hand_points) / (float)num_circle_points > 0.05) break;
+	}
+
+	R = R - 1;
+	int R2 = R * R;
+	int dx; int dy; int dist;
+	for (int i = palm_center.y - R; i < palm_center.y + R && i < scaled_binary.rows; ++i)
+	{
+		for (int j = palm_center.x - R; j < palm_center.x + R && j < scaled_binary.cols; ++j)
+		{
+			dx = abs(j - palm_center.x); dy = abs(i - palm_center.y);
+			if (dx > R) continue;
+			if (dy > R) continue;
+			if (dx + dy <= R)
+			{
+				test_image.at<cv::Vec3b>(i, j) = cv::Vec3b(0, 0, 255);
+				continue;
+			}
+			dist = (dx * dx) + (dy * dy);
+			if (dist <= R2) 
+			{
+				test_image.at<cv::Vec3b>(i, j) = cv::Vec3b(0, 0, 255);
+				continue;
+			}
+		}
+	}
+
+	//createWindow(test_image, "Test Image");
+}
 
 void KinectMotion::initData()
 {
@@ -147,7 +220,7 @@ std::vector<cv::Point> KinectMotion::getContour(cv::Mat image)
 	if (contours.size() == 1) rawContour = contours[0];
 	else
 	{
-		int max_size = 0;
+		size_t max_size = 0;
 		int max_index;
 		for (int i = 0; i < contours.size(); ++i)
 		{
@@ -206,14 +279,14 @@ cv::Mat KinectMotion::scaleHand(cv::Mat image)
 	{
 		roi.width = 440;
 		roi.x = 20;
-		roi.height = height * scale;
+		roi.height = static_cast<int>(height * scale);
 		roi.y = (SCALE - roi.height) / 2;
 	}
 	else
 	{
 		roi.y = 20;
 		roi.height = 440;
-		roi.width = width * scale;
+		roi.width = static_cast<int>(width * scale);
 		roi.x = (SCALE - roi.width) / 2;
 	}
 	cv::resize(croppedImage, dst(roi), roi.size());
@@ -247,7 +320,7 @@ float * KinectMotion::distContour(cv::Mat image)
 	float max = 0;
 	for (int i = 0; i < sampleContour.size(); i++)
 	{
-		float temp = std::sqrt(std::pow(palm_center.x - sampleContour.at(i).x, 2) + std::pow(palm_center.y - sampleContour.at(i).y, 2));
+		auto temp = static_cast<float>(std::sqrt(std::pow(palm_center.x - sampleContour.at(i).x, 2) + std::pow(palm_center.y - sampleContour.at(i).y, 2)));
 		retVal[i] = temp;
 		if (temp > max)
 		{
@@ -317,7 +390,7 @@ cv::Mat KinectMotion::rotateImage(cv::Mat image)
 {
 	float x = leap->getHandDirection().getX();
 	float y = leap->getHandDirection().getY();
-	float angle = atan(x / y) * (180 / PI);
+	auto angle = atan(x / y) * (180 / PI);
 
 	cv::Point2f src_center(image.cols / 2.0F, image.rows / 2.0F);
 	cv::Mat rot_mat = getRotationMatrix2D(src_center, angle, 1.0);
@@ -342,9 +415,9 @@ float * KinectMotion::silhouette(cv::Mat image)
 	for (int i = 0; i < scaled_contour.size(); ++i)
 	{
 		x = scaled_contour[i].x - center.x; y = center.y - scaled_contour[i].y;
-		angle = atan2(y, x);
-		if (angle < 0) angle = (2 * PI) + angle;
-		dist = sqrt((x*x) + (y*y));
+		angle = static_cast<float>(atan2(y, x));
+		if (angle < 0.f) angle = static_cast<float>((2.f * PI) + angle);
+		dist = static_cast<float>(sqrt((x*x) + (y*y)));
 		bin = (int)(angle * 16 / PI);
 		bins[bin].push_back(dist);
 	}
@@ -416,9 +489,9 @@ float * KinectMotion::hullAreas(cv::Mat image)
 		//cv::drawContours(new_image, thresholded_hull_contours, i, cv::Scalar(i * 255 / thresholded_hull_contours.size(), 0, 255));
 		cv::Moments m = moments(thresholded_hull_contours[i]);
 		cv::Point centroid = cv::Point((int)(m.m10 / m.m00), (int)(m.m01 / m.m00));
-		angles.push_back(atan2(palm_center.y - centroid.y, centroid.x - palm_center.x));
-		if (angles[i] < 0) angles[i] = (2 * PI) + angles[i];
-		ret_array[i] = contourArea(thresholded_hull_contours[i]) / hand_area;
+		angles.push_back(static_cast<float>(atan2(palm_center.y - centroid.y, centroid.x - palm_center.x)));
+		if (angles[i] < 0.f) angles[i] = static_cast<float>((2.f * PI) + angles[i]);
+		ret_array[i] = static_cast<float>(contourArea(thresholded_hull_contours[i]) / hand_area);
 	}
 
 	for (int i = 1; i < angles.size(); ++i)
@@ -519,7 +592,7 @@ cv::Mat KinectMotion::getHand(cv::Mat image)
 	bool foundHand = false;
 	bool foundWrist = false;
 	int handToWrist = 0;
-	double numPixels = 0;
+	int numPixels = 0;
 	int max = 0;
 	int tmp = 0;
 	double thresholdRatio = 0;
@@ -554,7 +627,7 @@ cv::Mat KinectMotion::getHand(cv::Mat image)
 			{
 				max = numPixels;
 			}
-			if (i > top + 90 && tmp != 0 && numPixels <= tmp * thresholdRatio && tmp <= max * .85)
+			if (i > top + 115 && tmp != 0 && numPixels <= tmp * thresholdRatio && tmp <= max * .95)
 			{
 				foundWrist = true;
 				break;
@@ -632,14 +705,14 @@ void KinectMotion::fingers()
 	std::vector<float> contour_distances;
 	for (int i = 0; i < sampled_contour.size(); ++i)
 	{
-		contour_distances.push_back(std::sqrt(std::pow(palm_center.x - sampled_contour[i].x, 2) + std::pow(palm_center.y - sampled_contour[i].y, 2)));
+		contour_distances.push_back(static_cast<float>(std::sqrt(std::pow(palm_center.x - sampled_contour[i].x, 2) + std::pow(palm_center.y - sampled_contour[i].y, 2))));
 	}
 
 	// Find Fingers
 	std::vector<int> finger_indicies;
-	for (int i = 0; i < contour_distances.size(); ++i)
+	for (auto i = 0; i < contour_distances.size(); ++i)
 	{
-		if ((contour_distances[i] - contour_distances[mod(i + (sampled_contour.size() / 10), contour_distances.size())] > 70) && (contour_distances[i] - contour_distances[mod(i - (sampled_contour.size() / 10), contour_distances.size())] > 70))
+		if ((contour_distances[i] - contour_distances[mod(static_cast<int>(i + (sampled_contour.size() / 10)), static_cast<int>(contour_distances.size()))] > 70) && (contour_distances[i] - contour_distances[mod(static_cast<int>(i - (sampled_contour.size() / 10)), static_cast<int>(contour_distances.size()))] > 70))
 		{
 			//finger_image.at<cv::Vec3b>(sampled_contour[i].y, sampled_contour[i].x) = cv::Vec3b(0, 0, 255);
 			//finger_image.at<cv::Vec3b>(sampled_contour[mod(i + (sampled_contour.size() / 10), contour_distances.size())].y, sampled_contour[mod(i + (sampled_contour.size() / 10), contour_distances.size())].x) = cv::Vec3b(255, 0, 255);
@@ -652,9 +725,9 @@ void KinectMotion::fingers()
 	std::vector<std::vector<int>> finger_clusters;
 	std::vector<int> cluster; 
 	if (finger_indicies.size() > 0) cluster.push_back(finger_indicies[0]);
-	for (int i = 1; i < finger_indicies.size(); ++i)
+	for (auto i = 1; i < finger_indicies.size(); ++i)
 	{
-		if (mod(finger_indicies[i] - finger_indicies[i - 1],sampled_contour.size()) > 100) {
+		if (mod(finger_indicies[i] - finger_indicies[i - 1],static_cast<int>(sampled_contour.size())) > 100) {
 			finger_clusters.push_back(cluster);
 			cluster.clear();
 		}
@@ -705,8 +778,8 @@ void KinectMotion::fingers()
 	float * finger_tip_angles = new float[5]{ 0 };
 	for (int i = 0; i < finger_tips.size(); ++i)
 	{
-		finger_tip_angles[i] = atan2(palm_center.y - sampled_contour[finger_tips[i]].y, sampled_contour[finger_tips[i]].x - palm_center.x);
-		finger_tip_distances[i] = std::sqrt(std::pow(palm_center.x - sampled_contour[finger_tips[i]].x, 2) + std::pow(palm_center.y - sampled_contour[finger_tips[i]].y, 2));
+		finger_tip_angles[i] = static_cast<float>(atan2(palm_center.y - sampled_contour[finger_tips[i]].y, sampled_contour[finger_tips[i]].x - palm_center.x));
+		finger_tip_distances[i] = static_cast<float>(std::sqrt(std::pow(palm_center.x - sampled_contour[finger_tips[i]].x, 2) + std::pow(palm_center.y - sampled_contour[finger_tips[i]].y, 2)));
 	}
 	for (int i = 1; i < finger_tips.size(); ++i)
 	{
@@ -768,7 +841,7 @@ cv::Point KinectMotion::palmCenter2(cv::Mat image, int thresh)
 		double current_min = 8000000;
 		for (int j = 0; j < scaled_contour.size(); j += 16)
 		{
-			float temp = std::sqrt(std::pow(possible_palm_centers[i].x - scaled_contour[j].x, 2) + std::pow(possible_palm_centers[i].y - scaled_contour[j].y, 2));
+			auto temp = std::sqrt(std::pow(possible_palm_centers[i].x - scaled_contour[j].x, 2) + std::pow(possible_palm_centers[i].y - scaled_contour[j].y, 2));
 			if (temp < current_min)
 			{
 				current_min = temp;
