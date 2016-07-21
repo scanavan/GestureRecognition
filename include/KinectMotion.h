@@ -19,7 +19,7 @@ struct Occ {
 
 class KinectMotion {
 public:
-	KinectMotion(std::string leap, std::string depth);
+	KinectMotion(std::string depth);
 	cv::Mat getHand(cv::Mat image);
 	cv::Mat makeContourImage(cv::Mat image);
 	cv::Mat scaleHand(cv::Mat image);
@@ -30,16 +30,15 @@ public:
 	int * getOccNonz();
 	float * getOccAvg();
 	float * getHull();
+	float * getFingerAngle();
+	float * getFingerDist();
 	std::string getGesture();
-	void otherDistContour(cv::Mat image);
 	void sortContourDist();
-	int countFingers();
 private:
 	//cv::Mat getRgb();
 	cv::Mat depth;
 	cv::Mat scaled_depth;
 	cv::Mat scaled_binary;
-	std::vector<cv::Point> unscaled_contour;
 	std::vector<float> reg_dist_contour;
 	//cv::Mat rgb;
 	LeapData * leap;
@@ -48,11 +47,15 @@ private:
 	int * occ_nonz;
 	float * occ_avg;
 	float * hull;
+	float * finger_angles;
+	float * finger_distances;
 	std::string gesture;
 	cv::Point palm_center;
 	std::vector<cv::Point> scaled_contour;
 	void initData();
 	void fingers();
+	std::vector<cv::Point> possible_palm_centers;
+	void test();
 
 	cv::Rect getRect(cv::Mat image);
 	float * silhouette(cv::Mat image);
@@ -60,10 +63,11 @@ private:
 	Occ cellOccupancy(cv::Mat image);
 	float * hullAreas(cv::Mat image);
 	cv::Mat binarize(cv::Mat image, int threshold = 5);
-	cv::Point palmCenter(cv::Mat image, int thresh = 23);
+	cv::Point palmCenter(cv::Mat image, int thresh = 150);
 	std::vector<cv::Point> getContour(cv::Mat image);
 	std::vector<cv::Point> getSortedContour(cv::Mat image);
 	cv::Mat updateImage(cv::Mat image);
+	cv::Point palmCenter2(cv::Mat image, int thresh = 150);
 };
 
 void createWindow(cv::Mat image, std::string imageName);

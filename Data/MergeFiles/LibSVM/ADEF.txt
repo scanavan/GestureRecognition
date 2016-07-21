@@ -1,0 +1,93 @@
+Zero Weights processed. Default weights will be used
+
+LibSVM wrapper, original code by Yasser EL-Manzalawy (= WLSVM)
+
+Time taken to build model: 0.3 seconds
+Time taken to test model on training data: 0.26 seconds
+
+=== Error on training data ===
+
+Correctly Classified Instances        1065               76.0714 %
+Incorrectly Classified Instances       335               23.9286 %
+Kappa statistic                          0.7341
+Mean absolute error                      0.0479
+Root mean squared error                  0.2188
+Relative absolute error                 26.5873 %
+Root relative squared error             72.9209 %
+Total Number of Instances             1400     
+
+
+=== Detailed Accuracy By Class ===
+
+                 TP Rate  FP Rate  Precision  Recall   F-Measure  MCC      ROC Area  PRC Area  Class
+                 0.821    0.050    0.646      0.821    0.723      0.695    0.886     0.549     G1
+                 0.643    0.040    0.638      0.643    0.641      0.600    0.801     0.446     G2
+                 0.729    0.020    0.803      0.729    0.764      0.740    0.854     0.612     G3
+                 0.786    0.015    0.853      0.786    0.818      0.799    0.885     0.691     G4
+                 0.764    0.025    0.770      0.764    0.767      0.741    0.869     0.612     G5
+                 0.750    0.029    0.739      0.750    0.745      0.716    0.860     0.580     G6
+                 0.836    0.005    0.951      0.836    0.890      0.881    0.915     0.811     G7
+                 0.757    0.037    0.693      0.757    0.724      0.692    0.860     0.549     G8
+                 0.943    0.003    0.971      0.943    0.957      0.952    0.970     0.921     G9
+                 0.579    0.040    0.614      0.579    0.596      0.552    0.769     0.397     G0
+Weighted Avg.    0.761    0.027    0.768      0.761    0.762      0.737    0.867     0.617     
+
+
+=== Confusion Matrix ===
+
+   a   b   c   d   e   f   g   h   i   j   <-- classified as
+ 115  22   3   0   0   0   0   0   0   0 |   a = G1
+  39  90   4   1   4   1   0   0   1   0 |   b = G2
+  14  10 102   4   6   1   0   2   0   1 |   c = G3
+   1   7   1 110   4  10   4   1   0   2 |   d = G4
+   7   1  13   1 107   7   0   3   0   1 |   e = G5
+   0   3   2   1   1 105   0   3   2  23 |   f = G6
+   2   4   1   6   1   0 117   8   0   1 |   g = G7
+   0   0   0   3   3   3   2 106   1  22 |   h = G8
+   0   3   0   0   0   0   0   4 132   1 |   i = G9
+   0   1   1   3  13  15   0  26   0  81 |   j = G0
+
+
+
+=== Stratified cross-validation ===
+
+Correctly Classified Instances        1009               72.0714 %
+Incorrectly Classified Instances       391               27.9286 %
+Kappa statistic                          0.6897
+Mean absolute error                      0.0559
+Root mean squared error                  0.2363
+Relative absolute error                 31.0317 %
+Root relative squared error             78.7804 %
+Total Number of Instances             1400     
+
+
+=== Detailed Accuracy By Class ===
+
+                 TP Rate  FP Rate  Precision  Recall   F-Measure  MCC      ROC Area  PRC Area  Class
+                 0.807    0.050    0.642      0.807    0.715      0.685    0.879     0.538     G1
+                 0.607    0.040    0.625      0.607    0.616      0.574    0.783     0.419     G2
+                 0.693    0.025    0.758      0.693    0.724      0.696    0.834     0.556     G3
+                 0.707    0.021    0.792      0.707    0.747      0.722    0.843     0.589     G4
+                 0.743    0.032    0.722      0.743    0.732      0.702    0.856     0.562     G5
+                 0.721    0.039    0.673      0.721    0.697      0.662    0.841     0.514     G6
+                 0.779    0.015    0.852      0.779    0.813      0.795    0.882     0.685     G7
+                 0.679    0.041    0.646      0.679    0.662      0.624    0.819     0.471     G8
+                 0.943    0.005    0.957      0.943    0.950      0.944    0.969     0.908     G9
+                 0.529    0.043    0.578      0.529    0.552      0.506    0.743     0.353     G0
+Weighted Avg.    0.721    0.031    0.724      0.721    0.721      0.691    0.845     0.559     
+
+
+=== Confusion Matrix ===
+
+   a   b   c   d   e   f   g   h   i   j   <-- classified as
+ 113  22   4   0   1   0   0   0   0   0 |   a = G1
+  39  85   6   1   6   1   1   0   1   0 |   b = G2
+  14  10  97   5   7   4   0   2   0   1 |   c = G3
+   1   7   3  99   4  14   7   3   0   2 |   d = G4
+   7   1  13   1 104   9   0   4   0   1 |   e = G5
+   0   3   3   1   1 101   1   3   3  24 |   f = G6
+   2   4   1  12   3   0 109   8   0   1 |   g = G7
+   0   0   0   3   4   4   7  95   2  25 |   h = G8
+   0   3   0   0   0   0   0   5 132   0 |   i = G9
+   0   1   1   3  14  17   3  27   0  74 |   j = G0
+
