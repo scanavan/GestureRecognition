@@ -48,28 +48,13 @@ void arffBatchWriter()
 void RFWriter()
 {
 	std::ofstream file;
-	file.open("S:/RF.bat");
+	file.open("C:/Users/IASA-FRI/Documents/SRI/Data/BatchFiles/REPTree2.bat");
 
-	for (int i = 1; i < (1 << 12); ++i)
+	for (int i = 1; i < (1 << 14); ++i)
 	{
-		file << "java weka.classifiers.trees.RandomForest -t ";
+		file << "java weka.classifiers.trees.REPTree -t ";
 
-		file << "S:/ARFF/";
-
-		if (i & (1 << 0)) file << "A";
-		if (i & (1 << 1)) file << "B";
-		if (i & (1 << 2)) file << "C";
-		if (i & (1 << 3)) file << "D";
-		if (i & (1 << 4)) file << "E";
-		if (i & (1 << 5)) file << "F";
-		if (i & (1 << 6)) file << "G";
-		if (i & (1 << 7)) file << "Z";
-		if (i & (1 << 8)) file << "Y";
-		if (i & (1 << 9)) file << "X";
-		if (i & (1 << 10)) file << "W";
-		if (i & (1 << 11)) file << "V";
-
-		file << ".arff > S:/RF/";
+		file << "C:/Users/IASA-FRI/Documents/SRI/Data/ARFFFiles/";
 
 		if (i & (1 << 0)) file << "A";
 		if (i & (1 << 1)) file << "B";
@@ -83,6 +68,24 @@ void RFWriter()
 		if (i & (1 << 9)) file << "X";
 		if (i & (1 << 10)) file << "W";
 		if (i & (1 << 11)) file << "V";
+		if (i & (1 << 12)) file << "U";
+		if (i & (1 << 13)) file << "T";
+		file << ".arff > C:/Users/IASA-FRI/Documents/SRI/Data/Merge2/REPTree/";
+
+		if (i & (1 << 0)) file << "A";
+		if (i & (1 << 1)) file << "B";
+		if (i & (1 << 2)) file << "C";
+		if (i & (1 << 3)) file << "D";
+		if (i & (1 << 4)) file << "E";
+		if (i & (1 << 5)) file << "F";
+		if (i & (1 << 6)) file << "G";
+		if (i & (1 << 7)) file << "Z";
+		if (i & (1 << 8)) file << "Y";
+		if (i & (1 << 9)) file << "X";
+		if (i & (1 << 10)) file << "W";
+		if (i & (1 << 11)) file << "V";
+		if (i & (1 << 12)) file << "U";
+		if (i & (1 << 13)) file << "T";
 
 		file << ".txt\n";
 	}

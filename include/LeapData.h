@@ -14,7 +14,11 @@ public:
 	LeapData();
 	LeapData(std::string path);
 	LeapData(RealTimeLeapData leapData);
+	void RealTimeLeap(std::string path);
 	void parse(int lineNum, std::string line);
+	void parseRealTime(int lineNum, std::string line);
+	void clearAll();
+
 	std::vector<float> splitString(std::string line);
 	void printAttributes();
 	std::vector<Point> getProjection();
@@ -59,6 +63,7 @@ public:
 	void setMaximums();
 	float getMax_X();
 	float getMax_Y();
+	void setFingertipDistance();
 private:
 	int numFingers;
 	std::vector<float> fingertipDist;
@@ -96,6 +101,7 @@ private:
 	std::vector<Point> extendedTipPosition;
 	float max_X;
 	float max_Y;
+	std::vector<Point> fingerDirection;
 };
 
 #endif 

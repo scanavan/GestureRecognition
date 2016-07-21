@@ -223,24 +223,22 @@ int RealTime::leapInfo() {
 
 	
 	while (counter) {
-		extendedFingers = { 0,0,0,0,0 };
 		const Frame frame = controller.frame();
 		HandList hands = frame.hands();
-		for (HandList::const_iterator hl = hands.begin(); hl != hands.end(); ++hl) {
-			// Get the first hand
-			const Hand hand = *hl;
-			// Get the hand's normal vector and direction
-			const Vector normal = hand.palmNormal();
-			const Vector direction = hand.direction();
-			const Vector position = hand.palmPosition();
+			extendedFingers = { 0,0,0,0,0 };
+		cv::waitKey(30);
+		if (keyPressedLeap) {
+			for (HandList::const_iterator hl = hands.begin(); hl != hands.end(); ++hl) {
+				// Get the first hand
+				const Hand hand = *hl;
+				// Get the hand's normal vector and direction
+				const Vector normal = hand.palmNormal();
+				const Vector direction = hand.direction();
+				const Vector position = hand.palmPosition();
 
-			palmNormal = Point(normal.x, normal.y, normal.z);
-			handDirection = Point(direction.x, direction.y, direction.z);
 			palmPosition = Point(position.x, position.y, position.z);
 
-			// Get fingers
-			const FingerList fingers = hand.fingers();
-			const FingerList extended = fingers.extended();
+
 
 			std::vector<Finger::Type> types;
 			for (FingerList::const_iterator fl = extended.begin(); fl != extended.end(); ++fl) {
@@ -255,23 +253,11 @@ int RealTime::leapInfo() {
 				ExtendedTipPositions.push_back(Point(0.000000, 0.000000, 0.000000));
 			}
 			numFingers = types.size();
-			for (int i = 0; i < types.size(); ++i)
-			{
+			for (int i = 0; i < types.size(); ++i)			{
 				extendedFingers[types[i]] = 1;
 			}
-
-			for (FingerList::const_iterator fl = fingers.begin(); fl != fingers.end(); ++fl) {
-				const Finger finger = *fl;
-				const Vector direction = finger.direction();
-				fingerDirections.push_back(Point(direction.x, direction.y, direction.z));
-				const Bone distal = finger.bone(Bone::TYPE_DISTAL);
-				const Vector tip = distal.nextJoint();
 				tipPositions.push_back(Point(tip.x, tip.y, tip.z));
 			}
-		}
-
-		cv::waitKey(30);
-		if (keyPressedLeap) {
 			//write the file
 			std::ofstream file;
 			if (gestureNum < 10) {
@@ -302,10 +288,12 @@ int RealTime::leapInfo() {
 			file << "\nnumFingers," + std::to_string(numFingers);
 			file.close();
 			keyPressedLeap = false;
+			fingerDirections.clear();
+			tipPositions.clear();
+			ExtendedTipPositions.clear();
 		}
-		fingerDirections.clear();
-		tipPositions.clear();
-		ExtendedTipPositions.clear();
+
+		
 	}
 	
 
