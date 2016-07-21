@@ -226,7 +226,6 @@ int RealTime::leapInfo() {
 		const Frame frame = controller.frame();
 		HandList hands = frame.hands();
 			extendedFingers = { 0,0,0,0,0 };
-		cv::waitKey(30);
 		if (keyPressedLeap) {
 			for (HandList::const_iterator hl = hands.begin(); hl != hands.end(); ++hl) {
 				// Get the first hand
@@ -238,7 +237,8 @@ int RealTime::leapInfo() {
 
 			palmPosition = Point(position.x, position.y, position.z);
 
-
+			const FingerList fingers = hand.fingers();
+			const FingerList extended = fingers.extended();
 
 			std::vector<Finger::Type> types;
 			for (FingerList::const_iterator fl = extended.begin(); fl != extended.end(); ++fl) {
@@ -256,7 +256,14 @@ int RealTime::leapInfo() {
 			for (int i = 0; i < types.size(); ++i)			{
 				extendedFingers[types[i]] = 1;
 			}
+			for (FingerList::const_iterator fl = fingers.begin(); fl != fingers.end(); ++fl) {
+				const Finger finger = *fl;
+				const Vector direction = finger.direction();
+				fingerDirections.push_back(Point(direction.x, direction.y, direction.z));
+				const Bone distal = finger.bone(Bone::TYPE_DISTAL);
+				const Vector tip = distal.nextJoint();
 				tipPositions.push_back(Point(tip.x, tip.y, tip.z));
+			}
 			}
 			//write the file
 			std::ofstream file;
