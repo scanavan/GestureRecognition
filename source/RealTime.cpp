@@ -62,8 +62,6 @@ int RealTime::depth()
 	cv::Mat depthMat(height, width, CV_8UC1);
 	cv::Mat inverted(height, width, CV_8UC1);
 
-	cv::namedWindow("Depth");
-
 	while (counter) {
 		// Frame
 		IDepthFrame* pDepthFrame = nullptr;
@@ -76,7 +74,6 @@ int RealTime::depth()
 		}
 		SafeRelease(pDepthFrame);
 		cv::subtract(cv::Scalar::all(255), depthMat, inverted);
-		cv::imshow("Depth", inverted);
 		cv::waitKey(30);
 		if (keyPressedDepth) {
 			if (gestureNum < 10) {
@@ -85,7 +82,6 @@ int RealTime::depth()
 			else {
 				cv::imwrite(path + std::to_string(gestureNum) + '/' + std::to_string(imageNum) + "_depth.png", inverted);
 			}
-			imageNum++;
 			keyPressedDepth = false;
 		}
 	}
@@ -224,11 +220,10 @@ int RealTime::leapInfo() {
 	int numFingers;
 
 	// Keep this process running until Enter is pressed
-	
-	extendedFingers = { 0,0,0,0,0 };
 
 	
 	while (counter) {
+		extendedFingers = { 0,0,0,0,0 };
 		const Frame frame = controller.frame();
 		HandList hands = frame.hands();
 		for (HandList::const_iterator hl = hands.begin(); hl != hands.end(); ++hl) {
@@ -262,16 +257,7 @@ int RealTime::leapInfo() {
 			numFingers = types.size();
 			for (int i = 0; i < types.size(); ++i)
 			{
-				if (types[i] == Finger::TYPE_THUMB)
-					extendedFingers[0] = 1;
-				if (types[i] == Finger::TYPE_INDEX)
-					extendedFingers[1] = 1;
-				if (types[i] == Finger::TYPE_MIDDLE)
-					extendedFingers[2] = 1;
-				if (types[i] == Finger::TYPE_RING)
-					extendedFingers[3] = 1;
-				if (types[i] == Finger::TYPE_PINKY)
-					extendedFingers[4] = 1;
+				extendedFingers[types[i]] = 1;
 			}
 
 			for (FingerList::const_iterator fl = fingers.begin(); fl != fingers.end(); ++fl) {
@@ -294,7 +280,6 @@ int RealTime::leapInfo() {
 			else {
 				file.open(path + std::to_string(gestureNum) + '/' + std::to_string(imageNum) + "_leap_motion.csv");
 			}
-			file.open(path + std::to_string(imageNum) + "_leap_motion.csv");
 			file << "extendedFingers";
 			for (int i = 0; i < extendedFingers.size(); i++) {
 				file << ',' + std::to_string(extendedFingers[i]);
@@ -342,6 +327,6 @@ void RealTime::setPath(std::string setVal) {
 
 void RealTime::changeGesture() {
 	gestureNum++;
-	imageNum = 1;
-	
+	imageNum = 0;
+	std::cout << gestureNum << std::endl;
 }

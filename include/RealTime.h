@@ -21,6 +21,7 @@ public:
 	void endProgram();
 	void setPath(std::string path);
 	void changeGesture();
+	std::atomic<int> imageNum = 0;
 private:
 	std::atomic<bool> keyPressedDepth = false;
 	std::atomic<bool> keyPressedColor = false;
@@ -28,7 +29,6 @@ private:
 	std::atomic<bool> counter = true;
 	std::string path;
 	std::atomic<int> gestureNum = 1;
-	std::atomic<int> imageNum = 1;
 	/*IKinectSensor* pSensor;
 	IDepthFrameSource* pDepthSource;
 	IColorFrameSource* pColorSource;
