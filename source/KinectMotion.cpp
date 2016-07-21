@@ -479,7 +479,7 @@ cv::Mat KinectMotion::updateImage(cv::Mat image)
 	{
 		for (int j = 0; j < image.cols; j++)
 		{
-			if (uimage.at<uchar>(i, j) > min + 4 || uimage.at<uchar>(i,j) < min) uimage.at<uchar>(i, j) = 0;
+			if (uimage.at<uchar>(i, j) > min + 2 || uimage.at<uchar>(i,j) < min) uimage.at<uchar>(i, j) = 0;
 		}
 	}
 	
