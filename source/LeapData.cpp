@@ -21,9 +21,8 @@ LeapData::LeapData(std::string path) {
 		}
 		extendedTipPosition = fingertipPosition;
 		setNewScaleFactor();
-		setOldScaleFactor();
 		//gets the gesture based on the path
-		auto index = path.find_last_of("/");
+		int index = path.find_last_of("/");
 		char gestureNumber = path.at(index - 1);
 		gesture = "G";
 		gesture.push_back(gestureNumber);
@@ -66,9 +65,9 @@ LeapData::LeapData(std::string path) {
 		//newFingertipDistRefined = fingertipDist;
 		projectionPoints = getProjection();
 		setFingertipAngles();
+		
 		setRatio();
 		setMaximums();
-
 		setFingerAreas();
 	}
 	else {
@@ -192,7 +191,8 @@ void LeapData::setFingerAreas()
 {
 	float total;
 	float a, b, c;
-	size_t first, last;
+	size_t first = 0;
+	size_t last = 0;
 
 	for (auto i = 0; i < fingertipPosition.size(); i++)
 	{
@@ -210,7 +210,7 @@ void LeapData::setFingerAreas()
 			break;
 		}
 	}
-
+	
 	a = fingertipPosition[first].getMagnitude(palmPosition);
 	b = fingertipPosition[first].getMagnitude(fingertipPosition[last]);
 	c = fingertipPosition[last].getMagnitude(palmPosition);
@@ -226,6 +226,7 @@ void LeapData::setFingerAreas()
 	else {
 		fingerArea = a / newScaleFactor;
 	}
+	
 }
 void LeapData::setRatio()
 {
