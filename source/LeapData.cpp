@@ -101,7 +101,7 @@ void LeapData::RealTimeLeap(std::string path) {
 	std::ifstream ifs;
 	std::string line;
 	ifs.open(path, std::ifstream::in);
-
+	std::cout << path << "\n";
 	if (ifs.is_open()) {
 		int counter = 0;
 		extendedFingers = { 0,0,0,0,0 };
@@ -110,7 +110,7 @@ void LeapData::RealTimeLeap(std::string path) {
 			parseRealTime(counter, line);
 			counter++;
 		}
-		std::cout << numFingers;
+		
 		setFingertipDistance();
 		setNewScaleFactor();
 		
@@ -548,6 +548,7 @@ std::vector<float> LeapData::splitString(std::string line) {
 		}
 		counter++;
 	}
+
 
 	return returnVal;
 }
