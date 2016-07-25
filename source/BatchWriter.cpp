@@ -48,13 +48,13 @@ void arffBatchWriter()
 void RFWriter()
 {
 	std::ofstream file;
-	file.open("C:/Users/IASA-FRI/Documents/SRI/Data/BatchFiles/REPTree2.bat");
+	file.open("C:/SRITest/SVM.bat");
 
 	for (int i = 1; i < (1 << 14); ++i)
 	{
-		file << "java weka.classifiers.trees.REPTree -t ";
+		file << "java weka.classifiers.functions.LibSVM -t ";
 
-		file << "C:/Users/IASA-FRI/Documents/SRI/Data/ARFFFiles/";
+		file << "C:/SRITest/ARFF/";
 
 		if (i & (1 << 0)) file << "A";
 		if (i & (1 << 1)) file << "B";
@@ -70,7 +70,7 @@ void RFWriter()
 		if (i & (1 << 11)) file << "V";
 		if (i & (1 << 12)) file << "U";
 		if (i & (1 << 13)) file << "T";
-		file << ".arff > C:/Users/IASA-FRI/Documents/SRI/Data/Merge2/REPTree/";
+		file << ".arff > C:/SRITest/SVM/";
 
 		if (i & (1 << 0)) file << "A";
 		if (i & (1 << 1)) file << "B";
