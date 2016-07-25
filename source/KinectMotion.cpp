@@ -10,7 +10,6 @@
 #include <vector>
 #include <set>
 
-using namespace p1d;
 
 KinectMotion::KinectMotion(std::string fdepth)
 {
