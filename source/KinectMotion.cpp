@@ -711,15 +711,15 @@ int mod(int a, int b)
 
 void KinectMotion::fingers()
 {
-	cv::Mat finger_image = cv::Mat::zeros(scaled_binary.size(),CV_8UC3); 
-	for (int i = 0; i < scaled_binary.rows; ++i)
-	{
-		for (int j = 0; j < scaled_binary.cols; ++j)
-		{
-			if (scaled_binary.at<uchar>(i, j) > 5) finger_image.at<cv::Vec3b>(i, j) = cv::Vec3b(255, 0, 0);
-			//else finger_image.at<cv::Vec3b>(i, j) = cv::Vec3b(255, 255, 255);
-		}
-	}
+	//cv::Mat finger_image = cv::Mat::zeros(scaled_binary.size(),CV_8UC3); 
+	//for (int i = 0; i < scaled_binary.rows; ++i)
+	//{
+	//	for (int j = 0; j < scaled_binary.cols; ++j)
+	//	{
+	//		if (scaled_binary.at<uchar>(i, j) > 5) finger_image.at<cv::Vec3b>(i, j) = cv::Vec3b(255, 0, 0);
+	//		//else finger_image.at<cv::Vec3b>(i, j) = cv::Vec3b(255, 255, 255);
+	//	}
+	//}
 
 	// Sample scaled contour
 	std::vector<cv::Point> sampled_contour = scaled_contour;
@@ -752,10 +752,10 @@ void KinectMotion::fingers()
 	{
 		if ((contour_distances[i] - contour_distances[mod(static_cast<int>(i + (sampled_contour.size() / 10)), static_cast<int>(contour_distances.size()))] > 70) && (contour_distances[i] - contour_distances[mod(static_cast<int>(i - (sampled_contour.size() / 10)), static_cast<int>(contour_distances.size()))] > 70))
 		{
-			finger_image.at<cv::Vec3b>(sampled_contour[i].y, sampled_contour[i].x) = cv::Vec3b(0, 0, 255);
-			finger_image.at<cv::Vec3b>(sampled_contour[i].y+1, sampled_contour[i].x+1) = cv::Vec3b(0, 0, 255);
-			finger_image.at<cv::Vec3b>(sampled_contour[i].y, sampled_contour[i].x-1) = cv::Vec3b(0, 0, 255);
-			finger_image.at<cv::Vec3b>(sampled_contour[i].y-1, sampled_contour[i].x) = cv::Vec3b(0, 0, 255);
+			//finger_image.at<cv::Vec3b>(sampled_contour[i].y, sampled_contour[i].x) = cv::Vec3b(0, 0, 255);
+			//finger_image.at<cv::Vec3b>(sampled_contour[i].y+1, sampled_contour[i].x+1) = cv::Vec3b(0, 0, 255);
+			//finger_image.at<cv::Vec3b>(sampled_contour[i].y, sampled_contour[i].x-1) = cv::Vec3b(0, 0, 255);
+			//finger_image.at<cv::Vec3b>(sampled_contour[i].y-1, sampled_contour[i].x) = cv::Vec3b(0, 0, 255);
 			//finger_image.at<cv::Vec3b>(sampled_contour[mod(i + (sampled_contour.size() / 10), contour_distances.size())].y, sampled_contour[mod(i + (sampled_contour.size() / 10), contour_distances.size())].x) = cv::Vec3b(255, 0, 255);
 			//finger_image.at<cv::Vec3b>(sampled_contour[mod(i - (sampled_contour.size() / 10), contour_distances.size())].y, sampled_contour[mod(i - (sampled_contour.size() / 10), contour_distances.size())].x) = cv::Vec3b(0, 255, 255);
 			finger_indicies.push_back(i);
@@ -838,16 +838,16 @@ void KinectMotion::fingers()
 
 	finger_angles = finger_tip_angles; finger_distances = finger_tip_distances;
 
-	// Display
-	for (int i = 0; i < finger_tips.size(); ++i)
-	{
-		//finger_image.at<cv::Vec3b>(sampled_contour[finger_tips[i]].y, sampled_contour[finger_tips[i]].x) = cv::Vec3b(0, 255, 255);
-		cv::circle(finger_image, sampled_contour[finger_tips[i]], 3, cv::Scalar(0, 255, 255),-1);
-	}
+	//// Display
+	//for (int i = 0; i < finger_tips.size(); ++i)
+	//{
+	//	//finger_image.at<cv::Vec3b>(sampled_contour[finger_tips[i]].y, sampled_contour[finger_tips[i]].x) = cv::Vec3b(0, 255, 255);
+	//	cv::circle(finger_image, sampled_contour[finger_tips[i]], 3, cv::Scalar(0, 255, 255),-1);
+	//}
 	//std::cout << finger_tips.size() << "\n";
 	//finger_image.at<cv::Vec3b>(palm_center.y, palm_center.x) = cv::Vec3b(0, 0, 255);
-	cv::imwrite("C:/SRI 2016/finger_tips.jpg", finger_image);
-	createWindow(finger_image, "A");
+	//cv::imwrite("C:/SRI 2016/finger_tips.jpg", finger_image);
+	//createWindow(finger_image, "A");
 	
 
 	return;
