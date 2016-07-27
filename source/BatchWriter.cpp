@@ -48,7 +48,7 @@ void arffBatchWriter()
 void RFWriter()
 {
 	std::ofstream file;
-	file.open("C:/SRITest/SVM.bat");
+	file.open("C:/SRITest/SVM2.bat");
 
 	for (int i = 1; i < (1 << 14); ++i)
 	{
