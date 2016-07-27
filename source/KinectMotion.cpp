@@ -81,8 +81,9 @@ std::string KinectMotion::getGesture() {
 }
 
 /*
-@def - gets contours and sorts them starts at contour point directly above palm center
-@param - image - the matrix image
+	@def gets contour of largest object in image
+	@param image (cv::Mat)
+	@return contour as a vector of points
 */
 std::vector<cv::Point> KinectMotion::getContour(cv::Mat image)
 {
@@ -134,8 +135,9 @@ std::vector<cv::Point> KinectMotion::getSortedContour(cv::Mat image)
 }
 
 /*
-@def - scales hand to a fixed square image
-@param - image - image matrix
+	@def scales hand to a fixed square image
+	@param image (cv::Mat)
+	@return scaled image (cv::Mat)
 */
 cv::Mat KinectMotion::scaleHand(cv::Mat image)
 {
@@ -179,9 +181,9 @@ void createWindow(cv::Mat image, std::string imageName)
 }
 
 /*
-@def - takes the sorted contours and gets a sample of 180 points
-calculates the distance from the palm center to each sampled point
-@param - image - image matrix
+	@def gets a sample of 150 contour points and calculates the distance from the palm center to each sampled point
+	@param image (cv::Mat)
+	@return array of 150 distances (floats) from palm center
 */
 float * KinectMotion::distContour(cv::Mat image)
 {
@@ -260,8 +262,9 @@ cv::Rect KinectMotion::getRect(cv::Mat image)
 }
 
 /*
-@def - gets average distance of contour from image center for 32 radial sections
-@param - image - image matrix
+	@def gets average distance of contour from image center for 32 radial sections
+	@param image (cv::Mat)
+	@return array of 32 distances (floats) of contour from image center
 */
 float * KinectMotion::silhouette(cv::Mat image)
 {
