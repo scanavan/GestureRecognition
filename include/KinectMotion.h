@@ -31,7 +31,6 @@ public:
 	float * getFingerAngle();
 	float * getFingerDist();
 	std::string getGesture();
-	void sortContourDist();
 private:
 	cv::Mat depth;
 	cv::Mat scaled_depth;
@@ -53,15 +52,15 @@ private:
 	std::vector<cv::Point> possible_palm_centers;
 
 	cv::Rect getRect(cv::Mat image);
-	float * silhouette(cv::Mat image);
-	float * distContour(cv::Mat image);
-	Occ cellOccupancy(cv::Mat image);
-	float * hullAreas(cv::Mat image);
+	float * silhouette();
+	float * distContour();
+	Occ cellOccupancy();
+	float * hullAreas();
 	cv::Mat binarize(cv::Mat image, int threshold = 5);
 	std::vector<cv::Point> getContour(cv::Mat image);
-	std::vector<cv::Point> getSortedContour(cv::Mat image);
+	std::vector<cv::Point> getSortedContour();
 	cv::Mat updateImage(cv::Mat image);
-	cv::Point palmCenter(cv::Mat image, int thresh = 150);
+	cv::Point palmCenter(cv::Mat image, int sigma = 150);
 };
 
 void createWindow(cv::Mat image, std::string imageName);

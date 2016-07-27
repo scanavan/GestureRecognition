@@ -10,7 +10,6 @@
 #include <vector>
 #include <set>
 
-
 KinectMotion::KinectMotion(std::string fdepth)
 {
 	depth = cv::imread(fdepth, CV_LOAD_IMAGE_UNCHANGED);
@@ -23,10 +22,10 @@ KinectMotion::KinectMotion(std::string fdepth)
 	depth = updateImage(depth);
 	getHand(depth);
 	initData();
-	sil = silhouette(scaled_depth);
-	contour_dist = distContour(scaled_binary);
-	hull = hullAreas(scaled_depth);
-	Occ occ_data = cellOccupancy(scaled_depth);
+	sil = silhouette();
+	contour_dist = distContour();
+	hull = hullAreas();
+	Occ occ_data = cellOccupancy();
 	occ_avg = occ_data.avgD;
 	occ_nonz = occ_data.nonZ;
 	fingers();
@@ -34,6 +33,12 @@ KinectMotion::KinectMotion(std::string fdepth)
 	//createWindow(scaled_binary, "Scaled Binary");
 }
 
+/*
+	@def initialize data for object
+	create scaled binary image
+	find contour of scaled hand
+	find palm center of scaled hand
+*/
 void KinectMotion::initData()
 {
 	scaled_depth = scaleHand(depth);
@@ -44,6 +49,7 @@ void KinectMotion::initData()
 
 }
 
+// Getters
 cv::Mat KinectMotion::getDepth()
 {
 	return depth;
@@ -113,7 +119,11 @@ std::vector<cv::Point> KinectMotion::getContour(cv::Mat image)
 	return rawContour;
 }
 
-std::vector<cv::Point> KinectMotion::getSortedContour(cv::Mat image)
+/*
+	@def gets sorted copy of scaled_contour, beginning with point above the palm center
+	@return sorted contour as vector of points
+*/
+std::vector<cv::Point> KinectMotion::getSortedContour()
 {
 	std::vector<cv::Point> sortedContour;
 
@@ -141,7 +151,6 @@ std::vector<cv::Point> KinectMotion::getSortedContour(cv::Mat image)
 */
 cv::Mat KinectMotion::scaleHand(cv::Mat image)
 {
-
 	cv::Mat dst = cv::Mat::zeros(SCALE, SCALE, CV_8U);
 
 	cv::Rect rect = getRect(image);
@@ -173,6 +182,10 @@ cv::Mat KinectMotion::scaleHand(cv::Mat image)
 	return dst;
 }
 
+/*
+	@def displays image at runtime
+	@param image (cv::Mat) and title (std::string)
+*/
 void createWindow(cv::Mat image, std::string imageName)
 {
 	cv::namedWindow(imageName, cv::WINDOW_AUTOSIZE);
@@ -185,9 +198,9 @@ void createWindow(cv::Mat image, std::string imageName)
 	@param image (cv::Mat)
 	@return array of 150 distances (floats) from palm center
 */
-float * KinectMotion::distContour(cv::Mat image)
+float * KinectMotion::distContour()
 {
-	std::vector<cv::Point> edges = getSortedContour(image);
+	std::vector<cv::Point> edges = getSortedContour();
 	std::vector<cv::Point> sampleContour;
 	float * retVal = new float[SAMPLE_SIZE] {0};
 
@@ -218,6 +231,11 @@ float * KinectMotion::distContour(cv::Mat image)
 	return retVal;
 }
 
+/*
+	@def finds rectangle around hand
+	@param thresholded depth image (cv::Mat)
+	@return rectangle (cv::Rect)
+*/
 cv::Rect KinectMotion::getRect(cv::Mat image)
 {
 	std::vector<cv::Point> edges = getContour(image);
@@ -266,9 +284,9 @@ cv::Rect KinectMotion::getRect(cv::Mat image)
 	@param image (cv::Mat)
 	@return array of 32 distances (floats) of contour from image center
 */
-float * KinectMotion::silhouette(cv::Mat image)
+float * KinectMotion::silhouette()
 {
-	cv::Point center = cv::Point(image.cols / 2, image.rows / 2);
+	cv::Point center = cv::Point(scaled_binary.cols / 2, scaled_binary.rows / 2);
 	std::vector<float> bins[32];
 
 	float angle, dist;
@@ -299,7 +317,11 @@ float * KinectMotion::silhouette(cv::Mat image)
 	return avgs;
 }
 
-float * KinectMotion::hullAreas(cv::Mat image)
+/*
+	@def finds areas between hand contour and it's convex hull
+	@return array of 6 areas (floats)
+*/
+float * KinectMotion::hullAreas()
 {
 	float * ret_array = new float[6]{ 0,0,0,0,0,0 };
 
@@ -308,7 +330,7 @@ float * KinectMotion::hullAreas(cv::Mat image)
 	std::vector<cv::Point> hull;
 	convexHull(scaled_contour, hull);
 
-	cv::Mat hull_image = cv::Mat::zeros(image.size(), CV_8U);
+	cv::Mat hull_image = cv::Mat::zeros(scaled_binary.size(), CV_8U);
 	std::vector <std::vector<cv::Point>> contours;
 	contours.push_back(hull);
 	cv::drawContours(hull_image, contours, 0, cv::Scalar(255, 255, 255));
@@ -316,9 +338,9 @@ float * KinectMotion::hullAreas(cv::Mat image)
 	cv::Point seed = cv::Point(hull_image.rows / 2, hull_image.cols / 2);
 	floodFill(hull_image, seed, cv::Scalar(255, 255, 255));
 
-	for (int i = 0; i < image.rows; ++i)
+	for (int i = 0; i < scaled_binary.rows; ++i)
 	{
-		for (int j = 0; j < image.cols; ++j)
+		for (int j = 0; j < scaled_binary.cols; ++j)
 		{
 			if (scaled_binary.at<uchar>(i, j) != 0) hull_image.at<uchar>(i, j) = 0;
 		}
@@ -356,6 +378,11 @@ float * KinectMotion::hullAreas(cv::Mat image)
 	return ret_array;
 }
 
+/*
+	@def binarizes a grayscale image
+	@param grayscale image (cv::Mat), optional threshold (int)
+	@return binary image (cv::Mat)
+*/
 cv::Mat KinectMotion::binarize(cv::Mat image, int threshold)
 {
 	cv::Mat binary_image;
@@ -372,6 +399,12 @@ cv::Mat KinectMotion::binarize(cv::Mat image, int threshold)
 	return binary_image;
 }
 
+/*
+	@def utility function for std::sort
+	compares areas of two contours
+	@param two contours (vector of points)
+	@return boolean value
+*/
 bool compareContourAreas(std::vector<cv::Point> contour1, std::vector<cv::Point> contour2)
 {
 	double i = fabs(contourArea(cv::Mat(contour1)));
@@ -379,6 +412,11 @@ bool compareContourAreas(std::vector<cv::Point> contour1, std::vector<cv::Point>
 	return (i > j);
 }
 
+/*
+	@def thresholds original depth image to filter out anything behind the hand
+	@param original depth image (cv::Mat)
+	@return updated image (cv::Mat)
+*/
 cv::Mat KinectMotion::updateImage(cv::Mat image)
 {
 	cv::Mat uimage; image.convertTo(uimage, CV_8U);
@@ -405,18 +443,22 @@ cv::Mat KinectMotion::updateImage(cv::Mat image)
 	return uimage;
 }
 
-Occ KinectMotion::cellOccupancy(cv::Mat image)
+/*
+	@def finds number of non-zero pixels and average depth inside each box of an 8x8 grid of hand image
+	@return Occ struct - array of 64 numbers of non-zero pixels (ints), array of 64 averages (floats)
+*/
+Occ KinectMotion::cellOccupancy()
 {
-	int i_size = image.rows / CELL_DIVS; int j_size = image.cols / CELL_DIVS;
+	int i_size = scaled_binary.rows / CELL_DIVS; int j_size = scaled_binary.cols / CELL_DIVS;
 	int box_size = i_size * j_size;
 	float * avgs = new float[NUM_CELLS] {0}; int * nonZs = new int[NUM_CELLS] {0}; float * sums = new float[NUM_CELLS] { 0 };
-	for (int i = 0; i < image.rows; ++i)
+	for (int i = 0; i < scaled_binary.rows; ++i)
 	{
-		for (int j = 0; j < image.cols; ++j)
+		for (int j = 0; j < scaled_binary.cols; ++j)
 		{
-			if (image.at<uchar>(i, j) != 0)
+			if (scaled_binary.at<uchar>(i, j) != 0)
 			{
-				sums[(j / j_size)*CELL_DIVS + (i / i_size)] += image.at<uchar>(i, j);
+				sums[(j / j_size)*CELL_DIVS + (i / i_size)] += scaled_binary.at<uchar>(i, j);
 				nonZs[(j / j_size)*CELL_DIVS + (i / i_size)]++;
 			}
 		}
@@ -433,6 +475,11 @@ Occ KinectMotion::cellOccupancy(cv::Mat image)
 	return ret_val;
 }
 
+/*
+	@def finds points where arm meets hand and removes arm from image
+	@param thresholded depth image (cv::Mat)
+	@return updated image (cv::Mat)
+*/
 cv::Mat KinectMotion::getHand(cv::Mat image)
 {
 	int top = 0;
@@ -497,20 +544,11 @@ cv::Mat KinectMotion::getHand(cv::Mat image)
 	return image;
 }
 
-void KinectMotion::sortContourDist() 
-{
-	std::vector<float> tmp;
-	for (int i = 0; i < SAMPLE_SIZE; i++) {
-		tmp.push_back(contour_dist[i]);
-	}
-
-	std::sort(tmp.begin(), tmp.end());
-
-	for (int i = 0; i < SAMPLE_SIZE; i++) {
-		contour_dist[i] = tmp[i];
-	}
-}
-
+/*
+	@def true modulous function which accounts for negative numbers
+	@param int a, int b
+	@return a mod b
+*/
 int mod(int a, int b)
 {
 	if (a >= 0)
@@ -520,6 +558,9 @@ int mod(int a, int b)
 	return (a + b) % b;
 }
 
+/*
+	@def finds fingertips and calculates their distances and angles from the palm center
+*/
 void KinectMotion::fingers()
 {
 	// Sample scaled contour
@@ -633,10 +674,15 @@ void KinectMotion::fingers()
 	return;
 }
 
-cv::Point KinectMotion::palmCenter(cv::Mat image, int thresh) 
+/*
+	@def finds palm center
+	@param image (cv::Mat), optional sigma for Gaussian blur (int)
+	@return palm center (cv::Point)
+*/
+cv::Point KinectMotion::palmCenter(cv::Mat image, int sigma) 
 {
 	cv::Mat new_image = image.clone();
-	cv::GaussianBlur(image, new_image, cv::Size(0, 0), thresh, thresh);
+	cv::GaussianBlur(image, new_image, cv::Size(0, 0), sigma, sigma);
 	
 
 	int max = 0;
