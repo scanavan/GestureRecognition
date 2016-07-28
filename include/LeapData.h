@@ -37,6 +37,7 @@ public:
 	Point getHandDirection();
 	Point getHandSphereCenter();
 	float getHandSphereRadius();
+	std::vector<Point> getFingerDirection();
 	Point getPalmNormal();
 	Point getPalmPosition();
 	Point getPalmPositionRefined();

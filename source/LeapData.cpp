@@ -79,7 +79,7 @@ LeapData::LeapData(std::string path) {
 // constructor with RealTimeLeapData object as parameter
 LeapData::LeapData(RealTimeLeapData leapData) {
 	extendedFingers = leapData.getExtendedFingers();
-	fingerDirections = leapData.getFingerDirections();
+	fingerDirection = leapData.getFingerDirections();
 	fingertipPosition = leapData.getTipPositions();
 	extendedTipPosition = leapData.getExtendedTipPositions();
 	handDirection = leapData.getHandDirection();
@@ -135,12 +135,12 @@ void LeapData::RealTimeLeap(std::string path) {
 
 void LeapData::setFingertipDistance() {
 	for (int i = 0; i < 5; i++) {
-		if (i < numFingers) {
+		//if (i < numFingers) {
 			fingertipDist.push_back(palmPosition.getMagnitude(fingertipPosition[i]));
-		}
-		else {
+		//}
+		/*else {
 			fingertipDist.push_back(0.f);
-		}
+		}*/
 		
 	}
 }
@@ -340,13 +340,14 @@ void LeapData::setFingertipAngles() {
 void LeapData::setNewFingertipDist() {
 	int count = 0;
 	for (int i = 0; i < 5; i++) {
-		if (extendedFingers[i] == 0) {
+		/*if (extendedFingers[i] == 0) {
 			newFingertipDistRefined.push_back(0.000000);
 		}
-		else {
-			newFingertipDistRefined.push_back(fingertipDist[count] / newScaleFactor);
-			count++;
-		}
+		else {*/
+			newFingertipDistRefined.push_back(fingertipDist[i] / newScaleFactor);
+			std::cout << newFingertipDistRefined[i] << ", ";
+		/*	count++;
+		}*/
 	}
 }
 
@@ -699,6 +700,9 @@ Point LeapData::getPalmPosition() {
 Point LeapData::getPalmPositionRefined() {
 	return palmPositionRefined;
 }
+std::vector<Point> LeapData::getFingerDirection() {
+	return fingerDirection;
+}
 std::vector<float> LeapData::getPalmVelocity() {
 	return palmVelocity;
 }
@@ -776,7 +780,6 @@ void LeapData::clearAll() {
 	projectionPoints.clear();
 	fingertipElevation.clear();
 	extendedFingers.clear();
-	fingerDirections.clear();
 	extendedTipPosition.clear();
 	fingerDirection.clear();
 }
