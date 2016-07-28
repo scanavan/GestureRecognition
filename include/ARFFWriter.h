@@ -28,6 +28,7 @@ public:
 	std::string getTranslation(LeapData leap);
 	std::string getTranslationProbability(LeapData leap);
 	std::string getFingertipDistRefined(LeapData leap);
+	std::string ARFFWriter::getFingerDirection(LeapData leap);
 
 	//new attributes
 	std::string getNewScaleFactor(LeapData leap);
