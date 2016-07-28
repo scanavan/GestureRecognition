@@ -370,9 +370,25 @@ float * KinectMotion::hullAreas()
 	{
 		cv::Moments m = moments(thresholded_hull_contours[i]);
 		cv::Point centroid = cv::Point((int)(m.m10 / m.m00), (int)(m.m01 / m.m00));
-		angles.push_back(static_cast<float>(atan2(centroid.x - palm_center.x, centroid.y - palm_center.y)));
+		angles.push_back(static_cast<float>(atan2(palm_center.y - centroid.y , centroid.x - palm_center.x)));
+		//angles.push_back(static_cast<float>(atan2(centroid.x - palm_center.x, centroid.y - palm_center.y)));
 		if (angles[i] < 0.f) angles[i] = static_cast<float>((2.f * PI) + angles[i]);
 		ret_array[i] = static_cast<float>(contourArea(thresholded_hull_contours[i]) / hand_area);
+	}
+
+	for (int i = 1; i < angles.size(); ++i)
+	{
+		for (int j = 1; j < angles.size(); ++j)
+		{
+			float temp_angle, temp_area;
+			std::vector<cv::Point> temp_contour;
+			if (angles[j - 1] > angles[j])
+			{
+				temp_angle = angles[j - 1]; angles[j - 1] = angles[j]; angles[j] = temp_angle;
+				temp_area = ret_array[j - 1]; ret_array[j - 1] = ret_array[j]; ret_array[j] = temp_area;
+				temp_contour = thresholded_hull_contours[j - 1]; thresholded_hull_contours[j - 1] = thresholded_hull_contours[j]; thresholded_hull_contours[j] = temp_contour;
+			}
+		}
 	}
 
 	return ret_array;
@@ -449,16 +465,16 @@ cv::Mat KinectMotion::updateImage(cv::Mat image)
 */
 Occ KinectMotion::cellOccupancy()
 {
-	int i_size = scaled_binary.rows / CELL_DIVS; int j_size = scaled_binary.cols / CELL_DIVS;
+	int i_size = scaled_depth.rows / CELL_DIVS; int j_size = scaled_depth.cols / CELL_DIVS;
 	int box_size = i_size * j_size;
 	float * avgs = new float[NUM_CELLS] {0}; int * nonZs = new int[NUM_CELLS] {0}; float * sums = new float[NUM_CELLS] { 0 };
-	for (int i = 0; i < scaled_binary.rows; ++i)
+	for (int i = 0; i < scaled_depth.rows; ++i)
 	{
-		for (int j = 0; j < scaled_binary.cols; ++j)
+		for (int j = 0; j < scaled_depth.cols; ++j)
 		{
-			if (scaled_binary.at<uchar>(i, j) != 0)
+			if (scaled_depth.at<uchar>(i, j) != 0)
 			{
-				sums[(j / j_size)*CELL_DIVS + (i / i_size)] += scaled_binary.at<uchar>(i, j);
+				sums[(j / j_size)*CELL_DIVS + (i / i_size)] += scaled_depth.at<uchar>(i, j);
 				nonZs[(j / j_size)*CELL_DIVS + (i / i_size)]++;
 			}
 		}
@@ -608,13 +624,13 @@ void KinectMotion::fingers()
 		}
 		cluster.push_back(finger_indicies[i]);
 	}
-	finger_clusters.push_back(cluster);
+	if (finger_indicies.size() > 0) finger_clusters.push_back(cluster);
 
 	// Find Tips
 	std::vector<int> finger_tips;
 	for (int i = 0; i < finger_clusters.size(); ++i)
 	{
-		float max_dist_for_cluster = 0; int max_dist_index;
+		float max_dist_for_cluster = 0; int max_dist_index = 0;
 		for (int j = 0; j < finger_clusters[i].size(); ++j)
 		{
 			if (contour_distances[finger_clusters[i][j]] > max_dist_for_cluster)
@@ -653,7 +669,8 @@ void KinectMotion::fingers()
 	float * finger_tip_angles = new float[5]{ 0 };
 	for (int i = 0; i < finger_tips.size(); ++i)
 	{
-		finger_tip_angles[i] = static_cast<float>(atan2(sampled_contour[finger_tips[i]].x - palm_center.x , sampled_contour[finger_tips[i]].y - palm_center.y));
+		//finger_tip_angles[i] = static_cast<float>(atan2(sampled_contour[finger_tips[i]].x - palm_center.x , sampled_contour[finger_tips[i]].y - palm_center.y));
+		finger_tip_angles[i] = static_cast<float>(atan2(palm_center.y - sampled_contour[finger_tips[i]].y , sampled_contour[finger_tips[i]].x - palm_center.x));
 		finger_tip_distances[i] = static_cast<float>(std::sqrt(std::pow(palm_center.x - sampled_contour[finger_tips[i]].x, 2) + std::pow(palm_center.y - sampled_contour[finger_tips[i]].y, 2)));
 	}
 	for (int i = 1; i < finger_tips.size(); ++i)
