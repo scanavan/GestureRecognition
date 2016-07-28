@@ -5,9 +5,9 @@
 void arffBatchWriter()
 {
 	std::ofstream file;
-	file.open("S:/arff.bat");
+	file.open("C:/SRITest/arff.bat");
 
-	for (int i = 1; i < (1 << 12); ++i)
+	for (int i = 1; i < (1 << 14); ++i)
 	{
 		file << "java weka.filters.unsupervised.attribute.Remove -V -R ";
 
@@ -23,8 +23,10 @@ void arffBatchWriter()
 		if (i & (1 << 9)) file << "194-199,";
 		if (i & (1 << 10)) file << "200-263,";
 		if (i & (1 << 11)) file << "264-327,";
+		if (i & (1 << 12)) file << "328-332,";
+		if (i & (1 << 13)) file << "333-337,";
 		
-		file << "328 -i S:/A-B-C-D-E-F-G-Z-Y-X-W-V.arff -o S:/ARFF/";
+		file << "338 -i C:/SRITest/ABCDEFGZYXWVUT.arff -o C:/SRITest/ARFF/";
 
 		if (i & (1 << 0)) file << "A";
 		if (i & (1 << 1)) file << "B";
@@ -38,6 +40,8 @@ void arffBatchWriter()
 		if (i & (1 << 9)) file << "X";
 		if (i & (1 << 10)) file << "W";
 		if (i & (1 << 11)) file << "V";
+		if (i & (1 << 12)) file << "U";
+		if (i & (1 << 13)) file << "T";
 
 		file << ".arff\n";
 
