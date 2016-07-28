@@ -371,7 +371,6 @@ float * KinectMotion::hullAreas()
 		cv::Moments m = moments(thresholded_hull_contours[i]);
 		cv::Point centroid = cv::Point((int)(m.m10 / m.m00), (int)(m.m01 / m.m00));
 		angles.push_back(static_cast<float>(atan2(palm_center.y - centroid.y , centroid.x - palm_center.x)));
-		//angles.push_back(static_cast<float>(atan2(centroid.x - palm_center.x, centroid.y - palm_center.y)));
 		if (angles[i] < 0.f) angles[i] = static_cast<float>((2.f * PI) + angles[i]);
 		ret_array[i] = static_cast<float>(contourArea(thresholded_hull_contours[i]) / hand_area);
 	}
@@ -653,7 +652,6 @@ void KinectMotion::fingers()
 
 	if (finger_tips.size() > 5)
 	{
-		std::cout << "AYYY" << std::endl;
 		for (int i = 0; i < finger_tips.size(); ++i)
 		{
 			if (sampled_contour[finger_tips[i]].y > palm_center.y)
@@ -663,13 +661,11 @@ void KinectMotion::fingers()
 		}
 	}
 
-	if (finger_tips.size() > 5) std::cout << "AYYY" << std::endl;
 
 	float * finger_tip_distances = new float[5]{ 0 };
 	float * finger_tip_angles = new float[5]{ 0 };
 	for (int i = 0; i < finger_tips.size(); ++i)
 	{
-		//finger_tip_angles[i] = static_cast<float>(atan2(sampled_contour[finger_tips[i]].x - palm_center.x , sampled_contour[finger_tips[i]].y - palm_center.y));
 		finger_tip_angles[i] = static_cast<float>(atan2(palm_center.y - sampled_contour[finger_tips[i]].y , sampled_contour[finger_tips[i]].x - palm_center.x));
 		finger_tip_distances[i] = static_cast<float>(std::sqrt(std::pow(palm_center.x - sampled_contour[finger_tips[i]].x, 2) + std::pow(palm_center.y - sampled_contour[finger_tips[i]].y, 2)));
 	}
