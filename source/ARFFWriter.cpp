@@ -447,7 +447,7 @@ ARFFWriter::ARFFWriter(std::string path, std::vector<LeapData> data, bool val) {
 
 	file.close();
 }
-
+//getters that return features as strings
 std::string ARFFWriter::getNumFingers(LeapData leap) {
 	return std::to_string(leap.getNumFingers()) + ",";
 }
