@@ -2,6 +2,8 @@
 #include <iostream>
 #include <fstream>
 
+
+// batch file writer for the arff combination of features A-G + T-Z
 void arffBatchWriter()
 {
 	std::ofstream file;
@@ -49,6 +51,7 @@ void arffBatchWriter()
 
 }
 
+// batch file writer for random forest tests of features A-G + T-Z
 void RFWriter()
 {
 	std::ofstream file;
@@ -96,6 +99,7 @@ void RFWriter()
 
 }
 
+// batch file writer for arff files for all the leap features
 void arffLeapBatchWriter() {
 	std::ofstream file;
 	file.open("C:/Users/IASA-FRI/Desktop/SRI/GestureRecognition/Data/BatchFiles/createARFF.bat");
@@ -131,6 +135,7 @@ void arffLeapBatchWriter() {
 	}
 }
 
+// batch file writer for random forest tests of all the leap features
 void LeapRFWriter()
 {
 	std::ofstream file;
@@ -169,42 +174,7 @@ void LeapRFWriter()
 
 }
 
-void LeapRTWriter() {
-	std::ofstream file;
-	file.open("C:/Users/IASA-FRI/Desktop/SRI/GestureRecognition/Data/BatchFiles/REPTree.bat");
-
-	for (int i = 1; i < (1 << 9); ++i)
-	{
-		file << "java weka.classifiers.trees.REPTree -t ";
-
-		file << "C:/Users/IASA-FRI/Desktop/SRI/GestureRecognition/Data/AllLeapFeatures/arffFiles/Leap/";
-
-		if (i & (1 << 0)) file << "A";
-		if (i & (1 << 1)) file << "B";
-		if (i & (1 << 2)) file << "C";
-		if (i & (1 << 3)) file << "D";
-		if (i & (1 << 4)) file << "E";
-		if (i & (1 << 5)) file << "F";
-		if (i & (1 << 6)) file << "G";
-		if (i & (1 << 7)) file << "H";
-		if (i & (1 << 8)) file << "I";
-
-		file << ".arff > C:/Users/IASA-FRI/Desktop/SRI/GestureRecognition/Data/AllLeapFeatures/REPTree/Leap/";
-
-		if (i & (1 << 0)) file << "A";
-		if (i & (1 << 1)) file << "B";
-		if (i & (1 << 2)) file << "C";
-		if (i & (1 << 3)) file << "D";
-		if (i & (1 << 4)) file << "E";
-		if (i & (1 << 5)) file << "F";
-		if (i & (1 << 6)) file << "G";
-		if (i & (1 << 7)) file << "H";
-		if (i & (1 << 8)) file << "I";
-
-		file << ".txt\n";
-	}
-}
-
+// batch file writer for LibSVM tests of all leap features
 void LeapLibSVMWriter() {
 	std::ofstream file;
 	file.open("C:/Users/IASA-FRI/Desktop/SRI/GestureRecognition/Data/BatchFiles/LibSVM.bat");

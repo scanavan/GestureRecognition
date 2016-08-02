@@ -5,10 +5,14 @@ FileNames::FileNames()
 {
 	// Default construtor
 }
+// constructor with path to call read dir
 FileNames::FileNames(const char * path)
 {
 	readDir(path);
 }
+
+// function to read the path names for all the different files in the database
+// separates them into vectors of strings for bin files, leap csv, depth images, and rgb images
 void FileNames::readDir(const char * path) {
 	tinydir_dir tempDir;
 	tinydir_open(&tempDir, path);
@@ -32,7 +36,7 @@ void FileNames::readDir(const char * path) {
 			txt.push_back((std::string)path + "/" + (std::string)file.name);
 		}
 		// goes into the subdirectories recursively
-		// the counter deals with an issue within the process of going into the subdirectories with hiddedn folders
+		// the counter deals with an issue within the process of going into the subdirectories with hidden folders
 		else if (file.is_dir && counter > 2) {
 			std::string newPath = (std::string)path + "/" + (std::string)file.name;
 			const char *cstr = newPath.c_str();
@@ -46,6 +50,7 @@ void FileNames::readDir(const char * path) {
 
 }
 
+// print the path names that are stored
 void FileNames::print() {
 
 	std::cout << "Depth files: " << std::endl;

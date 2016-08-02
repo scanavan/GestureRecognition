@@ -62,7 +62,6 @@ LeapData::LeapData(std::string path) {
 		}
 
 		setNewFingertipDist();
-		//newFingertipDistRefined = fingertipDist;
 		projectionPoints = getProjection();
 		setFingertipAngles();
 		
@@ -96,6 +95,7 @@ LeapData::LeapData(RealTimeLeapData leapData) {
 	setMaximums();
 }
 
+// constructor for the LeapData for we collected and wrote to a CSV file
 void LeapData::RealTimeLeap(std::string path) {
 	std::ifstream ifs;
 	std::string line;
@@ -133,18 +133,14 @@ void LeapData::RealTimeLeap(std::string path) {
 	ifs.close();
 }
 
+//sets the fingertip distances using the palm position and fingertip positions
 void LeapData::setFingertipDistance() {
 	for (int i = 0; i < 5; i++) {
-		//if (i < numFingers) {
-			fingertipDist.push_back(palmPosition.getMagnitude(fingertipPosition[i]));
-		//}
-		/*else {
-			fingertipDist.push_back(0.f);
-		}*/
-		
+		fingertipDist.push_back(palmPosition.getMagnitude(fingertipPosition[i]));
 	}
 }
 
+// calculates and sets the max X and max Y
 void LeapData::setMaximums()
 {
 	float tmp_X=0;
@@ -172,16 +168,6 @@ void LeapData::setMaximums()
 	}
 	max_X = max_X / newScaleFactor;
 	max_Y = max_Y / newScaleFactor;
-	//std::cout << "fingertipPosition:" << " ";
-	//for (int i = 0; i < extendedTipPosition.size(); i++) {
-	//	std::cout << "(" << extendedTipPosition[i].getX() - palmPosition.getX() << ',' << extendedTipPosition[i].getY() - palmPosition.getY() << ')'<<' ';
-	//}
-	//std::cout << std::endl;
-	//std::cout << "palm position ";
-	//palmPosition.printPoint();
-	//std::cout << "Max_X" << max_X << "\n";
-	//std::cout << "Max_Y" << max_Y << "\n";
-
 }
 // sets fingerArea to the average area between the extended fingers
 // s = (fingerDistance[i] + fingerDistance[i+1] + distanceBetweenFingers) / 2
@@ -338,16 +324,8 @@ void LeapData::setFingertipAngles() {
 // sets the newFingertipDistance based on newScaleFactor
 // newFingertipDist = dist(fingertipPosition, palmPosition) / newScaleFactor
 void LeapData::setNewFingertipDist() {
-	int count = 0;
 	for (int i = 0; i < 5; i++) {
-		/*if (extendedFingers[i] == 0) {
-			newFingertipDistRefined.push_back(0.000000);
-		}
-		else {*/
-			newFingertipDistRefined.push_back(fingertipDist[i] / newScaleFactor);
-			std::cout << newFingertipDistRefined[i] << ", ";
-		/*	count++;
-		}*/
+		newFingertipDistRefined.push_back(fingertipDist[i] / newScaleFactor);
 	}
 }
 
