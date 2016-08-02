@@ -11,6 +11,7 @@ txt::txt(char* path,std::string output)
 		ifs.open(file.txt[i], std::ifstream::in);
 		if (ifs.is_open())
 		{
+			//finds stratified cross-validation then goes down two more lines to retrieve percentage
 			while (!ifs.eof())
 			{
 				std::getline(ifs, line);
