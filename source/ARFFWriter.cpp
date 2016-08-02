@@ -36,8 +36,8 @@ ARFFWriter::ARFFWriter(std::string path, std::vector<LeapData> data) {
 		"@ATTRIBUTE fingertipElevation_f3   NUMERIC\n" <<
 		"@ATTRIBUTE fingertipElevation_f4   NUMERIC\n" <<
 		"@ATTRIBUTE fingertipElevation_f5   NUMERIC\n" <<
-		//"@ATTRIBUTE class { G1, G2, G3, G4, G5, G6, G7, G8, G9, G0 }\n" <<
-		"@ATTRIBUTE class { G01, G02, G03, G04, G05, G06, G07, G08, G09, G10,G11,G12,G13,G14,G15,G16,G17,G18,G19,G20,G21,G22,G23,G24 }\n"
+		"@ATTRIBUTE class { G1, G2, G3, G4, G5, G6, G7, G8, G9, G0 }\n" <<
+		//"@ATTRIBUTE class { G01, G02, G03, G04, G05, G06, G07, G08, G09, G10,G11,G12,G13,G14,G15,G16,G17,G18,G19,G20,G21,G22,G23,G24 }\n"
 		"\n@DATA\n";
 
 		// goes through the data LeapData vector and gets the values for the arff file
@@ -421,21 +421,21 @@ ARFFWriter::ARFFWriter(std::string path, std::vector<LeapData> data, bool val) {
 		"@ATTRIBUTE newFingerTipDistRefined_f3  NUMERIC\n" <<
 		"@ATTRIBUTE newFingerTipDistRefined_f4  NUMERIC\n" <<
 		"@ATTRIBUTE newFingerTipDistRefined_f5  NUMERIC\n" <<
-		"@ATTRIBUTE fingerDirection f1_x  NUMERIC\n" <<
-		"@ATTRIBUTE fingerDirection f1_y  NUMERIC\n" <<
-		"@ATTRIBUTE fingerDirection f1_z  NUMERIC\n" <<
-		"@ATTRIBUTE fingerDirection f2_x  NUMERIC\n" <<
-		"@ATTRIBUTE fingerDirection f2_y  NUMERIC\n" <<
-		"@ATTRIBUTE fingerDirection f2_z  NUMERIC\n" <<
-		"@ATTRIBUTE fingerDirection f3_x  NUMERIC\n" <<
-		"@ATTRIBUTE fingerDirection f3_y  NUMERIC\n" <<
-		"@ATTRIBUTE fingerDirection f3_z  NUMERIC\n" <<
-		"@ATTRIBUTE fingerDirection f4_x  NUMERIC\n" <<
-		"@ATTRIBUTE fingerDirection f4_y  NUMERIC\n" <<
-		"@ATTRIBUTE fingerDirection f4_z  NUMERIC\n" <<
-		"@ATTRIBUTE fingerDirection f5_x  NUMERIC\n" <<
-		"@ATTRIBUTE fingerDirection f5_y  NUMERIC\n" <<
-		"@ATTRIBUTE fingerDirection f5_z  NUMERIC\n" <<
+		"@ATTRIBUTE fingerDirection_f1_x  NUMERIC\n" <<
+		"@ATTRIBUTE fingerDirection_f1_y  NUMERIC\n" <<
+		"@ATTRIBUTE fingerDirection_f1_z  NUMERIC\n" <<
+		"@ATTRIBUTE fingerDirection_f2_x  NUMERIC\n" <<
+		"@ATTRIBUTE fingerDirection_f2_y  NUMERIC\n" <<
+		"@ATTRIBUTE fingerDirection_f2_z  NUMERIC\n" <<
+		"@ATTRIBUTE fingerDirection_f3_x  NUMERIC\n" <<
+		"@ATTRIBUTE fingerDirection_f3_y  NUMERIC\n" <<
+		"@ATTRIBUTE fingerDirection_f3_z  NUMERIC\n" <<
+		"@ATTRIBUTE fingerDirection_f4_x  NUMERIC\n" <<
+		"@ATTRIBUTE fingerDirection_f4_y  NUMERIC\n" <<
+		"@ATTRIBUTE fingerDirection_f4_z  NUMERIC\n" <<
+		"@ATTRIBUTE fingerDirection_f5_x  NUMERIC\n" <<
+		"@ATTRIBUTE fingerDirection_f5_y  NUMERIC\n" <<
+		"@ATTRIBUTE fingerDirection_f5_z  NUMERIC\n" <<
 		//"@ATTRIBUTE class { G1, G2, G3, G4, G5, G6, G7, G8, G9, G0 }\n" <<
 		"@ATTRIBUTE class { G01, G02, G03, G04, G05, G06, G07, G08, G09, G10,G11,G12,G13,G14,G15,G16,G17,G18,G19,G20,G21,G22,G23,G24 }\n"
 		"\n@DATA\n";

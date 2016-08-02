@@ -1,7 +1,8 @@
 #include "RealTime.h"
 
 
-
+// gets a depth image from the Kinect on  a button click
+// source :https://github.com/UnaNancyOwen/Kinect2Sample
 int RealTime::depth()
 {
 	cv::setUseOptimized(true);
@@ -99,22 +100,10 @@ int RealTime::depth()
 	return 0;
 }
 
+// gets a rgb image from the Kinect on  a button click
+// source :https://github.com/UnaNancyOwen/Kinect2Sample
 int RealTime::color()
 {
-
-	
-
-	//SafeRelease(pColorSource);
-	//SafeRelease(pColorReader);
-	//SafeRelease(pDescription);
-	//if (pSensor) {
-	//	pSensor->Close();
-	//}
-	//SafeRelease(pSensor);
-	//cv::destroyAllWindows();
-
-	//return 0;
-
 	cv::setUseOptimized(true);
 
 	// Sensor
@@ -206,6 +195,7 @@ int RealTime::color()
 
 }
 
+// gets basic leap information from the Leap Motion on  a button click
 int RealTime::leapInfo() {
 	//SampleListener listener;
 	Controller controller;
@@ -306,20 +296,24 @@ int RealTime::leapInfo() {
 
 }
 
+// the atomic key press that tells depth() color() and leapInfo() to capture information
 void RealTime::setKeyPressed(bool val) {
 	keyPressedDepth = val;
 	keyPressedColor = val;
 	keyPressedLeap = val;
 }
 
+// exits the program
 void RealTime::endProgram() {
 	counter = false;
 }
 
+// sets the path for where the files should be saved
 void RealTime::setPath(std::string setVal) {
 	path = setVal;
 }
 
+// changes the path on a button click to increment to the next gesture
 void RealTime::changeGesture() {
 	gestureNum++;
 	imageNum = 0;
