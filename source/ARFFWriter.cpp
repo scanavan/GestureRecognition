@@ -421,13 +421,28 @@ ARFFWriter::ARFFWriter(std::string path, std::vector<LeapData> data, bool val) {
 		"@ATTRIBUTE newFingerTipDistRefined_f3  NUMERIC\n" <<
 		"@ATTRIBUTE newFingerTipDistRefined_f4  NUMERIC\n" <<
 		"@ATTRIBUTE newFingerTipDistRefined_f5  NUMERIC\n" <<
+		"@ATTRIBUTE fingerDirection f1_x  NUMERIC\n" <<
+		"@ATTRIBUTE fingerDirection f1_y  NUMERIC\n" <<
+		"@ATTRIBUTE fingerDirection f1_z  NUMERIC\n" <<
+		"@ATTRIBUTE fingerDirection f2_x  NUMERIC\n" <<
+		"@ATTRIBUTE fingerDirection f2_y  NUMERIC\n" <<
+		"@ATTRIBUTE fingerDirection f2_z  NUMERIC\n" <<
+		"@ATTRIBUTE fingerDirection f3_x  NUMERIC\n" <<
+		"@ATTRIBUTE fingerDirection f3_y  NUMERIC\n" <<
+		"@ATTRIBUTE fingerDirection f3_z  NUMERIC\n" <<
+		"@ATTRIBUTE fingerDirection f4_x  NUMERIC\n" <<
+		"@ATTRIBUTE fingerDirection f4_y  NUMERIC\n" <<
+		"@ATTRIBUTE fingerDirection f4_z  NUMERIC\n" <<
+		"@ATTRIBUTE fingerDirection f5_x  NUMERIC\n" <<
+		"@ATTRIBUTE fingerDirection f5_y  NUMERIC\n" <<
+		"@ATTRIBUTE fingerDirection f5_z  NUMERIC\n" <<
 		//"@ATTRIBUTE class { G1, G2, G3, G4, G5, G6, G7, G8, G9, G0 }\n" <<
 		"@ATTRIBUTE class { G01, G02, G03, G04, G05, G06, G07, G08, G09, G10,G11,G12,G13,G14,G15,G16,G17,G18,G19,G20,G21,G22,G23,G24 }\n"
 		"\n@DATA\n";
 
 	// goes through the data LeapData vector and gets the values for the arff file
 	for (int i = 0; i < data.size(); i++) {
-		file << getNumFingers(data[i]) << getFingersExtends(data[i]) << getRatio(data[i]) << getMax_X(data[i]) << getMax_Y(data[i]) << getFingersArea(data[i]) << getNewFingertipDistRefined(data[i]) << getGesture(data[i]) << "\n";
+		file << getNumFingers(data[i]) << getFingersExtends(data[i]) << getRatio(data[i]) << getMax_X(data[i]) << getMax_Y(data[i]) << getFingersArea(data[i]) << getNewFingertipDistRefined(data[i]) << getFingerDirection(data[i]) << getGesture(data[i]) << "\n";
 	}
 
 	file.close();
@@ -667,4 +682,11 @@ std::string ARFFWriter::getMax_X(LeapData leap)
 std::string ARFFWriter::getMax_Y(LeapData leap)
 {
 	return std::to_string(leap.getMax_Y()) + ",";
+}
+std::string ARFFWriter::getFingerDirection(LeapData leap) {
+	std::string returnVal;
+	for (int i = 0; i < leap.getFingerDirection().size(); i++) {
+		returnVal = returnVal + leap.getFingerDirection()[i].writePoint() + ",";
+	}
+	return returnVal;
 }

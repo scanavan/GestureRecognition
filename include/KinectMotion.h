@@ -21,9 +21,7 @@ class KinectMotion {
 public:
 	KinectMotion(std::string depth);
 	cv::Mat getHand(cv::Mat image);
-	cv::Mat makeContourImage(cv::Mat image);
 	cv::Mat scaleHand(cv::Mat image);
-	cv::Mat rotateImage(cv::Mat image);
 	cv::Mat getDepth();
 	float * getSil();
 	float * getContourDist();
@@ -33,14 +31,11 @@ public:
 	float * getFingerAngle();
 	float * getFingerDist();
 	std::string getGesture();
-	void sortContourDist();
 private:
-	//cv::Mat getRgb();
 	cv::Mat depth;
 	cv::Mat scaled_depth;
 	cv::Mat scaled_binary;
 	std::vector<float> reg_dist_contour;
-	//cv::Mat rgb;
 	LeapData * leap;
 	float * sil;
 	float * contour_dist;
@@ -55,19 +50,17 @@ private:
 	void initData();
 	void fingers();
 	std::vector<cv::Point> possible_palm_centers;
-	void palmCircle();
 
 	cv::Rect getRect(cv::Mat image);
-	float * silhouette(cv::Mat image);
-	float * distContour(cv::Mat image);
-	Occ cellOccupancy(cv::Mat image);
-	float * hullAreas(cv::Mat image);
+	float * silhouette();
+	float * distContour();
+	Occ cellOccupancy();
+	float * hullAreas();
 	cv::Mat binarize(cv::Mat image, int threshold = 5);
-	cv::Point palmCenter(cv::Mat image, int thresh = 150);
 	std::vector<cv::Point> getContour(cv::Mat image);
-	std::vector<cv::Point> getSortedContour(cv::Mat image);
+	std::vector<cv::Point> getSortedContour();
 	cv::Mat updateImage(cv::Mat image);
-	cv::Point palmCenter2(cv::Mat image, int thresh = 150);
+	cv::Point palmCenter(cv::Mat image, int sigma = 150);
 };
 
 void createWindow(cv::Mat image, std::string imageName);
