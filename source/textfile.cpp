@@ -28,7 +28,7 @@ txt::txt(char* path,std::string output)
 			int start;
 			int end;
 			
-
+			//retrieves file path and percentages from the file
 			while (std::getline(ss, token, ' ')) {
 				if (token!="") 
 				{
