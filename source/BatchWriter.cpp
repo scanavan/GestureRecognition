@@ -51,33 +51,17 @@ void arffBatchWriter()
 
 }
 
-// batch file writer for random forest tests of features A-G + T-Z
+// batch file writer for random forest tests of features A-H + T-Z
 void RFWriter()
 {
 	std::ofstream file;
-	file.open("C:/SRITest/SVM2.bat");
+	file.open("C:/SRITest/RF_ASL.bat");
 
-	for (int i = 1; i < (1 << 14); ++i)
+	for (int i = 1; i < (1 << 15); ++i)
 	{
-		file << "java weka.classifiers.functions.LibSVM -t ";
+		file << "java weka.classifiers.trees.RandomForest -t ";
 
-		file << "C:/SRITest/ARFF/";
-
-		if (i & (1 << 0)) file << "A";
-		if (i & (1 << 1)) file << "B";
-		if (i & (1 << 2)) file << "C";
-		if (i & (1 << 3)) file << "D";
-		if (i & (1 << 4)) file << "E";
-		if (i & (1 << 5)) file << "F";
-		if (i & (1 << 6)) file << "G";
-		if (i & (1 << 7)) file << "Z";
-		if (i & (1 << 8)) file << "Y";
-		if (i & (1 << 9)) file << "X";
-		if (i & (1 << 10)) file << "W";
-		if (i & (1 << 11)) file << "V";
-		if (i & (1 << 12)) file << "U";
-		if (i & (1 << 13)) file << "T";
-		file << ".arff > C:/SRITest/SVM/";
+		file << "C:/ASL_ARFF/";
 
 		if (i & (1 << 0)) file << "A";
 		if (i & (1 << 1)) file << "B";
@@ -86,13 +70,31 @@ void RFWriter()
 		if (i & (1 << 4)) file << "E";
 		if (i & (1 << 5)) file << "F";
 		if (i & (1 << 6)) file << "G";
-		if (i & (1 << 7)) file << "Z";
-		if (i & (1 << 8)) file << "Y";
-		if (i & (1 << 9)) file << "X";
-		if (i & (1 << 10)) file << "W";
-		if (i & (1 << 11)) file << "V";
-		if (i & (1 << 12)) file << "U";
-		if (i & (1 << 13)) file << "T";
+		if (i & (1 << 7)) file << "H";
+		if (i & (1 << 8)) file << "Z";
+		if (i & (1 << 9)) file << "Y";
+		if (i & (1 << 10)) file << "X";
+		if (i & (1 << 11)) file << "W";
+		if (i & (1 << 12)) file << "V";
+		if (i & (1 << 13)) file << "U";
+		if (i & (1 << 14)) file << "T";
+		file << ".arff > C:/RF_ASL/";
+
+		if (i & (1 << 0)) file << "A";
+		if (i & (1 << 1)) file << "B";
+		if (i & (1 << 2)) file << "C";
+		if (i & (1 << 3)) file << "D";
+		if (i & (1 << 4)) file << "E";
+		if (i & (1 << 5)) file << "F";
+		if (i & (1 << 6)) file << "G";
+		if (i & (1 << 7)) file << "H";
+		if (i & (1 << 8)) file << "Z";
+		if (i & (1 << 9)) file << "Y";
+		if (i & (1 << 10)) file << "X";
+		if (i & (1 << 11)) file << "W";
+		if (i & (1 << 12)) file << "V";
+		if (i & (1 << 13)) file << "U";
+		if (i & (1 << 14)) file << "T";
 
 		file << ".txt\n";
 	}
