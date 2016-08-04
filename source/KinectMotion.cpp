@@ -82,7 +82,8 @@ float * KinectMotion::getFingerDist()
 {
 	return finger_distances;
 }
-std::string KinectMotion::getGesture() {
+std::string KinectMotion::getGesture() 
+{
 	return gesture;
 }
 
@@ -522,9 +523,11 @@ cv::Mat KinectMotion::getHand(cv::Mat image)
 				}
 			}
 		}
-		if (foundHand && numPixels != 0) {
+		if (foundHand && numPixels != 0) 
+		{
 			thresholdRatio = previousNumPixels / numPixels;
-			if (maxThresholdRatio < thresholdRatio) {
+			if (maxThresholdRatio < thresholdRatio) 
+			{
 				maxThresholdRatio = thresholdRatio;
 			}
 		}
@@ -544,7 +547,8 @@ cv::Mat KinectMotion::getHand(cv::Mat image)
 			tmp = numPixels;
 			numPixels = 0;
 		}
-		if (foundWrist) {
+		if (foundWrist) 
+		{
 			break;
 		}
 	}
@@ -617,7 +621,8 @@ void KinectMotion::fingers()
 	if (finger_indicies.size() > 0) cluster.push_back(finger_indicies[0]);
 	for (auto i = 1; i < finger_indicies.size(); ++i)
 	{
-		if (mod(finger_indicies[i] - finger_indicies[i - 1],static_cast<int>(sampled_contour.size())) > 100) {
+		if (mod(finger_indicies[i] - finger_indicies[i - 1],static_cast<int>(sampled_contour.size())) > 100) 
+		{
 			finger_clusters.push_back(cluster);
 			cluster.clear();
 		}
