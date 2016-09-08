@@ -212,3 +212,23 @@ void LeapLibSVMWriter() {
 		file << ".txt\n";
 	}
 }
+
+// batch file writer to create the directory structure for a dataset
+void DirStruct(std::string home, int subjects) {
+	std::string tmp1, tmp2;
+	std::ofstream file;
+	file.open("C:/Users/IASA-FRI/Desktop/createDir.bat");
+	
+	file << "if not exist \"" << home << "\" MD \"" << home << "\"\n";
+
+	for (int i = 1; i <= subjects; ++i)
+	{
+		tmp1 = home + "/P" + std::to_string(i);
+		file << "if not exist \"" << tmp1 << "\" MD \"" << tmp1 << "\"\n";
+		for (int j = 1; j <= 24; ++j)
+		{
+			tmp2 = tmp1 + "/G" + std::to_string(j);
+			file << "if not exist \"" << tmp2 << "\" MD \"" << tmp2 << "\"\n";
+		}
+	}
+}
