@@ -65,7 +65,11 @@ public:
 	float getMax_X();
 	float getMax_Y();
 	void setFingertipDistance();
+	void setFingerAngles();
+
 private:
+	std::vector<float>fingerAngles;
+
 	int numFingers;
 	std::vector<float> fingertipDist;
 	std::vector<float> fingertipDistRefined;
