@@ -42,6 +42,7 @@ public:
 	std::string getRatio(LeapData leap);
 	std::string getMax_X(LeapData leap);
 	std::string getMax_Y(LeapData leap);
+	std::string getFingerAngles(LeapData leap);
 
 	std::string getSil(KinectMotion depth);
 	std::string getContourDist(KinectMotion depth);

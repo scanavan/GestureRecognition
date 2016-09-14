@@ -436,13 +436,17 @@ ARFFWriter::ARFFWriter(std::string path, std::vector<LeapData> data, bool val) {
 		"@ATTRIBUTE fingerDirection_f5_x  NUMERIC\n" <<
 		"@ATTRIBUTE fingerDirection_f5_y  NUMERIC\n" <<
 		"@ATTRIBUTE fingerDirection_f5_z  NUMERIC\n" <<
+		"@ATTRIBUTE fingerAngle_1  NUMERIC\n" <<
+		"@ATTRIBUTE fingerAngle_2  NUMERIC\n" <<
+		"@ATTRIBUTE fingerAngle_3  NUMERIC\n" <<
+		"@ATTRIBUTE fingerAngle_4  NUMERIC\n" <<
 		//"@ATTRIBUTE class { G1, G2, G3, G4, G5, G6, G7, G8, G9, G0 }\n" <<
 		"@ATTRIBUTE class { G01, G02, G03, G04, G05, G06, G07, G08, G09, G10,G11,G12,G13,G14,G15,G16,G17,G18,G19,G20,G21,G22,G23,G24 }\n"
 		"\n@DATA\n";
 
 	// goes through the data LeapData vector and gets the values for the arff file
 	for (int i = 0; i < data.size(); i++) {
-		file << getNumFingers(data[i]) << getFingersExtends(data[i]) << getRatio(data[i]) << getMax_X(data[i]) << getMax_Y(data[i]) << getFingersArea(data[i]) << getNewFingertipDistRefined(data[i]) << getFingerDirection(data[i]) << getGesture(data[i]) << "\n";
+		file << getNumFingers(data[i]) << getFingersExtends(data[i]) << getRatio(data[i]) << getMax_X(data[i]) << getMax_Y(data[i]) << getFingersArea(data[i]) << getNewFingertipDistRefined(data[i]) << getFingerDirection(data[i]) << getFingerAngles(data[i]) << getGesture(data[i]) << "\n";
 	}
 
 	file.close();
@@ -463,6 +467,13 @@ std::string ARFFWriter::getFingertipDistRefined(LeapData leap) {
 	std::string returnVal;
 	for (int i = 0; i < leap.getFingertipDistRefined().size(); i++) {
 		returnVal = returnVal + std::to_string(leap.getFingertipDistRefined()[i]) + ",";
+	}
+	return returnVal;
+}
+std::string ARFFWriter::getFingerAngles(LeapData leap) {
+	std::string returnVal;
+	for (int i = 0; i < leap.getFingerAngles().size(); i++) {
+		returnVal = returnVal + std::to_string(leap.getFingerAngles()[i]) + ",";
 	}
 	return returnVal;
 }

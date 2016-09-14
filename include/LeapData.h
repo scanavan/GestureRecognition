@@ -59,6 +59,7 @@ public:
 	std::vector<float> getFingertipAngles();
 	std::vector<Point> getProjectionPoints();
 	std::vector<float> getFingertipElevation();
+	std::vector<float> getFingerAngles();
 	std::string getGesture();
 	std::vector<int> getExtendedFingers();
 	void setMaximums();
