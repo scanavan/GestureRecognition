@@ -328,7 +328,20 @@ void LeapData::setNewFingertipDist() {
 		newFingertipDistRefined.push_back(fingertipDist[i] / newScaleFactor);
 	}
 }
+void LeapData::setFingerAngles() {
+	for (int i = 0; i < numFingers - 1; ++i)
+	{
+		float a = extendedTipPosition[i].getMagnitude(palmPosition);
+		float b = extendedTipPosition[i + 1].getMagnitude(palmPosition);
+		float c = extendedTipPosition[i].getMagnitude(extendedTipPosition[i + 1]);
 
+		fingerAngles.push_back(acos(a*a + b*b - c*c) / (2 * a*b));
+	}
+	for (int i = fingerAngles.size(); i < 4; ++i)
+	{
+		fingerAngles.push_back(0);
+	}
+}
 // calculates newScaleFactor
 // newScaleFactor = dist((avg(fingertipPositions) / numFingers), palmPosition)
 void LeapData::setNewScaleFactor() {
@@ -714,6 +727,9 @@ float LeapData::getNewScaleFactor() {
 std::vector<float> LeapData::getNewFingertipDistRefined() {
 	return newFingertipDistRefined;
 }
+std::vector<float> LeapData::getFingerAngles() {
+	return fingerAngles;
+}
 std::vector<float> LeapData::getFingertipAngles() {
 	return fingertipAngles;
 }
@@ -760,4 +776,5 @@ void LeapData::clearAll() {
 	extendedFingers.clear();
 	extendedTipPosition.clear();
 	fingerDirection.clear();
+	fingerAngles.clear();
 }
