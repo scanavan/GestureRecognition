@@ -75,7 +75,6 @@ int RealTime::depth()
 		}
 		SafeRelease(pDepthFrame);
 		cv::subtract(cv::Scalar::all(255), depthMat, inverted);
-		cv::waitKey(30);
 		if (keyPressedDepth) {
 			if (gestureNum < 10) {
 				cv::imwrite(path + '0' + std::to_string(gestureNum) + '/' + std::to_string(imageNum) + "_depth.png", inverted);
@@ -85,6 +84,7 @@ int RealTime::depth()
 			}
 			keyPressedDepth = false;
 		}
+		cv::waitKey(30);
 	}
 
 	SafeRelease(pDepthSource);
@@ -168,16 +168,17 @@ int RealTime::color()
 		SafeRelease(pColorFrame);
 
 		cv::imshow("Color", colorMat);
-		cv::waitKey(30);
 		if (keyPressedColor) {
 			if (gestureNum < 10) {
 				cv::imwrite(path + '0' + std::to_string(gestureNum) + '/' + std::to_string(imageNum) + "_color.png", colorMat);
+				//cv::imwrite("C:/Users/IASA-FRI/Desktop/ASL_Dataset/1_color.png", colorMat);
 			}
 			else {
 				cv::imwrite(path + std::to_string(gestureNum) + '/' + std::to_string(imageNum) + "_color.png", colorMat);
 			}
 			keyPressedColor = false;
 		}
+		cv::waitKey(30);
 	}
 
 
@@ -301,6 +302,7 @@ void RealTime::setKeyPressed(bool val) {
 	keyPressedDepth = val;
 	keyPressedColor = val;
 	keyPressedLeap = val;
+	imageNum++;
 }
 
 // exits the program
