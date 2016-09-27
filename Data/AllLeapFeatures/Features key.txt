@@ -1,6 +1,0 @@
-a=refinedDistances
-b=numberFingers
-c=angles
-d=elevations
-e=area
-f=extendFingers
