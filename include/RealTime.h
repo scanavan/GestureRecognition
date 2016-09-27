@@ -16,7 +16,7 @@ class RealTime {
 public:
 	int color();
 	int depth();
-	int leapInfo();
+	void leapInfo();
 	void setKeyPressed(bool val);
 	void endProgram();
 	void setPath(std::string path);

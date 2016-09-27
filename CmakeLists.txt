@@ -21,8 +21,8 @@ SOURCE_GROUP("Source Files" FILES ${SOURCE_FILES})
 #make sure we include opencv include dir
 INCLUDE_DIRECTORIES(${LEAP_DIR}/include ${OPENCV_DIR}/include ${KINECT_DIR}/inc ${INCLUDE_DIR})
 #include opencv lib directory
-LINK_DIRECTORIES(${LEAP_DIR}/lib/x64/ ${OPENCV_DIR}/x64/vc12/lib/ ${KINECT_DIR}/Lib/x64/)
+LINK_DIRECTORIES(${LEAP_DIR}/lib/x64/ ${OPENCV_DIR}/x64/vc14/lib/ ${KINECT_DIR}/Lib/x64/)
 #create exe
 ADD_EXECUTABLE(GestureRecognition ${SOURCE_FILES} ${HEADER_FILES})
 #link libs
-TARGET_LINK_LIBRARIES(GestureRecognition Leap.lib opencv_world310.lib Kinect20.lib)
+TARGET_LINK_LIBRARIES(GestureRecognition Leap.lib opencv_world310.lib Kinect20.lib Kinect20.Face.lib)

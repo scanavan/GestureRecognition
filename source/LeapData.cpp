@@ -727,6 +727,9 @@ float LeapData::getNewScaleFactor() {
 std::vector<float> LeapData::getNewFingertipDistRefined() {
 	return newFingertipDistRefined;
 }
+std::vector<float> LeapData::getFingerAngles() {
+	return fingerAngles;
+}
 std::vector<float> LeapData::getFingertipAngles() {
 	return fingertipAngles;
 }
@@ -773,4 +776,5 @@ void LeapData::clearAll() {
 	extendedFingers.clear();
 	extendedTipPosition.clear();
 	fingerDirection.clear();
+	fingerAngles.clear();
 }
