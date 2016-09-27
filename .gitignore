@@ -4,7 +4,15 @@
 *.cmake
 *.sdf
 *.suo
+*.VC.opendb
 /CMakeFiles
+/RFlib/CMakeFiles
+/RFlib/bin
+/GestureRecognition.dir/
+/RFlib/RFlib.dir/
+/RFlib/run_patch.dir/
+/RFlib/x64
+/x64/
 CMakeCache.txt
 
 # Windows image file caches
