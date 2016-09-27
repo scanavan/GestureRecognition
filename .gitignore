@@ -3,7 +3,8 @@
 *.vcxproj*
 *.cmake
 *.sdf
-GestureRecognition/CMakeFiles
+*.suo
+/CMakeFiles
 CMakeCache.txt
 
 # Windows image file caches
