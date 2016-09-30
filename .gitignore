@@ -2,8 +2,10 @@
 *.sln
 *.vcxproj*
 *.cmake
+*.exe
 *.sdf
 *.suo
+*.VC.db
 *.VC.opendb
 /CMakeFiles
 /RFlib/CMakeFiles
@@ -13,7 +15,11 @@
 /RFlib/run_patch.dir/
 /RFlib/x64
 /x64/
+/Debug/
+/Release/
+
 CMakeCache.txt
+main.cpp
 
 # Windows image file caches
 Thumbs.db

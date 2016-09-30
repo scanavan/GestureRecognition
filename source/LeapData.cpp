@@ -121,7 +121,7 @@ void LeapData::RealTimeLeap(std::string path) {
 		
 		//newFingertipDistRefined = fingertipDist;
 		projectionPoints = getProjection();
-		setFingertipAngles();
+		setFingerAngles();
 		setRatio();
 		setMaximums();
 
@@ -335,7 +335,8 @@ void LeapData::setFingerAngles() {
 		float b = extendedTipPosition[i + 1].getMagnitude(palmPosition);
 		float c = extendedTipPosition[i].getMagnitude(extendedTipPosition[i + 1]);
 
-		fingerAngles.push_back(acos(a*a + b*b - c*c) / (2 * a*b));
+		fingerAngles.push_back(acos((a*a + b*b - c*c) / (2 * a*b)));
+		std::cout << acos((a*a + b*b - c*c) / (2 * a*b)) << std:: endl;
 	}
 	for (int i = fingerAngles.size(); i < 4; ++i)
 	{
