@@ -16,9 +16,9 @@ class RandomizedForest : public IClassifier
 {
 public:
     //! Constructor
-    RandomizedForest(unsigned int nbLabels=2, bool occurence_normalization = false, 
-					 unsigned int depth=10, unsigned int nb_trees=10, 
-					 unsigned int vector_size=15, double minValue=0., double maxValue=255.);
+    RandomizedForest(unsigned int nbLabels, bool occurence_normalization, 
+					 unsigned int depth, unsigned int nb_trees, 
+					 unsigned int vector_size, double minValue, double maxValue);
 
     //! Copy constructor
     RandomizedForest(const RandomizedForest& other);

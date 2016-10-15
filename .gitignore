@@ -7,6 +7,7 @@
 *.suo
 *.VC.db
 *.VC.opendb
+*.rf
 /CMakeFiles
 /RFlib/CMakeFiles
 /RFlib/bin

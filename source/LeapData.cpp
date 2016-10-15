@@ -76,24 +76,24 @@ LeapData::LeapData(std::string path) {
 }
 
 // constructor with RealTimeLeapData object as parameter
-LeapData::LeapData(RealTimeLeapData leapData) {
-	extendedFingers = leapData.getExtendedFingers();
-	fingerDirection = leapData.getFingerDirections();
-	fingertipPosition = leapData.getTipPositions();
-	extendedTipPosition = leapData.getExtendedTipPositions();
-	handDirection = leapData.getHandDirection();
-	palmNormal = leapData.getPalmNormal();
-	palmPosition = leapData.getPalmPosition();
-	numFingers = leapData.getNumFingers();
-	setNewScaleFactor();
-	setNewFingertipDist();
-	projectionPoints = getProjection();
-	setFingertipAngles();
-	gesture = leapData.getGesture();
-	setFingerAreas();
-	setRatio();
-	setMaximums();
-}
+//LeapData::LeapData(RealTimeLeapData leapData) {
+//	extendedFingers = leapData.getExtendedFingers();
+//	fingerDirection = leapData.getFingerDirections();
+//	fingertipPosition = leapData.getTipPositions();
+//	extendedTipPosition = leapData.getExtendedTipPositions();
+//	handDirection = leapData.getHandDirection();
+//	palmNormal = leapData.getPalmNormal();
+//	palmPosition = leapData.getPalmPosition();
+//	numFingers = leapData.getNumFingers();
+//	setNewScaleFactor();
+//	setNewFingertipDist();
+//	projectionPoints = getProjection();
+//	setFingertipAngles();
+//	gesture = leapData.getGesture();
+//	setFingerAreas();
+//	setRatio();
+//	setMaximums();
+//}
 
 // constructor for the LeapData for we collected and wrote to a CSV file
 void LeapData::RealTimeLeap(std::string path) {

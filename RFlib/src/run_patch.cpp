@@ -1,10 +1,79 @@
 #include <iostream>
 #include "../inc/RandomizedForest.h"
-#include "../inc/Color.h"
-#include "../inc/Patch.h"
+//#include "../inc/Color.h"
+//#include "../inc/Patch.h"
+#include "../inc/GestureVector.h"
+
+std::vector<GestureVector> parffArse(std::string path)
+{
+	std::vector<GestureVector> data;
+	std::ifstream ifs;
+	std::string line;
+	ifs.open(path, std::ifstream::in);
+
+	if (ifs.is_open()) {
+		std::getline(ifs, line);
+		while (line != "@data") {
+			if (ifs.eof()) { break; }
+			std::getline(ifs, line);
+		}
+		std::getline(ifs, line);
+		while (true) {
+			std::getline(ifs, line);
+			if (ifs.eof()) { break; }
+			std::istringstream ss(line);
+			std::string token;
+			std::string::size_type sz;
+			std::vector<float> val;
+			unsigned int lab;
+			while (std::getline(ss, token, ',')) {
+				if (token[0] == 'G') {
+					lab = std::stoi(token.substr(1, 2));
+				} else {
+					val.push_back(std::stof(token, &sz));
+				}
+			}
+			data.push_back(GestureVector(val, lab));
+			val.clear();
+			lab = 0;
+		}
+		ifs.close();
+	}
+	return data;
+}
 
 int main(int argc, char** argv)
 {
+	unsigned int nb_labels = 24;
+	unsigned int depth = 30;
+	unsigned int nb_trees = 32;
+	unsigned int vector_size;
+	double minV = -2. * PI;
+	double maxV = 11111.;
+
+	
+	std::cout << "Training...\n" << std::flush;
+
+	std::vector<GestureVector> gesture = parffArse("C:/ASL_ARFF/ACEFGHX.arff");
+	vector_size = gesture[0].getFeatures().size();
+
+	RandomizedForest forest(nb_labels, true, depth, nb_trees, vector_size, minV, maxV);
+
+	//std::cout << gesture[0].getLabel() << std::endl;
+
+	for (int i = 0; i < gesture.size(); ++i) {
+		forest.train(gesture[i], gesture[i].getLabel());
+	}
+
+	forest.save("ACEFGHX");
+
+	std::cout << "Classifying..." << std::flush;
+
+
+	return 0;
+
+
+	/*
 	const char* imagename = argv[1];
 	const char* labelname = argv[2];
 	
@@ -81,5 +150,6 @@ int main(int argc, char** argv)
 	cvReleaseImage(&test);
 	cvReleaseImage(&image);
 	cvReleaseImage(&label);
+	*/
 
 }
