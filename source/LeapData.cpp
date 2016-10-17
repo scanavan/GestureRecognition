@@ -76,24 +76,24 @@ LeapData::LeapData(std::string path) {
 }
 
 // constructor with RealTimeLeapData object as parameter
-LeapData::LeapData(RealTimeLeapData leapData) {
-	extendedFingers = leapData.getExtendedFingers();
-	fingerDirection = leapData.getFingerDirections();
-	fingertipPosition = leapData.getTipPositions();
-	extendedTipPosition = leapData.getExtendedTipPositions();
-	handDirection = leapData.getHandDirection();
-	palmNormal = leapData.getPalmNormal();
-	palmPosition = leapData.getPalmPosition();
-	numFingers = leapData.getNumFingers();
-	setNewScaleFactor();
-	setNewFingertipDist();
-	projectionPoints = getProjection();
-	setFingertipAngles();
-	gesture = leapData.getGesture();
-	setFingerAreas();
-	setRatio();
-	setMaximums();
-}
+//LeapData::LeapData(RealTimeLeapData leapData) {
+//	extendedFingers = leapData.getExtendedFingers();
+//	fingerDirection = leapData.getFingerDirections();
+//	fingertipPosition = leapData.getTipPositions();
+//	extendedTipPosition = leapData.getExtendedTipPositions();
+//	handDirection = leapData.getHandDirection();
+//	palmNormal = leapData.getPalmNormal();
+//	palmPosition = leapData.getPalmPosition();
+//	numFingers = leapData.getNumFingers();
+//	setNewScaleFactor();
+//	setNewFingertipDist();
+//	projectionPoints = getProjection();
+//	setFingertipAngles();
+//	gesture = leapData.getGesture();
+//	setFingerAreas();
+//	setRatio();
+//	setMaximums();
+//}
 
 // constructor for the LeapData for we collected and wrote to a CSV file
 void LeapData::RealTimeLeap(std::string path) {
@@ -121,7 +121,7 @@ void LeapData::RealTimeLeap(std::string path) {
 		
 		//newFingertipDistRefined = fingertipDist;
 		projectionPoints = getProjection();
-		setFingertipAngles();
+		setFingerAngles();
 		setRatio();
 		setMaximums();
 
@@ -335,7 +335,8 @@ void LeapData::setFingerAngles() {
 		float b = extendedTipPosition[i + 1].getMagnitude(palmPosition);
 		float c = extendedTipPosition[i].getMagnitude(extendedTipPosition[i + 1]);
 
-		fingerAngles.push_back(acos(a*a + b*b - c*c) / (2 * a*b));
+		fingerAngles.push_back(acos((a*a + b*b - c*c) / (2 * a*b)));
+		std::cout << acos((a*a + b*b - c*c) / (2 * a*b)) << std:: endl;
 	}
 	for (int i = fingerAngles.size(); i < 4; ++i)
 	{

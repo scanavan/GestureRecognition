@@ -54,9 +54,9 @@ void arffBatchWriter()
 void selectiveARFFBatch(std::vector<int> test)
 {
 	std::ofstream file;
-	file.open("C:/Users/IASA-FRI.FRI-03/Desktop/test.bat");
+	file.open("C:/LeapAngles/arff.bat");
 	bool run = false;
-	for (int i = 1; i < (1 << 14); ++i)
+	for (int i = 1; i < (1 << 16); ++i)
 	{
 		run = false;
 		for (int j = 0; j < test.size(); ++j)
@@ -75,15 +75,17 @@ void selectiveARFFBatch(std::vector<int> test)
 			if (i & (1 << 4)) file << "5,";
 			if (i & (1 << 5)) file << "6,";
 			if (i & (1 << 6)) file << "7-11,";
-			if (i & (1 << 7)) file << "12-43,";
-			if (i & (1 << 8)) file << "44-193,";
-			if (i & (1 << 9)) file << "194-199,";
-			if (i & (1 << 10)) file << "200-263,";
-			if (i & (1 << 11)) file << "264-327,";
-			if (i & (1 << 12)) file << "328-332,";
-			if (i & (1 << 13)) file << "333-337,";
+			if (i & (1 << 7)) file << "12-26,";
+			if (i & (1 << 8)) file << "27-30,";
+			if (i & (1 << 9)) file << "31-62,";
+			if (i & (1 << 10)) file << "63-212,";
+			if (i & (1 << 11)) file << "213-218,";
+			if (i & (1 << 12)) file << "219-282,";
+			if (i & (1 << 13)) file << "283-346,";
+			if (i & (1 << 14)) file << "347-351,";
+			if (i & (1 << 15)) file << "352-356,";
 
-			file << "338 -i C:/SRITest/ABCDEFGZYXWVUT.arff -o C:/SRITest/ARFF/";
+			file << "357 -i C:/Users/IASA-FRI/Desktop/ASL_Dataset/Combo.arff -o C:/LeapAngles/arff/";
 
 			if (i & (1 << 0)) file << "A";
 			if (i & (1 << 1)) file << "B";
@@ -92,13 +94,15 @@ void selectiveARFFBatch(std::vector<int> test)
 			if (i & (1 << 4)) file << "E";
 			if (i & (1 << 5)) file << "F";
 			if (i & (1 << 6)) file << "G";
-			if (i & (1 << 7)) file << "Z";
-			if (i & (1 << 8)) file << "Y";
-			if (i & (1 << 9)) file << "X";
-			if (i & (1 << 10)) file << "W";
-			if (i & (1 << 11)) file << "V";
-			if (i & (1 << 12)) file << "U";
-			if (i & (1 << 13)) file << "T";
+			if (i & (1 << 7)) file << "H";
+			if (i & (1 << 8)) file << "I";
+			if (i & (1 << 9)) file << "Z";
+			if (i & (1 << 10)) file << "Y";
+			if (i & (1 << 11)) file << "X";
+			if (i & (1 << 12)) file << "W";
+			if (i & (1 << 13)) file << "V";
+			if (i & (1 << 14)) file << "U";
+			if (i & (1 << 15)) file << "T";
 
 			file << ".arff\n";
 		}
@@ -110,9 +114,9 @@ void selectiveARFFBatch(std::vector<int> test)
 void selectiveTestBatch(std::vector<int> test)
 {
 	std::ofstream file;
-	file.open("C:/Users/IASA-FRI.FRI-03/Desktop/RFtest.bat");
+	file.open("C:/LeapAngles/RF.bat");
 	bool run = false;
-	for (int i = 1; i < (1 << 14); ++i)
+	for (int i = 1; i < (1 << 16); ++i)
 	{
 		run = false;
 		for (int j = 0; j < test.size(); ++j)
@@ -124,7 +128,7 @@ void selectiveTestBatch(std::vector<int> test)
 		if (run) {
 			file << "java weka.classifiers.trees.RandomForest -t ";
 
-			file << "C:/ASL_ARFF/";
+			file << "C:/LeapAngles/arff/";
 
 			if (i & (1 << 0)) file << "A";
 			if (i & (1 << 1)) file << "B";
@@ -134,14 +138,15 @@ void selectiveTestBatch(std::vector<int> test)
 			if (i & (1 << 5)) file << "F";
 			if (i & (1 << 6)) file << "G";
 			if (i & (1 << 7)) file << "H";
-			if (i & (1 << 8)) file << "Z";
-			if (i & (1 << 9)) file << "Y";
-			if (i & (1 << 10)) file << "X";
-			if (i & (1 << 11)) file << "W";
-			if (i & (1 << 12)) file << "V";
-			if (i & (1 << 13)) file << "U";
-			if (i & (1 << 14)) file << "T";
-			file << ".arff > C:/RF_ASL/";
+			if (i & (1 << 8)) file << "I";
+			if (i & (1 << 9)) file << "Z";
+			if (i & (1 << 10)) file << "Y";
+			if (i & (1 << 11)) file << "X";
+			if (i & (1 << 12)) file << "W";
+			if (i & (1 << 13)) file << "V";
+			if (i & (1 << 14)) file << "U";
+			if (i & (1 << 15)) file << "T";
+			file << ".arff > C:/LeapAngles/RF/";
 
 			if (i & (1 << 0)) file << "A";
 			if (i & (1 << 1)) file << "B";
@@ -151,13 +156,14 @@ void selectiveTestBatch(std::vector<int> test)
 			if (i & (1 << 5)) file << "F";
 			if (i & (1 << 6)) file << "G";
 			if (i & (1 << 7)) file << "H";
-			if (i & (1 << 8)) file << "Z";
-			if (i & (1 << 9)) file << "Y";
-			if (i & (1 << 10)) file << "X";
-			if (i & (1 << 11)) file << "W";
-			if (i & (1 << 12)) file << "V";
-			if (i & (1 << 13)) file << "U";
-			if (i & (1 << 14)) file << "T";
+			if (i & (1 << 8)) file << "I";
+			if (i & (1 << 9)) file << "Z";
+			if (i & (1 << 10)) file << "Y";
+			if (i & (1 << 11)) file << "X";
+			if (i & (1 << 12)) file << "W";
+			if (i & (1 << 13)) file << "V";
+			if (i & (1 << 14)) file << "U";
+			if (i & (1 << 15)) file << "T";
 
 			file << ".txt\n";
 		}

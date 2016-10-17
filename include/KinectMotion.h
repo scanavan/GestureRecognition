@@ -6,7 +6,6 @@
 #include "LeapData.h"
 #include <set>
 
-#define PI				3.14159265
 #define SCALE			480
 #define SAMPLE_SIZE		150
 #define CELL_DIVS		8

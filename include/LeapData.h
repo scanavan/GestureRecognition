@@ -1,19 +1,20 @@
 #ifndef LEAPDATA_H
 #define LEAPDATA_H
 
+#define PI				3.14159265
 
 #include <iostream>
 #include <fstream>
 #include <vector>
 #include "Point.h"
-#include "RealTimeLeapData.h"
+//#include "RealTimeLeapData.h"
 
 
 class LeapData {
 public:
 	LeapData();
 	LeapData(std::string path);
-	LeapData(RealTimeLeapData leapData);
+	//LeapData(RealTimeLeapData leapData);
 	void RealTimeLeap(std::string path);
 	void parse(int lineNum, std::string line);
 	void parseRealTime(int lineNum, std::string line);

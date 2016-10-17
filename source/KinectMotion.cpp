@@ -15,9 +15,7 @@ KinectMotion::KinectMotion(std::string fdepth)
 	depth = cv::imread(fdepth, CV_LOAD_IMAGE_UNCHANGED);
 
 	auto index = fdepth.find_last_of("/");
-	char gestureNumber = fdepth.at(index - 1);
-	gesture = "G";
-	gesture.push_back(gestureNumber);
+	gesture = fdepth.substr(index - 3, 3);
 
 	depth = updateImage(depth);
 	getHand(depth);
