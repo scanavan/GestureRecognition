@@ -10,6 +10,7 @@
 *.rf
 /CMakeFiles
 /RFlib/CMakeFiles
+/LeapCapture/CMakeFiles
 /RFlib/bin
 /GestureRecognition.dir/
 /RFlib/RFlib.dir/
