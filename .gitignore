@@ -8,9 +8,7 @@
 *.VC.db
 *.VC.opendb
 *.rf
-/CMakeFiles
-/RFlib/CMakeFiles
-/LeapCapture/CMakeFiles
+CMakeFiles/
 /RFlib/bin
 /GestureRecognition.dir/
 /RFlib/RFlib.dir/
