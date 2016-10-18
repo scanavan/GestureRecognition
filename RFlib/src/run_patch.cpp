@@ -46,7 +46,7 @@ int main(int argc, char** argv)
 {
 	unsigned int nb_labels = 24;
 	unsigned int depth = 30;
-	unsigned int nb_trees = 32;
+	unsigned int nb_trees = 5;
 	unsigned int vector_size;
 	double minV = -2. * PI;
 	double maxV = 11111.;
@@ -56,18 +56,17 @@ int main(int argc, char** argv)
 
 	std::vector<GestureVector> gesture = parffArse("C:/ASL_ARFF/ACEFGHX.arff");
 	vector_size = gesture[0].getFeatures().size();
-
 	RandomizedForest forest(nb_labels, true, depth, nb_trees, vector_size, minV, maxV);
 
-	//std::cout << gesture[0].getLabel() << std::endl;
-
-	for (int i = 0; i < gesture.size(); ++i) {
+	/*for (int i = 0; i < gesture.size(); ++i) {
 		forest.train(gesture[i], gesture[i].getLabel());
-	}
+	}*/
 
-	forest.save("ACEFGHX");
+	//forest.save("ACEFGHX");
 
-	std::cout << "Classifying..." << std::flush;
+	forest.load("ACEFGHX");
+
+	std::cout << "Classifying...\n" << std::flush;
 
 
 	return 0;

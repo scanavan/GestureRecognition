@@ -17,6 +17,8 @@
 
 
 //============================================================================================================================//
+RandomizedForest::RandomizedForest() {}
+
 RandomizedForest::RandomizedForest(unsigned int nbLabels, 
 								   bool occurence_normalization, 
 								   unsigned int depth, 
@@ -145,7 +147,7 @@ RandomizedForest::load(const std::string& filename)
 	std::getline (file,name);
 	std::getline (file,name);
 	std::getline (file,name);
-	m_occurences = Histogram(m_nb_labels);
+	Histogram(m_nb_labels);
 	file>>m_occurences;
 
     // allocate and load the trees    

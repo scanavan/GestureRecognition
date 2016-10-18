@@ -15,6 +15,9 @@ class RandomizedTree;
 class RandomizedForest : public IClassifier
 {
 public:
+	//! Default constructor
+	RandomizedForest();
+
     //! Constructor
     RandomizedForest(unsigned int nbLabels, bool occurence_normalization, 
 					 unsigned int depth, unsigned int nb_trees, 
