@@ -9,14 +9,11 @@
 *.VC.opendb
 *.rf
 CMakeFiles/
-/RFlib/bin
-/GestureRecognition.dir/
-/RFlib/RFlib.dir/
-/RFlib/run_patch.dir/
-/RFlib/x64
-/x64/
-/Debug/
-/Release/
+bin/
+*.dir/
+x64/
+Debug/
+Release/
 
 CMakeCache.txt
 main.cpp
