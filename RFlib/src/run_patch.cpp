@@ -42,35 +42,72 @@ std::vector<GestureVector> parffArse(std::string path)
 	return data;
 }
 
+double getAccuracy(std::vector<unsigned int> labels, std::vector<GestureVector> gestures)
+{
+	unsigned int counter = 0;
+	for (int i = 0; i < labels.size(); ++i) {
+		if ((gestures[i].getLabel()%24)==labels[i]%24) {
+			counter++;
+		}
+	}
+	return (double)counter / (double)labels.size() * 100;
+}
+
+void trainForest(std::vector<GestureVector> gesture, RandomizedForest forest, std::string filename)
+{
+	std::cout << "Training...\n" << std::flush;
+	
+	for (int i = 0; i < gesture.size(); ++i) {
+		forest.train(gesture[i], gesture[i].getLabel());
+	}
+
+	forest.save(filename);
+}
+
+void testForest(std::vector<GestureVector> gesture, std::string filename)
+{
+	std::cout << "Classifying...\n" << std::flush;
+
+	RandomizedForest forest2;
+	forest2.load(filename + ".rf");
+	//forest2.setOccurenceNormalization(true);
+
+	std::vector<unsigned int> jest;
+	for (int i = 0; i < gesture.size(); ++i) {
+		jest.push_back(forest2.classify(gesture[i]));
+		//std::cout << jest[i] << std::endl;
+	}
+
+	std::cout << getAccuracy(jest, gesture) << std::endl;
+}
+
 int main(int argc, char** argv)
 {
 	unsigned int nb_labels = 24;
-	unsigned int depth = 30;
-	unsigned int nb_trees = 5;
 	unsigned int vector_size;
 	double minV = -2. * PI;
-	double maxV = 11111.;
-
+	//double maxV = 2. * PI;
+	double maxV = 100.;
+	unsigned int depth = 150;
+	//unsigned int nb_trees = 15;
 	
-	std::cout << "Training...\n" << std::flush;
-
-	std::vector<GestureVector> gesture = parffArse("C:/ASL_ARFF/ACEFGHX.arff");
+	std::vector<GestureVector> gesture = parffArse("C:/LeapAngles/arff/CGHI.arff");
 	vector_size = gesture[0].getFeatures().size();
-	RandomizedForest forest(nb_labels, true, depth, nb_trees, vector_size, minV, maxV);
-
-	/*for (int i = 0; i < gesture.size(); ++i) {
-		forest.train(gesture[i], gesture[i].getLabel());
-	}*/
-
-	//forest.save("ACEFGHX");
-
-	forest.load("ACEFGHX");
-
-	std::cout << "Classifying...\n" << std::flush;
 
 
+	for (int trees_i = 4; trees_i <= 30; ++trees_i) {
+			RandomizedForest forest(nb_labels, true, depth, trees_i, vector_size, minV, maxV);
+			
+			trainForest(gesture, forest, "C:/RFlib_Test/CGHI");
+			std::cout << trees_i << std::endl;
+			testForest(gesture, "C:/RFlib_Test/CGHI");
+			/*std::vector<GestureVector>::const_iterator first = gesture.begin() + gesture.size() - 240;
+			std::vector<GestureVector>::const_iterator last = gesture.end();
+			std::vector<GestureVector> test(first, last);*/
+			
+			//forest.~RandomizedForest();
+	}
 	return 0;
-
 
 	/*
 	const char* imagename = argv[1];
