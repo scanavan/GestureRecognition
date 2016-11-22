@@ -7,8 +7,8 @@
 
 #include <iostream>
 #include "IFeatureVector.h"
-#include "../../GestureRecognition/include/LeapData.h"
-#include "../../GestureRecognition/include/KinectMotion.h"
+#include "../../include/LeapData.h"
+#include "../../include/KinectMotion.h"
 
 class GestureVector : public IFeatureVector
 {

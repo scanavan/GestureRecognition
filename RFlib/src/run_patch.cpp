@@ -1,3 +1,4 @@
+#ifdef RUN_PATCH
 #include <iostream>
 #include "../inc/RandomizedForest.h"
 //#include "../inc/Color.h"
@@ -84,7 +85,7 @@ void testForest(std::vector<GestureVector> gesture, std::string filename)
 int main(int argc, char** argv)
 {
 	unsigned int nb_labels = 24;
-	unsigned int vector_size;
+	size_t vector_size;
 	double minV = -2. * PI;
 	//double maxV = 2. * PI;
 	double maxV = 100.;
@@ -189,3 +190,4 @@ int main(int argc, char** argv)
 	*/
 
 }
+#endif

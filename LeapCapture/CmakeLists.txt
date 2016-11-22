@@ -1,26 +1,42 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8.0 FATAL_ERROR)
 cmake_policy(VERSION 2.8)
 PROJECT(LeapCapture)
-#make sure we only build release
+#make sure we only build debug and release
 SET(CMAKE_CONFIGURATION_TYPES Debug Release CACHE STRING "" FORCE)
-#set opencv directory vars
-SET(LEAP_DIR "C:/Leap/LeapSDK/")
+
+OPTION(RUN_PATCH "Execute run_patch" OFF)
+
+#set directory variables
+SET(LEAP_DIR "C:/Leap/LeapSDK")
+SET(RF_LIB_DIR "../RFlib")
 SET(SOURCE_DIR "source")
 SET(INCLUDE_DIR "include")
+SET(OpenCV_LINK_DIRECTORIES "C:/opencv/build/x64/vc14/lib")
+SET(OpenCV_INCLUDE_DIRS "C:/opencv/build/include")
 
+#get lists of files
 FILE(GLOB SOURCE_FILES ${SOURCE_DIR}/*.cpp)
 FILE(GLOB HEADER_FILES ${INCLUDE_DIR}/*.h)
+FILE(GLOB RF_LIB_HEADER_FILES ${RF_LIB_DIR}/inc/*.h)
+FILE(GLOB RF_LIB_SOURCE_FILES ${RF_LIB_DIR}/src/*.cpp)
 
+#RFlib
+SOURCE_GROUP("Header Files\\RFlib" FILES ${RF_LIB_HEADER_FILES})
+SOURCE_GROUP("Source Files\\RFlib" FILES ${RF_LIB_SOURCE_FILES})
 #header filters
-SOURCE_GROUP("Header Files" FILES ${HEADER_FILES})
+SOURCE_GROUP("Header Files\\LeapCapture" FILES ${HEADER_FILES})
 #source filters
-SOURCE_GROUP("Source Files" FILES ${SOURCE_FILES})
+SOURCE_GROUP("Source Files\\LeapCapture" FILES ${SOURCE_FILES})
+
+if(RUN_PATCH)
+	ADD_DEFINITIONS(-DRUN_PATCH)
+ENDIF(RUN_PATCH)
 
 #make sure we include opencv include dir
-INCLUDE_DIRECTORIES(${LEAP_DIR}/include ${INCLUDE_DIR})
+INCLUDE_DIRECTORIES(${LEAP_DIR}/include ${INCLUDE_DIR} ${RF_LIB_DIR}/inc ${OpenCV_INCLUDE_DIRS})
 #include opencv lib directory
-LINK_DIRECTORIES(${LEAP_DIR}/lib/x64/)
+LINK_DIRECTORIES(${LEAP_DIR}/lib/x64/ ${OpenCV_LINK_DIRECTORIES})
 #create exe
-ADD_EXECUTABLE(LeapCapture ${SOURCE_FILES} ${HEADER_FILES})
+ADD_EXECUTABLE(LeapCapture ${SOURCE_FILES} ${HEADER_FILES} ${RF_LIB_HEADER_FILES} ${RF_LIB_SOURCE_FILES})
 #link libs
-TARGET_LINK_LIBRARIES(LeapCapture Leap.lib)
+TARGET_LINK_LIBRARIES(LeapCapture Leap.lib opencv_world310.lib)

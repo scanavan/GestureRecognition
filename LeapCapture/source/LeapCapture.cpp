@@ -1,150 +1,94 @@
 #include "LeapCapture.h"
 #include <iostream>
-#include <fstream>
 
-
-
-
-
-
-
-
-LeapCapture::LeapCapture(bool connectToSocket) :
+LeapCapture::LeapCapture() :
 	palmPosition(0.f, 0.f, 0.f)
 {
-	if (connectToSocket)
-	{
-		SocketConnect();
-	}
 }
 LeapCapture::~LeapCapture()
 {
-	closesocket(ConnectSocket);
-	WSACleanup();
+	outArffFile.close();
 }
-void LeapCapture::SocketConnect()
+void LeapCapture::WriteArffFileHeader(std::string outName)
 {
-	int iResult;
-
-
-
-
-	struct addrinfo *result = NULL,
-		*ptr = NULL,
-		hints;
-	WSADATA wsaData;
-
-
-
-
-	ConnectSocket = INVALID_SOCKET;
-
-
-
-
-	// Initialize Winsock
-	iResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
-	if (iResult != 0)
-	{
-		printf("WSAStartup failed with error: %d\n", iResult);
-	}
-
-
-
-
-	ZeroMemory(&hints, sizeof(hints));
-	hints.ai_family = AF_UNSPEC;
-	hints.ai_socktype = SOCK_STREAM;
-	hints.ai_protocol = IPPROTO_TCP;
-
-
-
-
-	// Resolve the server address and port
-	iResult = getaddrinfo("149.125.127.206", DEFAULT_PORT, &hints, &result);
-	if (iResult != 0)
-	{
-		printf("getaddrinfo failed with error: %d\n", iResult);
-		WSACleanup();
-	}
-	// Attempt to connect to an address until one succeeds
-	for (ptr = result; ptr != NULL; ptr = ptr->ai_next)
-	{
-		std::cout << "Creating socket." << std::endl;
-		// Create a SOCKET for connecting to server
-		ConnectSocket = socket(ptr->ai_family, ptr->ai_socktype,
-			ptr->ai_protocol);
-		if (ConnectSocket == INVALID_SOCKET)
-		{
-			printf("socket failed with error: %ld\n", WSAGetLastError());
-			WSACleanup();
-		}
-		std::cout << "connecting to socket" << std::endl;
-		// Connect to server.
-		iResult = connect(ConnectSocket, ptr->ai_addr, (int)ptr->ai_addrlen);
-		std::cout << WSAGetLastError() << std::endl;
-		if (iResult == SOCKET_ERROR)
-		{
-			closesocket(ConnectSocket);
-			ConnectSocket = INVALID_SOCKET;
-			continue;
-		}
-		break;
-	}
-	freeaddrinfo(result);
-	if (ConnectSocket == INVALID_SOCKET)
-	{
-		std::cerr << "Unable to connect to server!" << std::endl;
-		WSACleanup();
-	}
-
-
-
-
+	outArffFile.open(outName);
+	outArffFile << "% 1. Title: Leap Database\n"
+		<< "%\n"
+		<< "% 2. Sources :\n"
+		<< "% (a)Creator : NIH and Binghamton FRI 2016\n"
+		<< "% (b)Date : Fall 2016\n"
+		<< "%\n"
+		<< "@RELATION asd\n"
+		<< "\n"
+		<< "@ATTRIBUTE fingerDirection1x NUMERIC\n"
+		<< "@ATTRIBUTE fingerDirection1y NUMERIC\n"
+		<< "@ATTRIBUTE fingerDirection1z NUMERIC\n"
+		<< "@ATTRIBUTE fingerDirection2x NUMERIC\n"
+		<< "@ATTRIBUTE fingerDirection2y NUMERIC\n"
+		<< "@ATTRIBUTE fingerDirection2z NUMERIC\n"
+		<< "@ATTRIBUTE fingerDirection3x NUMERIC\n"
+		<< "@ATTRIBUTE fingerDirection3y NUMERIC\n"
+		<< "@ATTRIBUTE fingerDirection3z NUMERIC\n"
+		<< "@ATTRIBUTE fingerDirection4x NUMERIC\n"
+		<< "@ATTRIBUTE fingerDirection4y NUMERIC\n"
+		<< "@ATTRIBUTE fingerDirection4z NUMERIC\n"
+		<< "@ATTRIBUTE fingerDirection5x NUMERIC\n"
+		<< "@ATTRIBUTE fingerDirection5y NUMERIC\n"
+		<< "@ATTRIBUTE fingerDirection5z NUMERIC\n"
+		<< "@ATTRIBUTE fingertip1x NUMERIC\n"
+		<< "@ATTRIBUTE fingertip1y NUMERIC\n"
+		<< "@ATTRIBUTE fingertip1z NUMERIC\n"
+		<< "@ATTRIBUTE fingertip2x NUMERIC\n"
+		<< "@ATTRIBUTE fingertip2y NUMERIC\n"
+		<< "@ATTRIBUTE fingertip2z NUMERIC\n"
+		<< "@ATTRIBUTE fingertip3x NUMERIC\n"
+		<< "@ATTRIBUTE fingertip3y NUMERIC\n"
+		<< "@ATTRIBUTE fingertip3z NUMERIC\n"
+		<< "@ATTRIBUTE fingertip4x NUMERIC\n"
+		<< "@ATTRIBUTE fingertip4y NUMERIC\n"
+		<< "@ATTRIBUTE fingertip4z NUMERIC\n"
+		<< "@ATTRIBUTE fingertip5x NUMERIC\n"
+		<< "@ATTRIBUTE fingertip5y NUMERIC\n"
+		<< "@ATTRIBUTE fingertip5z NUMERIC\n"
+		<< "@ATTRIBUTE stableFingertip1x NUMERIC\n"
+		<< "@ATTRIBUTE stableFingertip1y NUMERIC\n"
+		<< "@ATTRIBUTE stableFingertip1z NUMERIC\n"
+		<< "@ATTRIBUTE stableFingertip2x NUMERIC\n"
+		<< "@ATTRIBUTE stableFingertip2y NUMERIC\n"
+		<< "@ATTRIBUTE stableFingertip2z NUMERIC\n"
+		<< "@ATTRIBUTE stableFingertip3x NUMERIC\n"
+		<< "@ATTRIBUTE stableFingertip3y NUMERIC\n"
+		<< "@ATTRIBUTE stableFingertip3z NUMERIC\n"
+		<< "@ATTRIBUTE stableFingertip4x NUMERIC\n"
+		<< "@ATTRIBUTE stableFingertip4y NUMERIC\n"
+		<< "@ATTRIBUTE stableFingertip4z NUMERIC\n"
+		<< "@ATTRIBUTE stableFingertip5x NUMERIC\n"
+		<< "@ATTRIBUTE stableFingertip5y NUMERIC\n"
+		<< "@ATTRIBUTE stableFingertip5z NUMERIC\n"
+		<< "@ATTRIBUTE pinchStrength NUMERIC\n"
+		<< "@ATTRIBUTE grabStrength NUMERIC\n"
+		<< "@ATTRIBUTE palmPositionX NUMERIC\n"
+		<< "@ATTRIBUTE palmPositionY NUMERIC\n"
+		<< "@ATTRIBUTE palmPositionZ NUMERIC\n"
+		<< "@ATTRIBUTE stablePalmPositionX NUMERIC\n"
+		<< "@ATTRIBUTE stablePalmPositionY NUMERIC\n"
+		<< "@ATTRIBUTE stablePalmPositionZ NUMERIC\n"
+		<< "@ATTRIBUTE scaleFactor NUMERIC\n"
+		<< "@ATTRIBUTE frontMostFinger NUMERIC\n"
+		<< "@ATTRIBUTE class {A,B,C,D,E,F,G,H,I,K,L,M,N,O,P,Q,R,S,T,U,V,X,Y}\n"
+		<< "\n@DATA\n";
 }
-void LeapCapture::SendData()
-{
-	if (palmPosition.x != 0 && palmPosition.y != 0 && palmPosition.z != 0)
-	{
-		sprintf(sendbuf, "%f %f %f", palmPosition.x, palmPosition.y, palmPosition.z);
-		int size((int)strlen(sendbuf));
-		int iResult(0);
-		// Send an initial buffer
-		iResult = send(ConnectSocket, sendbuf, size, 0);
-		if (iResult == SOCKET_ERROR)
-		{
-			std::cerr << "Send failed with error: " << WSAGetLastError() << std::endl;
-			closesocket(ConnectSocket);
-			WSACleanup();
-		}
-		iResult = recv(ConnectSocket, recvbuf, DEFAULT_BUFLEN, 0);
-	}
-}
-void LeapCapture::Capture()
+bool LeapCapture::Capture()
 {
 	palmPosition = Leap::Vector(0.f, 0.f, 0.f);
 	const Leap::Frame frame = controller.frame();
 	Leap::HandList hands = frame.hands();
-
-
-
 	handFound = false;
 	for (Leap::HandList::const_iterator hl = hands.begin(); hl != hands.end(); ++hl)
 	{
 		// Get the first hand
 		const Leap::Hand hand = *hl;
-		
 		handFound = true;
-
-
-
-
-		//Get a reference frame if there's only one hand in view, ASSUMING ONE HAND FOR NOW
-		//if (hands.count() == 1)
-		//{
-
-
-
 
 		//ScaleFactor turns to 1 and stays at 1 after you take your hand away, WHY DOES THIS HAPPEN?
 		if (ctr == 1)
@@ -152,8 +96,6 @@ void LeapCapture::Capture()
 			referenceFrame = frame;
 			ctr++;
 		}
-		//}
-
 
 		// Get the hand's normal vector and direction
 		normal = hand.palmNormal();
@@ -161,16 +103,9 @@ void LeapCapture::Capture()
 		palmPosition = hand.palmPosition();
 		pinchStrength = hand.pinchStrength();
 		frontMostFinger = frame.fingers().frontmost();
-		//std::cout << "Palm Position: " << palmPosition << std::endl;
-
 
 		fingers = hand.fingers();
 		extended = fingers.extended();
-
-
-
-
-
 
 		int i = 0;
 		for (Leap::FingerList::const_iterator fl = extended.begin(); fl != extended.end(); ++fl)
@@ -182,24 +117,11 @@ void LeapCapture::Capture()
 		}
 		//This code can be omitted if you do fingers.begin() -> fingers.end() instead of extended.begin() -> extended.end()
 		//-1*10^8 only occurs when the finger isnt recognized as detected
-
-
-
-
 		//if (fingerWidths[0] > 0 && fingerWidths[1] > 0 && fingerWidths[2] > 0 && fingerWidths[3] > 0 && fingerWidths[4] > 0)
 		//{
 		//std::cout << "FingerWidths: " << fingerWidths[0] << " " << fingerWidths[1] << " " << fingerWidths[2] << " " << fingerWidths[3] << " "
 		//<< fingerWidths[4] << std::endl;
 		//}
-
-
-
-
-
-
-
-
-
 
 		for (Leap::FingerList::const_iterator fl = fingers.begin(); fl != fingers.end(); ++fl) {
 			const Leap::Finger finger = *fl;
@@ -212,15 +134,10 @@ void LeapCapture::Capture()
 			const Leap::Bone intermediate = finger.bone(Leap::Bone::TYPE_INTERMEDIATE);
 			const Leap::Bone proximal = finger.bone(Leap::Bone::TYPE_PROXIMAL);
 			const Leap::Bone metacarpal = finger.bone(Leap::Bone::TYPE_METACARPAL);
-			averageFingerWidth = (distal.width() + intermediate.width() + proximal.width() + metacarpal.width()) / 4.0;
+			averageFingerWidth = (distal.width() + intermediate.width() + proximal.width() + metacarpal.width()) / 4.f;
 			//Did with Array instead of Vector out of curiosity
 			fingerWidths[i] = averageFingerWidth;
 			i++;
-			//Don't think this is necessary
-			//if (i < 5) { i++; }
-
-
-
 
 			//fingertips
 			const Leap::Vector tip = distal.nextJoint();
@@ -231,69 +148,42 @@ void LeapCapture::Capture()
 			frontMostFinger = fingers.frontmost();
 			//pinchStrength
 			pinchStrength = hand.pinchStrength();
-
-
-
-
-
-
-
-
-
 			//std::cout << "FingerWidths: " << fingerWidths[0] << " " << fingerWidths[1] << " " << fingerWidths[2] << " " << fingerWidths[3] << " "
 			//<< fingerWidths[4] << std::endl;
 		}
 
-
-
-
-		for (int i = 0; i < fingerDirections.size(); i++)
-		{
+		//for (int i = 0; i < fingerDirections.size(); i++)
+		//{
 			//std::cout << "Finger Direction" << i + 1 << ": " << fingerDirections[i] << std::endl;
-		}
+		//}
 		//fingerDirections.clear();
 		//Can't print vector directly
-		for (int i = 0; i < fingertips.size(); i++)
-		{
-			//std::cout << "Fingertip Position" << i+1 << ": " << fingertips[i] << std::endl;
-		}
+		//for (int i = 0; i < fingertips.size(); i++)
+		//{
+		//	std::cout << "Fingertip Position" << i+1 << ": " << fingertips[i] << std::endl;
+		//}
 		//fingertips.clear();
-		for (int i = 0; i < stableTipPositions.size(); i++)
-		{
+		//for (int i = 0; i < stableTipPositions.size(); i++)
+		//{
 			//std::cout << "Stable Fingertip Position" << i+1 << ": " << stableTipPositions[i] << std::endl;
-		}
+		//}
 		//stableTipPositions.clear();
-
-
 		//grabAngle
 		grabStrength = hand.grabStrength();
 		//stable palm position
 		stablePalmPosition = hand.stabilizedPalmPosition();
 		//Frame scaleFactor
 		scaleFactor = frame.scaleFactor(referenceFrame);
-
-
 		//std::cout << "Pinch Strength: " << pinchStrength << std::endl;
 		//std::cout << "Hand Grab Strength: " << grabStrength << std::endl;
 		//std::cout << "Palm Position: " << palmPosition << std::endl;
 		//std::cout << "Stable Palm Position: " << stablePalmPosition << std::endl;
 		//std::cout << "Hand ScaleFactor: " << hand.scaleFactor(referenceFrame) << std::endl;
 		//std::cout << "Frame ScaleFactor: " << frame.scaleFactor(referenceFrame) << std::endl;
-
-
-
-
 		//Starts off at a decimal value but increases to 1 and stays at 1 forever?
 		//std::cout << "Confidence: " << hand.confidence() << std::endl;
-
-
-
-
 		//returns frontMost FingerId, last digit of ID: 0=thumb, 1=index, 2=middle, 3=ring, 4=pinky
 		//std::cout << "FrontMost Finger: " << frontMostFinger << std::endl;
-
-
-
 	}
 	if (!handFound)
 	{
@@ -301,38 +191,35 @@ void LeapCapture::Capture()
 		fingertips.clear();
 		stableTipPositions.clear();
 	}
+	return handFound;
 }
-
-
-void LeapCapture::writeArffFile(std::ofstream& out, char button)
+void LeapCapture::writeArffFile(char button)
 {
-	if (!handFound) { return; }
-
 	for (int i = 0; i<fingerDirections.size(); i++)
 	{
-		out << fingerDirections[i].x << ", " << fingerDirections[i].y << ", " << fingerDirections[i].z << ", ";
+		outArffFile << fingerDirections[i].x << ", " << fingerDirections[i].y << ", " << fingerDirections[i].z << ", ";
 	}
 
 
 	for (int i = 0; i<fingertips.size(); i++)
 	{
-		out << fingertips[i].x << ", " << fingertips[i].y << ", " << fingertips[i].z << ", ";
+		outArffFile << fingertips[i].x << ", " << fingertips[i].y << ", " << fingertips[i].z << ", ";
 	}
 
 
 	for (int i = 0; i<stableTipPositions.size(); i++)
 	{
-		out << stableTipPositions[i].x << ", " << stableTipPositions[i].y << ", " << stableTipPositions[i].z << ", ";
+		outArffFile << stableTipPositions[i].x << ", " << stableTipPositions[i].y << ", " << stableTipPositions[i].z << ", ";
 	}
 
 
-	out << pinchStrength << ", ";
-	out << grabStrength << ", ";
-	out << palmPosition.x << ", " << palmPosition.y << ", " << palmPosition.z << ", ";
-	out << stablePalmPosition.x << ", " << stablePalmPosition.y << ", " << stablePalmPosition.z << ", ";
-	out << scaleFactor << ", ";
-	out << frontMostFinger.type() << ", ";
-	out << button << "\n";
+	outArffFile << pinchStrength << ", ";
+	outArffFile << grabStrength << ", ";
+	outArffFile << palmPosition.x << ", " << palmPosition.y << ", " << palmPosition.z << ", ";
+	outArffFile << stablePalmPosition.x << ", " << stablePalmPosition.y << ", " << stablePalmPosition.z << ", ";
+	outArffFile << scaleFactor << ", ";
+	outArffFile << frontMostFinger.type() << ", ";
+	outArffFile << button << "\n";
 }
 
 void LeapCapture::clearVectors()
