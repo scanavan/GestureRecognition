@@ -8,7 +8,6 @@
 #include <vector>
 #include "Leap.h"
 #include "Point.h"
-#include "SampleListener.h"
 #include <fstream>
 
 

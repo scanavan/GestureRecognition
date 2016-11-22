@@ -3,7 +3,7 @@
 #include <string>
 #include <opencv\cv.h>
 #include <vector>
-#include "LeapData.h"
+#include "../../GestureRecognition/include/LeapData.h"
 #include <set>
 
 #define SCALE			480

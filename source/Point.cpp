@@ -1,4 +1,4 @@
-#include "Point.h"
+#include "../include/Point.h"
 
 // constructor
 Point::Point(float _x, float _y, float _z) {

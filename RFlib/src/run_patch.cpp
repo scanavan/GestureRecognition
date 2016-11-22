@@ -1,8 +1,26 @@
 #include <iostream>
+#include <fstream>
 #include "../inc/RandomizedForest.h"
+#include "../inc/GestureVector.h"
+
+
 //#include "../inc/Color.h"
 //#include "../inc/Patch.h"
-#include "../inc/GestureVector.h"
+
+//std::vector<GestureVector> getFrame()
+//{
+//	std::vector<LeapData> leap;
+//	std::vector<KinectMotion> depth;
+//
+//	//for (int i = 0; i < data.size(); i++) {
+//	//	file << getSil(data[i]) << getContourDist(data[i]) << getHull(data[i]) << getOccNonz(data[i]) << getOccAvg(data[i]) << getFingerAngle(data[i]) << getFingerDist(data[i]) << getGesture(data[i]) << "\n";
+//	//}
+//	//
+//	//for (int i = 0; i < data.size(); i++) {
+//	//	file << getNumFingers(data[i]) << getFingersExtends(data[i]) << getRatio(data[i]) << getMax_X(data[i]) << getMax_Y(data[i]) << getFingersArea(data[i]) << getNewFingertipDistRefined(data[i]) << getFingerDirection(data[i]) << getFingerAngles(data[i]) << getGesture(data[i]) << "\n";
+//	//}
+//}
+
 
 std::vector<GestureVector> parffArse(std::string path)
 {
@@ -55,7 +73,7 @@ double getAccuracy(std::vector<unsigned int> labels, std::vector<GestureVector> 
 
 void trainForest(std::vector<GestureVector> gesture, RandomizedForest forest, std::string filename)
 {
-	std::cout << "Training...\n" << std::flush;
+	//std::cout << "Training...\n" << std::flush;
 	
 	for (int i = 0; i < gesture.size(); ++i) {
 		forest.train(gesture[i], gesture[i].getLabel());
@@ -64,9 +82,9 @@ void trainForest(std::vector<GestureVector> gesture, RandomizedForest forest, st
 	forest.save(filename);
 }
 
-void testForest(std::vector<GestureVector> gesture, std::string filename)
+double testForest(std::vector<GestureVector> gesture, std::string filename)
 {
-	std::cout << "Classifying...\n" << std::flush;
+	//std::cout << "Classifying...\n" << std::flush;
 
 	RandomizedForest forest2;
 	forest2.load(filename + ".rf");
@@ -78,7 +96,7 @@ void testForest(std::vector<GestureVector> gesture, std::string filename)
 		//std::cout << jest[i] << std::endl;
 	}
 
-	std::cout << getAccuracy(jest, gesture) << std::endl;
+	return getAccuracy(jest, gesture);
 }
 
 int main(int argc, char** argv)
@@ -86,27 +104,44 @@ int main(int argc, char** argv)
 	unsigned int nb_labels = 24;
 	unsigned int vector_size;
 	double minV = -2. * PI;
-	//double maxV = 2. * PI;
-	double maxV = 100.;
+	double maxV = 100.; // 2 * PI;
 	unsigned int depth = 150;
 	//unsigned int nb_trees = 15;
 	
 	std::vector<GestureVector> gesture = parffArse("C:/LeapAngles/arff/CGHI.arff");
 	vector_size = gesture[0].getFeatures().size();
 
+	std::vector<GestureVector> testset;
+	std::vector<GestureVector> trainset;
 
-	for (int trees_i = 4; trees_i <= 30; ++trees_i) {
-			RandomizedForest forest(nb_labels, true, depth, trees_i, vector_size, minV, maxV);
+	for (int trees_i = 4; trees_i <= 30; ++trees_i) 
+	{
+		RandomizedForest forest(nb_labels, true, depth, trees_i, vector_size, minV, maxV);
+		double total_accuracy = 0;
+
+		for (int test = 0; test < 10; test++)
+		{
+			testset.clear();
+			trainset.clear();
+				
+			for	(int i = 0; i < vector_size; i++) {
+				if ((i % 10) == test) testset.push_back(gesture[i]);
+				else trainset.push_back(gesture[i]);
+			}
+
+			trainForest(trainset, forest, "C:/RFlib_Test/CGHI");
+			total_accuracy += testForest(testset, "C:/RFlib_Test/CGHI");
 			
-			trainForest(gesture, forest, "C:/RFlib_Test/CGHI");
-			std::cout << trees_i << std::endl;
-			testForest(gesture, "C:/RFlib_Test/CGHI");
 			/*std::vector<GestureVector>::const_iterator first = gesture.begin() + gesture.size() - 240;
 			std::vector<GestureVector>::const_iterator last = gesture.end();
 			std::vector<GestureVector> test(first, last);*/
-			
+
 			//forest.~RandomizedForest();
+		}
+
+		std::cout << trees_i << " " << (total_accuracy/10) << std::endl;
 	}
+
 	return 0;
 
 	/*

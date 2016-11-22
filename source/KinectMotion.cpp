@@ -1,12 +1,12 @@
 #include <iostream>
-#include "KinectMotion.h"
+#include "../../GestureRecognition/include/KinectMotion.h"
 #include <opencv\cv.h>
-#include "LeapData.h"
+#include "../../GestureRecognition/include/LeapData.h"
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/features2d.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
-#include "filenames.h" 
+#include "../../GestureRecognition/include/filenames.h" 
 #include <vector>
 #include <set>
 

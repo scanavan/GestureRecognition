@@ -1,4 +1,4 @@
-#include "LeapData.h"
+#include "../../GestureRecognition/include/LeapData.h"
 #include <sstream>
 #include <math.h>
 
@@ -256,23 +256,23 @@ void LeapData::setRatio()
 		}
 	}
 	
-/*	std::cout << "rightFingerAddr: " << rightFingerAddr<<std::endl;
-	std::cout << "right finger: "; right.printPoint();
-	
-	std::cout << "leftFingerAddr: " << leftFingerAddr << std::endl;
-	std::cout << "left finger: "; left.printPoint();
+	//std::cout << "rightFingerAddr: " << rightFingerAddr<<std::endl;
+	//std::cout << "right finger: "; right.printPoint();
+	//
+	//std::cout << "leftFingerAddr: " << leftFingerAddr << std::endl;
+	//std::cout << "left finger: "; left.printPoint();
 
-	std::cout << "extendedTipPosition:" << " ";
-	for (int i = 0; i < extendedTipPosition.size(); i++) {
-		extendedTipPosition[i].printPoint();
-	}
-	std::cout << std::endl;
-	
-	std::cout << "extended Finger:" << " ";
-	for (int i = 0; i < extendedFingers.size(); i++) {
-		std::cout << extendedFingers[i];
-	}
-	std::cout << std::endl;*/
+	//std::cout << "extendedTipPosition:" << " ";
+	//for (int i = 0; i < extendedTipPosition.size(); i++) {
+	//	extendedTipPosition[i].printPoint();
+	//}
+	//std::cout << std::endl;
+	//
+	//std::cout << "extended Finger:" << " ";
+	//for (int i = 0; i < extendedFingers.size(); i++) {
+	//	std::cout << extendedFingers[i];
+	//}
+	//std::cout << std::endl;
 
 	//maxX = right.getX() - left.getX();
 	maxX = right.getMagnitude(left);
@@ -291,10 +291,10 @@ void LeapData::setRatio()
 	{
 		ratio = 0;
 	}
-	/*std::cout << 
-		"maxX: " << maxX << "\n" << 
-		"maxY: " << maxY << "\n" << 
-		"ratio: " << ratio<<"\n";*/
+	//std::cout << 
+	//	"maxX: " << maxX << "\n" << 
+	//	"maxY: " << maxY << "\n" << 
+	//	"ratio: " << ratio<<"\n";
 	ratio = ratio / newScaleFactor;
 }
 // sets the fingertipAngles and also fingertipElevation

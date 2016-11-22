@@ -6,6 +6,7 @@
 #define FEATURE_H
 
 #include <iostream>
+#include <vector>
 #include "IFeatureVector.h"
 #include "../../GestureRecognition/include/LeapData.h"
 #include "../../GestureRecognition/include/KinectMotion.h"
