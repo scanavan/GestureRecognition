@@ -36,5 +36,5 @@ double GestureVector::operator[](unsigned int k) const
 
 unsigned int GestureVector::size() const
 {
-	return features.size();
+	return static_cast<unsigned>(features.size());
 }
