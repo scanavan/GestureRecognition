@@ -211,15 +211,22 @@ void LeapCapture::writeArffFile(char button)
 	{
 		outArffFile << stableTipPositions[i].x << ", " << stableTipPositions[i].y << ", " << stableTipPositions[i].z << ", ";
 	}
-
-
 	outArffFile << pinchStrength << ", ";
 	outArffFile << grabStrength << ", ";
 	outArffFile << palmPosition.x << ", " << palmPosition.y << ", " << palmPosition.z << ", ";
 	outArffFile << stablePalmPosition.x << ", " << stablePalmPosition.y << ", " << stablePalmPosition.z << ", ";
 	outArffFile << scaleFactor << ", ";
 	outArffFile << frontMostFinger.type() << ", ";
-	outArffFile << button << "\n";
+	int label = button - 64;
+	if (label < 10)
+	{
+		outArffFile << "G0";
+	}
+	else
+	{
+		outArffFile << "G";
+	}
+	outArffFile << label << "\n";
 }
 
 void LeapCapture::clearVectors()

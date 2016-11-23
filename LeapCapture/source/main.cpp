@@ -91,9 +91,9 @@ void Train()
 	for (int trees_i = 4; trees_i <= 30; ++trees_i) {
 		RandomizedForest forest(nb_labels, true, depth, trees_i, vector_size, minV, maxV);
 
-		trainForest(gesture, forest, "C:/RFlib_Test/CGHI");
+//		trainForest(gesture, forest, "C:/RFlib_Test/CGHI");
 		std::cout << trees_i << std::endl;
-		testForest(gesture, "C:/RFlib_Test/CGHI");
+//		testForest(gesture, "C:/RFlib_Test/CGHI");
 		/*std::vector<GestureVector>::const_iterator first = gesture.begin() + gesture.size() - 240;
 		std::vector<GestureVector>::const_iterator last = gesture.end();
 		std::vector<GestureVector> test(first, last);*/
