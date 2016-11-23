@@ -23,6 +23,7 @@ private:
 	std::vector<Leap::Vector> fingerDirections;
 	std::vector<Leap::Vector> fingertips;
 	std::vector<Leap::Vector> stableTipPositions;
+	std::vector<int> extendedFingers;
 	Leap::Frame referenceFrame;
 	int ctr = 1;
 	Leap::Finger frontMostFinger;

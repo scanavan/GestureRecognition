@@ -65,6 +65,11 @@ void LeapCapture::WriteArffFileHeader(std::string outName)
 		<< "@ATTRIBUTE stableFingertip5x NUMERIC\n"
 		<< "@ATTRIBUTE stableFingertip5y NUMERIC\n"
 		<< "@ATTRIBUTE stableFingertip5z NUMERIC\n"
+		<< "@ATTRIBUTE extendedFinger1 NUMERIC\n"
+		<< "@ATTRIBUTE extendedFinger2 NUMERIC\n"
+		<< "@ATTRIBUTE extendedFinger3 NUMERIC\n"
+		<< "@ATTRIBUTE extendedFinger4 NUMERIC\n"
+		<< "@ATTRIBUTE extendedFinger5 NUMERIC\n"
 		<< "@ATTRIBUTE pinchStrength NUMERIC\n"
 		<< "@ATTRIBUTE grabStrength NUMERIC\n"
 		<< "@ATTRIBUTE palmPositionX NUMERIC\n"
@@ -75,7 +80,7 @@ void LeapCapture::WriteArffFileHeader(std::string outName)
 		<< "@ATTRIBUTE stablePalmPositionZ NUMERIC\n"
 		<< "@ATTRIBUTE scaleFactor NUMERIC\n"
 		<< "@ATTRIBUTE frontMostFinger NUMERIC\n"
-		<< "@ATTRIBUTE class {A,B,C,D,E,F,G,H,I,K,L,M,N,O,P,Q,R,S,T,U,V,X,Y}\n"
+		<< "@ATTRIBUTE class {G01,G02,G03,G04,G05,G06,G07,G08,G09,G11,G12,G13,G14,G15,G16,G17,G18,G19,G20,G21,G22,G23,G24,G25}\n"
 		<< "\n@DATA\n";
 }
 bool LeapCapture::Capture()
@@ -89,8 +94,6 @@ bool LeapCapture::Capture()
 		// Get the first hand
 		const Leap::Hand hand = *hl;
 		handFound = true;
-
-		//ScaleFactor turns to 1 and stays at 1 after you take your hand away, WHY DOES THIS HAPPEN?
 		if (ctr == 1)
 		{
 			referenceFrame = frame;
@@ -115,16 +118,10 @@ bool LeapCapture::Capture()
 			const Leap::Bone distal = finger.bone(Leap::Bone::TYPE_DISTAL);
 			const Leap::Vector tip = distal.nextJoint();
 		}
-		//This code can be omitted if you do fingers.begin() -> fingers.end() instead of extended.begin() -> extended.end()
-		//-1*10^8 only occurs when the finger isnt recognized as detected
-		//if (fingerWidths[0] > 0 && fingerWidths[1] > 0 && fingerWidths[2] > 0 && fingerWidths[3] > 0 && fingerWidths[4] > 0)
-		//{
-		//std::cout << "FingerWidths: " << fingerWidths[0] << " " << fingerWidths[1] << " " << fingerWidths[2] << " " << fingerWidths[3] << " "
-		//<< fingerWidths[4] << std::endl;
-		//}
 
 		for (Leap::FingerList::const_iterator fl = fingers.begin(); fl != fingers.end(); ++fl) {
 			const Leap::Finger finger = *fl;
+			
 			//FingerDirections
 			const Leap::Vector fingerDirection = finger.direction();
 			fingerDirections.push_back(fingerDirection);
@@ -134,10 +131,6 @@ bool LeapCapture::Capture()
 			const Leap::Bone intermediate = finger.bone(Leap::Bone::TYPE_INTERMEDIATE);
 			const Leap::Bone proximal = finger.bone(Leap::Bone::TYPE_PROXIMAL);
 			const Leap::Bone metacarpal = finger.bone(Leap::Bone::TYPE_METACARPAL);
-			averageFingerWidth = (distal.width() + intermediate.width() + proximal.width() + metacarpal.width()) / 4.f;
-			//Did with Array instead of Vector out of curiosity
-			fingerWidths[i] = averageFingerWidth;
-			i++;
 
 			//fingertips
 			const Leap::Vector tip = distal.nextJoint();
@@ -148,42 +141,24 @@ bool LeapCapture::Capture()
 			frontMostFinger = fingers.frontmost();
 			//pinchStrength
 			pinchStrength = hand.pinchStrength();
-			//std::cout << "FingerWidths: " << fingerWidths[0] << " " << fingerWidths[1] << " " << fingerWidths[2] << " " << fingerWidths[3] << " "
-			//<< fingerWidths[4] << std::endl;
+			//extended fingers
+			if (finger.isExtended())
+			{
+				extendedFingers.push_back(1);
+			}
+			else
+			{
+				extendedFingers.push_back(0);
+			}
 		}
 
-		//for (int i = 0; i < fingerDirections.size(); i++)
-		//{
-			//std::cout << "Finger Direction" << i + 1 << ": " << fingerDirections[i] << std::endl;
-		//}
-		//fingerDirections.clear();
-		//Can't print vector directly
-		//for (int i = 0; i < fingertips.size(); i++)
-		//{
-		//	std::cout << "Fingertip Position" << i+1 << ": " << fingertips[i] << std::endl;
-		//}
-		//fingertips.clear();
-		//for (int i = 0; i < stableTipPositions.size(); i++)
-		//{
-			//std::cout << "Stable Fingertip Position" << i+1 << ": " << stableTipPositions[i] << std::endl;
-		//}
-		//stableTipPositions.clear();
 		//grabAngle
 		grabStrength = hand.grabStrength();
 		//stable palm position
 		stablePalmPosition = hand.stabilizedPalmPosition();
 		//Frame scaleFactor
 		scaleFactor = frame.scaleFactor(referenceFrame);
-		//std::cout << "Pinch Strength: " << pinchStrength << std::endl;
-		//std::cout << "Hand Grab Strength: " << grabStrength << std::endl;
-		//std::cout << "Palm Position: " << palmPosition << std::endl;
-		//std::cout << "Stable Palm Position: " << stablePalmPosition << std::endl;
-		//std::cout << "Hand ScaleFactor: " << hand.scaleFactor(referenceFrame) << std::endl;
-		//std::cout << "Frame ScaleFactor: " << frame.scaleFactor(referenceFrame) << std::endl;
-		//Starts off at a decimal value but increases to 1 and stays at 1 forever?
-		//std::cout << "Confidence: " << hand.confidence() << std::endl;
-		//returns frontMost FingerId, last digit of ID: 0=thumb, 1=index, 2=middle, 3=ring, 4=pinky
-		//std::cout << "FrontMost Finger: " << frontMostFinger << std::endl;
+		
 	}
 	if (!handFound)
 	{
@@ -199,18 +174,19 @@ void LeapCapture::writeArffFile(char button)
 	{
 		outArffFile << fingerDirections[i].x << ", " << fingerDirections[i].y << ", " << fingerDirections[i].z << ", ";
 	}
-
-
 	for (int i = 0; i<fingertips.size(); i++)
 	{
 		outArffFile << fingertips[i].x << ", " << fingertips[i].y << ", " << fingertips[i].z << ", ";
 	}
-
-
 	for (int i = 0; i<stableTipPositions.size(); i++)
 	{
 		outArffFile << stableTipPositions[i].x << ", " << stableTipPositions[i].y << ", " << stableTipPositions[i].z << ", ";
 	}
+	for (int i = 0; i<extendedFingers.size(); i++)
+	{
+		outArffFile << extendedFingers[i] << ", ";
+	}
+
 	outArffFile << pinchStrength << ", ";
 	outArffFile << grabStrength << ", ";
 	outArffFile << palmPosition.x << ", " << palmPosition.y << ", " << palmPosition.z << ", ";
@@ -234,4 +210,5 @@ void LeapCapture::clearVectors()
 	fingerDirections.clear();
 	fingertips.clear();
 	stableTipPositions.clear();
+	extendedFingers.clear();
 }
