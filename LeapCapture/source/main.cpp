@@ -15,10 +15,17 @@ void Capture()
 		{
 			if (GetAsyncKeyState(button) && captured)
 			{
+				if (button == 'J' || button == 'Z')
+				{
+					std::cout << button << " is not a valid gesture right now!" << std::endl;
+				}
 				//to do real-time, we need to call the random forest here.
 				//need to write a function that takes LeapCapture data and tests on forest
-				lc.writeArffFile(button);
-				std::cout << button << " captured!" << std::endl;
+				else
+				{
+					lc.writeArffFile(button);
+					std::cout << button << " captured!" << std::endl;
+				}
 			}
 		}
 		//can this be a shorter sleep and still get the right data?
@@ -119,12 +126,7 @@ int main(int argc, char* argv[])
 		Capture();
 	}
 	return 0;
-	//getASyncKeystroke Windows?
-	//Bind keypress to call arffWriter
-	//Calling functions first time, write header one time, everytime you press key, you append to file
 }
-
-
 
 
 
