@@ -12,6 +12,7 @@ public:
 	void writeArffFile(char button);
 	void clearVectors();
 	void WriteArffFileHeader(std::string outName);
+	void AppendArffFile(std::string outName);
 private:
 	Leap::Vector palmPosition;
 	Leap::Vector stablePalmPosition;

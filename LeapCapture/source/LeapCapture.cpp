@@ -9,6 +9,11 @@ LeapCapture::~LeapCapture()
 {
 	outArffFile.close();
 }
+void LeapCapture::AppendArffFile(std::string outName)
+{
+	outArffFile.open(outName, std::fstream::app);
+
+}
 void LeapCapture::WriteArffFileHeader(std::string outName)
 {
 	outArffFile.open(outName);

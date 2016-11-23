@@ -3,10 +3,18 @@
 #include <fstream>
 #include "../inc/RandomizedForest.h"
 #include "../inc/GestureVector.h"
-void Capture()
+void Capture(std::string mode)
 {
 	LeapCapture lc;
-	lc.WriteArffFileHeader("test.arff");//"C:/Users/IASA-FRI/Documents/leapArffFiles/leapData.arff"
+	if (mode == "write")
+	{
+		lc.WriteArffFileHeader("test.arff");//"C:/Users/IASA-FRI/Documents/leapArffFiles/leapData.arff"
+	}
+	else if (mode == "append")
+	{
+		//outArffFile.open("test.arff", std::fstream::in | std::fstream::out | std::fstream::app);
+		lc.AppendArffFile("test.arff");
+	}
 	while (1)
 	{
 		bool captured = lc.Capture();
@@ -121,9 +129,13 @@ int main(int argc, char* argv[])
 	{
 		Test();
 	}
-	else if (mode.compare("capture") == 0)
+	else if (mode.compare("capture new") == 0)
 	{
-		Capture();
+		Capture("write");
+	}
+	else if (mode.compare("capture append") == 0)
+	{
+		Capture("append");
 	}
 	return 0;
 }
