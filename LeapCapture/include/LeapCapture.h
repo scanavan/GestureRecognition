@@ -13,6 +13,7 @@ public:
 	void clearVectors();
 	void WriteArffFileHeader(std::string outName);
 	void GetGestureVector(std::vector<float>& data);
+	void AppendArffFile(std::string outName);
 
 private:
 	Leap::Vector palmPosition;
@@ -25,6 +26,7 @@ private:
 	std::vector<Leap::Vector> fingerDirections;
 	std::vector<Leap::Vector> fingertips;
 	std::vector<Leap::Vector> stableTipPositions;
+	std::vector<int> extendedFingers;
 	Leap::Frame referenceFrame;
 	int ctr = 1;
 	Leap::Finger frontMostFinger;

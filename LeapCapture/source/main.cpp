@@ -4,7 +4,7 @@
 #include "../inc/RandomizedForest.h"
 #include "../inc/GestureVector.h"
 
-void Capture();
+void Capture(std::string mode);
 void Test(std::string treeFile);
 void Train();
 std::vector<GestureVector> parffArse(std::string path);
@@ -20,10 +20,18 @@ void trainForest(std::vector<GestureVector> gesture, RandomizedForest forest, st
 
 	forest.save(filename);
 }
-void Capture()
+void Capture(std::string mode)
 {
 	LeapCapture lc;
-	lc.WriteArffFileHeader("test.arff");//"C:/Users/IASA-FRI/Documents/leapArffFiles/leapData.arff"
+	if (mode == "write")
+	{
+		lc.WriteArffFileHeader("test.arff");//"C:/Users/IASA-FRI/Documents/leapArffFiles/leapData.arff"
+	}
+	else if (mode == "append")
+	{
+		//outArffFile.open("test.arff", std::fstream::in | std::fstream::out | std::fstream::app);
+		lc.AppendArffFile("test.arff");
+	}
 	while (1)
 	{
 		bool captured = lc.Capture();
@@ -32,10 +40,17 @@ void Capture()
 		{
 			if (GetAsyncKeyState(button) && captured)
 			{
+				if (button == 'J' || button == 'Z')
+				{
+					std::cout << button << " is not a valid gesture right now!" << std::endl;
+				}
 				//to do real-time, we need to call the random forest here.
 				//need to write a function that takes LeapCapture data and tests on forest
-				lc.writeArffFile(button);
-				std::cout << button << " captured!" << std::endl;
+				else
+				{
+					lc.writeArffFile(button);
+					std::cout << button << " captured!" << std::endl;
+				}
 			}
 		}
 		//can this be a shorter sleep and still get the right data?
@@ -107,8 +122,9 @@ void Test(std::string treeFile)
 }
 void Train()
 {
+	//NOTE: This function should probably take a string that is the arrf file to read.
 	unsigned int nb_labels = 24;
-	size_t vector_size;
+	unsigned vector_size;
 	double minV = -2. * PI;
 	//double maxV = 2. * PI;
 	double maxV = 100.;
@@ -116,7 +132,7 @@ void Train()
 	//unsigned int nb_trees = 15;
 
 	std::vector<GestureVector> gesture = parffArse("ryanWalterEricMelanie.arff");
-	vector_size = gesture[0].getFeatures().size();
+	vector_size = static_cast<unsigned>(gesture[0].getFeatures().size());
 	//for (int trees_i = 4; trees_i <= 30; ++trees_i) 
 	{
 		RandomizedForest forest(nb_labels, false, depth, 15, vector_size, minV, maxV);
@@ -136,17 +152,16 @@ int main(int argc, char* argv[])
 	{
 		Test("testTree");
 	}
-	else if (mode.compare("capture") == 0)
+	else if (mode.compare("capture new") == 0)
 	{
-		Capture();
+		Capture("write");
+	}
+	else if (mode.compare("capture append") == 0)
+	{
+		Capture("append");
 	}
 	return 0;
-	//getASyncKeystroke Windows?
-	//Bind keypress to call arffWriter
-	//Calling functions first time, write header one time, everytime you press key, you append to file
 }
-
-
 
 
 
