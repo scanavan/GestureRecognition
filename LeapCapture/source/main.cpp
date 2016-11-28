@@ -3,6 +3,23 @@
 #include <fstream>
 #include "../inc/RandomizedForest.h"
 #include "../inc/GestureVector.h"
+
+void Capture();
+void Test(std::string treeFile);
+void Train();
+std::vector<GestureVector> parffArse(std::string path);
+void trainForest(std::vector<GestureVector> gesture, RandomizedForest forest, std::string filename);
+
+void trainForest(std::vector<GestureVector> gesture, RandomizedForest forest, std::string filename)
+{
+	//std::cout << "Training...\n" << std::flush;
+
+	for (int i = 0; i < gesture.size(); ++i) {
+		forest.train(gesture[i], gesture[i].getLabel());
+	}
+
+	forest.save(filename);
+}
 void Capture()
 {
 	LeapCapture lc;
@@ -35,22 +52,24 @@ std::vector<GestureVector> parffArse(std::string path)
 
 	if (ifs.is_open()) {
 		std::getline(ifs, line);
-		while (line != "@data") {
+		while (line != "@DATA") {
 			if (ifs.eof()) { break; }
 			std::getline(ifs, line);
 		}
 		std::getline(ifs, line);
 		while (true) {
 			std::getline(ifs, line);
-			if (ifs.eof()) { break; }
+			if (ifs.eof()) { 
+				break; 
+			}
 			std::istringstream ss(line);
 			std::string token;
 			std::string::size_type sz;
 			std::vector<float> val;
 			unsigned int lab;
 			while (std::getline(ss, token, ',')) {
-				if (token[0] == 'G') {
-					lab = std::stoi(token.substr(1, 2));
+				if (token[1] == 'G') {
+					lab = std::stoi(token.substr(2, 2));
 				}
 				else {
 					val.push_back(std::stof(token, &sz));
@@ -64,15 +83,27 @@ std::vector<GestureVector> parffArse(std::string path)
 	}
 	return data;
 }
-void Test()
+void Test(std::string treeFile)
 {
-	unsigned int nb_labels = 24;
-	size_t vector_size;
-	double minV = -2. * PI;
-	//double maxV = 2. * PI;
-	double maxV = 100.;
-	unsigned int depth = 150;
-	//unsigned int nb_trees = 15;
+	LeapCapture lc;
+	std::cout << "Loading Random Forest...";
+	RandomizedForest forest;
+	forest.load(treeFile + ".rf");
+	std::cout << "DONE." << std::endl;
+	std::vector<float> data;
+	while (1)
+	{
+		bool found = lc.Capture();
+		if (found)
+		{
+			lc.GetGestureVector(data);
+			GestureVector gesture(data, 1);
+			int classify = forest.classify(gesture);
+			std::cout << classify << std::endl;
+			data.clear();
+		}
+		lc.clearVectors();
+	}
 }
 void Train()
 {
@@ -84,21 +115,12 @@ void Train()
 	unsigned int depth = 150;
 	//unsigned int nb_trees = 15;
 
-	std::vector<GestureVector> gesture = parffArse("C:/LeapAngles/arff/CGHI.arff");
+	std::vector<GestureVector> gesture = parffArse("ryanWalterEricMelanie.arff");
 	vector_size = gesture[0].getFeatures().size();
-
-
-	for (int trees_i = 4; trees_i <= 30; ++trees_i) {
-		RandomizedForest forest(nb_labels, true, depth, trees_i, vector_size, minV, maxV);
-
-//		trainForest(gesture, forest, "C:/RFlib_Test/CGHI");
-		std::cout << trees_i << std::endl;
-//		testForest(gesture, "C:/RFlib_Test/CGHI");
-		/*std::vector<GestureVector>::const_iterator first = gesture.begin() + gesture.size() - 240;
-		std::vector<GestureVector>::const_iterator last = gesture.end();
-		std::vector<GestureVector> test(first, last);*/
-
-		//forest.~RandomizedForest();
+	//for (int trees_i = 4; trees_i <= 30; ++trees_i) 
+	{
+		RandomizedForest forest(nb_labels, false, depth, 15, vector_size, minV, maxV);
+		trainForest(gesture, forest, "testTree");
 	}
 }
 int main(int argc, char* argv[])
@@ -112,7 +134,7 @@ int main(int argc, char* argv[])
 	}
 	else if (mode.compare("test") == 0)
 	{
-		Test();
+		Test("testTree");
 	}
 	else if (mode.compare("capture") == 0)
 	{

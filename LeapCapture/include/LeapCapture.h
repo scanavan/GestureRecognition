@@ -12,6 +12,8 @@ public:
 	void writeArffFile(char button);
 	void clearVectors();
 	void WriteArffFileHeader(std::string outName);
+	void GetGestureVector(std::vector<float>& data);
+
 private:
 	Leap::Vector palmPosition;
 	Leap::Vector stablePalmPosition;

@@ -9,6 +9,40 @@ LeapCapture::~LeapCapture()
 {
 	outArffFile.close();
 }
+void LeapCapture::GetGestureVector(std::vector<float>& data)
+{
+
+	for (int i = 0; i<fingerDirections.size(); i++)
+	{
+		data.push_back(fingerDirections[i].x);
+		data.push_back(fingerDirections[i].y);
+		data.push_back(fingerDirections[i].z);
+	}
+	for (int i = 0; i<fingertips.size(); i++)
+	{
+		data.push_back(fingertips[i].x);
+		data.push_back(fingertips[i].y);
+		data.push_back(fingertips[i].z);
+	}
+
+
+	for (int i = 0; i<stableTipPositions.size(); i++)
+	{
+		data.push_back(stableTipPositions[i].x);
+		data.push_back(stableTipPositions[i].y);
+		data.push_back(stableTipPositions[i].z);
+	}
+	data.push_back(pinchStrength);
+	data.push_back(grabStrength);
+	data.push_back(palmPosition.x);
+	data.push_back(palmPosition.y);
+	data.push_back(palmPosition.z);
+	data.push_back(stablePalmPosition.x);
+	data.push_back(stablePalmPosition.y);
+	data.push_back(stablePalmPosition.z);
+	data.push_back(scaleFactor);
+	data.push_back(frontMostFinger.type());
+}
 void LeapCapture::WriteArffFileHeader(std::string outName)
 {
 	outArffFile.open(outName);
