@@ -16,7 +16,6 @@ void DisplayLetter(int letter);
 std::string title = "Sign Language Letters";
 void DisplayLetter(int letter)
 {
-	letter = 0;
 	std::string image;
 	if (letter < 10)
 	{
@@ -46,12 +45,12 @@ void Capture(std::string mode)
 	LeapCapture lc;
 	if (mode == "write")
 	{
-		lc.WriteArffFileHeader("ryan.arff");//"C:/Users/IASA-FRI/Documents/leapArffFiles/leapData.arff"
+		lc.WriteArffFileHeader("FRIDemoSWTAR.arff");//"C:/Users/IASA-FRI/Documents/leapArffFiles/leapData.arff"
 	}
 	else if (mode == "append")
 	{
 		//outArffFile.open("test.arff", std::fstream::in | std::fstream::out | std::fstream::app);
-		lc.AppendArffFile("ryan.arff");
+		lc.AppendArffFile("FRIDemoSWTAR.arff");
 	}
 	while (1)
 	{
@@ -108,6 +107,7 @@ std::vector<GestureVector> parffArse(std::string path)
 			while (std::getline(ss, token, ',')) {
 				if (token[1] == 'G') {
 					lab = std::stoi(token.substr(2, 2));
+					if (lab >= 10) { lab--; }
 				}
 				else {
 					val.push_back(std::stof(token, &sz));
@@ -133,13 +133,13 @@ void Test(std::string treeFile)
 	while (1)
 	{
 		bool found = lc.Capture();
-		int classify(-1);
+		int classify(0);
 		if (found)
 		{
 			lc.GetGestureVector(data);
 			GestureVector gesture(data, 1);
 			classify = forest.classify(gesture);
-			std::cout << classify << std::endl;
+			//std::cout << classify << std::endl;
 			data.clear();
 		}
 		DisplayLetter(classify);
@@ -149,7 +149,7 @@ void Test(std::string treeFile)
 void Train()
 {
 	//NOTE: This function should probably take a string that is the arrf file to read.
-	unsigned int nb_labels = 3;
+	unsigned int nb_labels = 5;
 	unsigned vector_size;
 	double minV = -2. * PI;
 	//double maxV = 2. * PI;
@@ -157,7 +157,7 @@ void Train()
 	unsigned int depth = 37;
 	//unsigned int nb_trees = 15;
 
-	std::vector<GestureVector> gesture = parffArse("ryan.arff");
+	std::vector<GestureVector> gesture = parffArse("FRIDemoSWTAR.arff");
 	if (!gesture.empty())
 	{
 		vector_size = static_cast<unsigned>(gesture[0].getFeatures().size());
