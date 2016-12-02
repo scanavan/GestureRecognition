@@ -3,13 +3,33 @@
 #include <fstream>
 #include "../inc/RandomizedForest.h"
 #include "../inc/GestureVector.h"
+#include <opencv2/core/core.hpp>
+#include <opencv2/highgui/highgui.hpp>
 
 void Capture(std::string mode);
 void Test(std::string treeFile);
 void Train();
 std::vector<GestureVector> parffArse(std::string path);
 void trainForest(std::vector<GestureVector> gesture, RandomizedForest forest, std::string filename);
+void DisplayLetter(int letter);
 
+std::string title = "Sign Language Letters";
+void DisplayLetter(int letter)
+{
+	letter = 0;
+	std::string image;
+	if (letter < 10)
+	{
+		image = "0" + std::to_string(letter) + ".jpeg";
+	}
+	else
+	{
+		image = std::to_string(letter) + ".jpeg";
+	}
+	cv::Mat letterImage = cv::imread(image);
+	cv::imshow(title, letterImage);
+	cv::waitKey(33);
+}
 void trainForest(std::vector<GestureVector> gesture, RandomizedForest forest, std::string filename)
 {
 	//std::cout << "Training...\n" << std::flush;
@@ -109,17 +129,20 @@ void Test(std::string treeFile)
 	forest.load(treeFile + ".rf");
 	std::cout << "DONE." << std::endl;
 	std::vector<float> data;
+	cv::namedWindow(title);
 	while (1)
 	{
 		bool found = lc.Capture();
+		int classify(-1);
 		if (found)
 		{
 			lc.GetGestureVector(data);
 			GestureVector gesture(data, 1);
-			int classify = forest.classify(gesture);
+			classify = forest.classify(gesture);
 			std::cout << classify << std::endl;
 			data.clear();
 		}
+		DisplayLetter(classify);
 		lc.clearVectors();
 	}
 }
