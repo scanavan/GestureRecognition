@@ -22,15 +22,16 @@ void trainForest(std::vector<GestureVector> gesture, RandomizedForest forest, st
 }
 void Capture(std::string mode)
 {
+	int ctr = 0;
 	LeapCapture lc;
 	if (mode == "write")
 	{
-		lc.WriteArffFileHeader("test.arff");//"C:/Users/IASA-FRI/Documents/leapArffFiles/leapData.arff"
+		lc.WriteArffFileHeader("ryan.arff");//"C:/Users/IASA-FRI/Documents/leapArffFiles/leapData.arff"
 	}
 	else if (mode == "append")
 	{
 		//outArffFile.open("test.arff", std::fstream::in | std::fstream::out | std::fstream::app);
-		lc.AppendArffFile("test.arff");
+		lc.AppendArffFile("ryan.arff");
 	}
 	while (1)
 	{
@@ -49,7 +50,9 @@ void Capture(std::string mode)
 				else
 				{
 					lc.writeArffFile(button);
-					std::cout << button << " captured!" << std::endl;
+					std::cout << button << " captured!  " << (ctr%10+1) << std::endl;
+					ctr++;
+
 				}
 			}
 		}
@@ -123,20 +126,23 @@ void Test(std::string treeFile)
 void Train()
 {
 	//NOTE: This function should probably take a string that is the arrf file to read.
-	unsigned int nb_labels = 24;
+	unsigned int nb_labels = 3;
 	unsigned vector_size;
 	double minV = -2. * PI;
 	//double maxV = 2. * PI;
 	double maxV = 100.;
-	unsigned int depth = 150;
+	unsigned int depth = 37;
 	//unsigned int nb_trees = 15;
 
-	std::vector<GestureVector> gesture = parffArse("ryanWalterEricMelanie.arff");
-	vector_size = static_cast<unsigned>(gesture[0].getFeatures().size());
-	//for (int trees_i = 4; trees_i <= 30; ++trees_i) 
+	std::vector<GestureVector> gesture = parffArse("ryan.arff");
+	if (!gesture.empty())
 	{
-		RandomizedForest forest(nb_labels, false, depth, 15, vector_size, minV, maxV);
-		trainForest(gesture, forest, "testTree");
+		vector_size = static_cast<unsigned>(gesture[0].getFeatures().size());
+		//for (int trees_i = 4; trees_i <= 30; ++trees_i) 
+		{
+			RandomizedForest forest(nb_labels, false, depth, 15, vector_size, minV, maxV);
+			trainForest(gesture, forest, "testTree");
+		}
 	}
 }
 int main(int argc, char* argv[])

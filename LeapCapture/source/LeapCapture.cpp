@@ -11,37 +11,25 @@ LeapCapture::~LeapCapture()
 }
 void LeapCapture::GetGestureVector(std::vector<float>& data)
 {
-
 	for (int i = 0; i<fingerDirections.size(); i++)
 	{
 		data.push_back(fingerDirections[i].x);
 		data.push_back(fingerDirections[i].y);
 		data.push_back(fingerDirections[i].z);
 	}
-	for (int i = 0; i<fingertips.size(); i++)
+	for (int i = 0; i<extendedFingers.size(); i++)
 	{
-		data.push_back(fingertips[i].x);
-		data.push_back(fingertips[i].y);
-		data.push_back(fingertips[i].z);
-	}
-
-
-	for (int i = 0; i<stableTipPositions.size(); i++)
-	{
-		data.push_back(stableTipPositions[i].x);
-		data.push_back(stableTipPositions[i].y);
-		data.push_back(stableTipPositions[i].z);
+		data.push_back(extendedFingers[i]);
 	}
 	data.push_back(pinchStrength);
 	data.push_back(grabStrength);
-	data.push_back(palmPosition.x);
-	data.push_back(palmPosition.y);
-	data.push_back(palmPosition.z);
-	data.push_back(stablePalmPosition.x);
-	data.push_back(stablePalmPosition.y);
-	data.push_back(stablePalmPosition.z);
 	data.push_back(scaleFactor);
-	data.push_back(frontMostFinger.type());
+	for (int i = 0; i<fingertips.size(); i++)
+	{
+		data.push_back(fingertips[i].x - palmPosition.x);
+		data.push_back(fingertips[i].y - palmPosition.y);
+		data.push_back(fingertips[i].z - palmPosition.z);
+	}
 }
 void LeapCapture::AppendArffFile(std::string outName)
 {
@@ -73,7 +61,7 @@ void LeapCapture::WriteArffFileHeader(std::string outName)
 		<< "@ATTRIBUTE fingerDirection5x NUMERIC\n"
 		<< "@ATTRIBUTE fingerDirection5y NUMERIC\n"
 		<< "@ATTRIBUTE fingerDirection5z NUMERIC\n"
-		<< "@ATTRIBUTE fingertip1x NUMERIC\n"
+		/*<< "@ATTRIBUTE fingertip1x NUMERIC\n"
 		<< "@ATTRIBUTE fingertip1y NUMERIC\n"
 		<< "@ATTRIBUTE fingertip1z NUMERIC\n"
 		<< "@ATTRIBUTE fingertip2x NUMERIC\n"
@@ -102,7 +90,7 @@ void LeapCapture::WriteArffFileHeader(std::string outName)
 		<< "@ATTRIBUTE stableFingertip4z NUMERIC\n"
 		<< "@ATTRIBUTE stableFingertip5x NUMERIC\n"
 		<< "@ATTRIBUTE stableFingertip5y NUMERIC\n"
-		<< "@ATTRIBUTE stableFingertip5z NUMERIC\n"
+		<< "@ATTRIBUTE stableFingertip5z NUMERIC\n"*/
 		<< "@ATTRIBUTE extendedFinger1 NUMERIC\n"
 		<< "@ATTRIBUTE extendedFinger2 NUMERIC\n"
 		<< "@ATTRIBUTE extendedFinger3 NUMERIC\n"
@@ -110,14 +98,29 @@ void LeapCapture::WriteArffFileHeader(std::string outName)
 		<< "@ATTRIBUTE extendedFinger5 NUMERIC\n"
 		<< "@ATTRIBUTE pinchStrength NUMERIC\n"
 		<< "@ATTRIBUTE grabStrength NUMERIC\n"
-		<< "@ATTRIBUTE palmPositionX NUMERIC\n"
+		/*<< "@ATTRIBUTE palmPositionX NUMERIC\n"
 		<< "@ATTRIBUTE palmPositionY NUMERIC\n"
-		<< "@ATTRIBUTE palmPositionZ NUMERIC\n"
-		<< "@ATTRIBUTE stablePalmPositionX NUMERIC\n"
+		<< "@ATTRIBUTE palmPositionZ NUMERIC\n"*/
+		/*<< "@ATTRIBUTE stablePalmPositionX NUMERIC\n"
 		<< "@ATTRIBUTE stablePalmPositionY NUMERIC\n"
-		<< "@ATTRIBUTE stablePalmPositionZ NUMERIC\n"
+		<< "@ATTRIBUTE stablePalmPositionZ NUMERIC\n"*/
 		<< "@ATTRIBUTE scaleFactor NUMERIC\n"
-		<< "@ATTRIBUTE frontMostFinger NUMERIC\n"
+		//<< "@ATTRIBUTE frontMostFinger NUMERIC\n"
+		<< "@ATTRIBUTE fingertipDistanceX1 NUMERIC\n"
+		<< "@ATTRIBUTE fingertipDistanceY1 NUMERIC\n"
+		<< "@ATTRIBUTE fingertipDistanceZ1 NUMERIC\n"
+		<< "@ATTRIBUTE fingertipDistanceX2 NUMERIC\n"
+		<< "@ATTRIBUTE fingertipDistanceY2 NUMERIC\n"
+		<< "@ATTRIBUTE fingertipDistanceZ2 NUMERIC\n"
+		<< "@ATTRIBUTE fingertipDistanceX3 NUMERIC\n"
+		<< "@ATTRIBUTE fingertipDistanceY3 NUMERIC\n"
+		<< "@ATTRIBUTE fingertipDistanceZ3 NUMERIC\n"
+		<< "@ATTRIBUTE fingertipDistanceX4 NUMERIC\n"
+		<< "@ATTRIBUTE fingertipDistanceY4 NUMERIC\n"
+		<< "@ATTRIBUTE fingertipDistanceZ4 NUMERIC\n"
+		<< "@ATTRIBUTE fingertipDistanceX5 NUMERIC\n"
+		<< "@ATTRIBUTE fingertipDistanceY5 NUMERIC\n"
+		<< "@ATTRIBUTE fingertipDistanceZ5 NUMERIC\n"
 		<< "@ATTRIBUTE class {G01,G02,G03,G04,G05,G06,G07,G08,G09,G11,G12,G13,G14,G15,G16,G17,G18,G19,G20,G21,G22,G23,G24,G25}\n"
 		<< "\n@DATA\n";
 }
@@ -212,14 +215,14 @@ void LeapCapture::writeArffFile(char button)
 	{
 		outArffFile << fingerDirections[i].x << ", " << fingerDirections[i].y << ", " << fingerDirections[i].z << ", ";
 	}
-	for (int i = 0; i<fingertips.size(); i++)
+	/*for (int i = 0; i<fingertips.size(); i++)
 	{
 		outArffFile << fingertips[i].x << ", " << fingertips[i].y << ", " << fingertips[i].z << ", ";
 	}
 	for (int i = 0; i<stableTipPositions.size(); i++)
 	{
 		outArffFile << stableTipPositions[i].x << ", " << stableTipPositions[i].y << ", " << stableTipPositions[i].z << ", ";
-	}
+	}*/
 	for (int i = 0; i<extendedFingers.size(); i++)
 	{
 		outArffFile << extendedFingers[i] << ", ";
@@ -227,11 +230,15 @@ void LeapCapture::writeArffFile(char button)
 
 	outArffFile << pinchStrength << ", ";
 	outArffFile << grabStrength << ", ";
-	outArffFile << palmPosition.x << ", " << palmPosition.y << ", " << palmPosition.z << ", ";
-	outArffFile << stablePalmPosition.x << ", " << stablePalmPosition.y << ", " << stablePalmPosition.z << ", ";
+	//outArffFile << palmPosition.x << ", " << palmPosition.y << ", " << palmPosition.z << ", ";
+	//outArffFile << stablePalmPosition.x << ", " << stablePalmPosition.y << ", " << stablePalmPosition.z << ", ";
 	outArffFile << scaleFactor << ", ";
-	outArffFile << frontMostFinger.type() << ", ";
-	int label = button - 64;
+	//outArffFile << frontMostFinger.type() << ", ";
+	for (int i = 0; i<fingertips.size(); i++)
+	{
+		outArffFile << fingertips[i].x - palmPosition.x << ", " << fingertips[i].y - palmPosition.y << ", " << fingertips[i].z - palmPosition.z << ", ";
+	}
+	int label = button - 65;
 	if (label < 10)
 	{
 		outArffFile << "G0";
