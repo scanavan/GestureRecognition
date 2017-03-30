@@ -9,7 +9,7 @@ A classification scheme is implemented using Ecole Centrale Paris's [RFLib](http
 We used the Leap Motion Controller and it's respective API (https://developer.leapmotion.com/documentation/cpp/api/Leap_Classes.html) in order to accurately recognize and classify letters of the American Sign Language (ASL) alphabet.
 
 ## Demo
-
+Click on the link below for a video demo of our work:
 [![Demo of our work](https://img.youtube.com/vi/FVk2ZBuirrI/0.jpg)](https://www.youtube.com/watch?v=FVk2ZBuirrI)
 
 ## Limitations
