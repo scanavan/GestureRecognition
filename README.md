@@ -21,5 +21,5 @@ For the purposes of this project, we did not include the letters 'J' and 'Z' bec
 
 ## Publication
 
-Our work has been accepted to ICIP 2017, which will take place September 17-20, 2017 in Beijing, China. Details can be found [http://2017.ieeeicip.org/ here].
+Our work has been accepted to ICIP 2017, which will take place September 17-20, 2017 in Beijing, China. Details can be found [here](http://2017.ieeeicip.org/)
 
