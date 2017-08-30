@@ -19,7 +19,7 @@ void LeapCapture::GetGestureVector(std::vector<float>& data)
 	}
 	for (int i = 0; i<extendedFingers.size(); i++)
 	{
-		data.push_back(extendedFingers[i]);
+		data.push_back(static_cast<float>(extendedFingers[i]));
 	}
 	data.push_back(pinchStrength);
 	data.push_back(grabStrength);

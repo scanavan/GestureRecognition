@@ -39,4 +39,4 @@ LINK_DIRECTORIES(${LEAP_DIR}/lib/x64/ ${OpenCV_LINK_DIRECTORIES})
 #create exe
 ADD_EXECUTABLE(LeapCapture ${SOURCE_FILES} ${HEADER_FILES} ${RF_LIB_HEADER_FILES} ${RF_LIB_SOURCE_FILES})
 #link libs
-TARGET_LINK_LIBRARIES(LeapCapture Leap.lib opencv_world310.lib)
+TARGET_LINK_LIBRARIES(LeapCapture Leap.lib opencv_world330.lib)
